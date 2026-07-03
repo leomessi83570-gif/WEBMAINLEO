@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MOSA Studio — Création de sites web, photo & vidéo</title>
+<meta name="description" content="MOSA Studio conçoit des sites web sur-mesure et réalise vos contenus photo et vidéo. Studio créatif noir & crème basé en région PACA.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0A0A0B;
+  --cream:#FBF8F1;
+  --cream-dim:#C9C5BC;
+  --ink:#0a0a0a;
+  --muted:#8A8A8F;
+  --line:rgba(251,248,241,.10);
+  --g-web:linear-gradient(137deg,#FF3D77 0%,#FFB1CE 45%,#FF9D3C 100%);
+  --g-photo:linear-gradient(137deg,#FFFFFF 0%,#7DD3FC 45%,#06B6D4 100%);
+  --g-accent:linear-gradient(137deg,#4361EE 0%,#E0AEFF 45%,#F72585 100%);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg);color:var(--cream);
+  font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
+  font-weight:400;line-height:1.6;overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+a{color:inherit;text-decoration:none}
+img{max-width:100%;display:block}
+.wrap{max-width:1100px;margin:0 auto;padding:0 28px}
+section{position:relative}
+
+/* ---------- INTRO ---------- */
+#intro{
+  position:fixed;inset:0;z-index:1000;background:var(--cream);
+  display:flex;align-items:center;justify-content:center;
+  transition:opacity .8s ease,visibility .8s ease;
+}
+#intro.done{opacity:0;visibility:hidden}
+#intro .intro-grad{
+  position:absolute;inset:0;pointer-events:none;opacity:0;z-index:0;
+  background:
+    radial-gradient(120% 90% at 18% 12%, rgba(255,61,119,.55) 0%, rgba(255,61,119,0) 50%),
+    radial-gradient(120% 90% at 88% 22%, rgba(255,157,60,.50) 0%, rgba(255,157,60,0) 52%),
+    radial-gradient(130% 100% at 70% 100%, rgba(125,211,252,.50) 0%, rgba(6,182,212,0) 55%),
+    radial-gradient(120% 110% at 30% 90%, rgba(224,174,255,.45) 0%, rgba(247,37,133,0) 55%);
+  filter:blur(20px);
+  animation:introGrad 2.4s ease forwards .35s;
+}
+@keyframes introGrad{0%{opacity:0}100%{opacity:.85}}
+#intro svg{position:relative;z-index:1;width:min(78vw,760px);height:auto;overflow:visible}
+#intro text{
+  font-family:'Anton',sans-serif;font-weight:400;
+  fill:var(--ink);stroke:var(--ink);stroke-width:2;
+  fill-opacity:0;stroke-dasharray:2400;stroke-dashoffset:2400;
+  animation:draw 1.7s cubic-bezier(.65,0,.35,1) forwards,fill .8s ease forwards 1.45s;
+}
+#intro .substudio{
+  font-family:'Inter',sans-serif;font-weight:500;letter-spacing:.5em;
+  fill:var(--ink);stroke:none;font-size:34px;opacity:0;
+  animation:fadeIn .7s ease forwards 2.1s;
+}
+@keyframes draw{to{stroke-dashoffset:0}}
+@keyframes fill{to{fill-opacity:1}}
+@keyframes fadeIn{to{opacity:1}}
+
+/* ---------- HEADER ---------- */
+header{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:20px 28px;
+  background:rgba(10,10,11,0);
+  transition:background .4s ease,backdrop-filter .4s ease,border-color .4s ease,padding .4s ease;
+  border-bottom:1px solid transparent;
+}
+header.scrolled{
+  background:rgba(10,10,11,.72);backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--line);padding:14px 28px;
+}
+.brand{font-family:'Anton',sans-serif;font-size:26px;letter-spacing:.04em}
+.brand span{font-size:11px;font-family:'Inter';letter-spacing:.35em;color:var(--cream-dim);margin-left:8px;vertical-align:3px;font-weight:500}
+nav{display:flex;gap:30px;align-items:center}
+nav a{font-size:13px;letter-spacing:.06em;color:var(--cream-dim);transition:color .25s ease;position:relative}
+nav a::after{content:"";position:absolute;left:0;bottom:-6px;width:0;height:1px;background:var(--cream);transition:width .3s ease}
+nav a:hover{color:var(--cream)}
+nav a:hover::after{width:100%}
+nav .nav-cta{
+  color:var(--ink);background:var(--cream);padding:8px 18px;border-radius:100px;
+  font-weight:500;transition:transform .2s ease,opacity .2s ease;
+}
+nav .nav-cta::after{display:none}
+nav .nav-cta:hover{transform:translateY(-1px);opacity:.9;color:var(--ink)}
+.burger{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:0;padding:6px}
+.burger span{width:24px;height:2px;background:var(--cream);transition:.3s}
+
+/* ---------- HERO ---------- */
+#hero{min-height:100vh;display:flex;align-items:center;overflow:hidden}
+.hero-glow{
+  position:absolute;width:900px;height:900px;border-radius:50%;
+  top:-280px;right:-220px;pointer-events:none;opacity:.5;
+  background:var(--g-accent);filter:blur(140px);
+  animation:float 14s ease-in-out infinite alternate;
+}
+.hero-glow.two{
+  top:auto;bottom:-380px;left:-260px;right:auto;width:760px;height:760px;
+  background:var(--g-photo);opacity:.32;animation-duration:18s;
+}
+@keyframes float{from{transform:translate(0,0) scale(1)}to{transform:translate(-40px,40px) scale(1.08)}}
+.hero-inner{position:relative;z-index:2}
+.eyebrow{
+  display:inline-flex;align-items:center;gap:10px;font-size:12px;letter-spacing:.22em;
+  color:var(--cream-dim);text-transform:uppercase;margin-bottom:30px;
+  border:1px solid var(--line);padding:8px 16px;border-radius:100px;
+}
+.eyebrow .dot{width:7px;height:7px;border-radius:50%;background:#4ADE80;box-shadow:0 0 12px #4ADE80}
+h1.hero-title{
+  font-family:'Anton',sans-serif;font-weight:400;
+  font-size:clamp(48px,9vw,118px);line-height:.92;letter-spacing:-.01em;
+  text-transform:uppercase;margin-bottom:28px;
+}
+h1.hero-title em{font-style:normal;-webkit-text-fill-color:transparent;-webkit-background-clip:text;background-clip:text;background-image:var(--g-web)}
+.hero-sub{font-size:clamp(16px,2.1vw,20px);color:var(--cream-dim);max-width:560px;font-weight:300;margin-bottom:40px}
+.hero-actions{display:flex;gap:16px;flex-wrap:wrap}
+.btn{
+  display:inline-flex;align-items:center;gap:10px;padding:15px 30px;border-radius:100px;
+  font-size:14px;font-weight:500;letter-spacing:.02em;cursor:pointer;border:1px solid transparent;
+  transition:transform .2s ease,opacity .2s ease,background .25s ease;
+}
+.btn-primary{background:var(--cream);color:var(--ink)}
+.btn-primary:hover{transform:translateY(-2px);opacity:.92}
+.btn-ghost{border-color:var(--line);color:var(--cream)}
+.btn-ghost:hover{background:rgba(251,248,241,.06);transform:translateY(-2px)}
+
+/* ---------- SECTION SHELL ---------- */
+.sec-pad{padding:120px 0}
+.sec-head{margin-bottom:60px;max-width:680px}
+.sec-tag{font-size:12px;letter-spacing:.24em;text-transform:uppercase;color:var(--muted);margin-bottom:18px;display:block}
+.sec-title{font-family:'Anton',sans-serif;font-weight:400;font-size:clamp(34px,5.4vw,64px);line-height:1;text-transform:uppercase;letter-spacing:-.01em}
+.sec-desc{margin-top:22px;color:var(--cream-dim);font-weight:300;font-size:17px;max-width:540px}
+
+/* ---------- SERVICES ---------- */
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px}
+.fcard{position:relative;border-radius:32px}
+.fcard .glow{
+  position:absolute;inset:0;border-radius:40px;opacity:.45;filter:blur(48px);
+  pointer-events:none;transition:opacity .4s ease;z-index:0;
+}
+.fcard:hover .glow{opacity:.75}
+.fcard .face{
+  position:relative;z-index:1;border-radius:32px;overflow:hidden;
+  border:1.5px solid transparent;min-height:320px;
+  background:linear-gradient(#141416,#141416) padding-box,var(--cg) border-box;
+  padding:34px;display:flex;flex-direction:column;justify-content:space-between;
+  transition:transform .35s cubic-bezier(.16,1,.3,1);
+}
+.fcard:hover .face{transform:translateY(-6px)}
+.fcard.web .glow{background:var(--g-web)} .fcard.web .face{--cg:var(--g-web)}
+.fcard.photo .glow{background:var(--g-photo)} .fcard.photo .face{--cg:var(--g-photo)}
+.fcard .icn{width:54px;height:54px;border-radius:16px;display:flex;align-items:center;justify-content:center;background:rgba(251,248,241,.06);border:1px solid var(--line)}
+.fcard .icn svg{width:26px;height:26px;stroke:var(--cream);stroke-width:2;fill:none}
+.fcard h3{font-family:'Anton',sans-serif;font-weight:400;font-size:30px;text-transform:uppercase;letter-spacing:0;margin:26px 0 14px}
+.fcard p{color:var(--cream-dim);font-weight:300;font-size:15px}
+.fcard ul{list-style:none;margin-top:20px;display:flex;flex-wrap:wrap;gap:8px}
+.fcard li{font-size:12px;color:var(--cream-dim);border:1px solid var(--line);padding:6px 12px;border-radius:100px}
+
+/* ---------- VIDEOS ---------- */
+.video-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:18px}
+.vthumb{
+  position:relative;border-radius:20px;overflow:hidden;aspect-ratio:16/10;
+  background:#141416;border:1px solid var(--line);cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  transition:transform .35s cubic-bezier(.16,1,.3,1),border-color .35s ease;
+}
+.vthumb:hover{transform:translateY(-5px);border-color:rgba(251,248,241,.28)}
+.vthumb .ph{position:absolute;inset:0;background:var(--vg);opacity:.20;transition:opacity .35s ease}
+.vthumb:hover .ph{opacity:.34}
+.vthumb .play{position:relative;z-index:2;width:64px;height:64px;border-radius:50%;background:rgba(251,248,241,.10);backdrop-filter:blur(6px);border:1px solid rgba(251,248,241,.3);display:flex;align-items:center;justify-content:center;transition:transform .3s ease,background .3s ease}
+.vthumb:hover .play{transform:scale(1.08);background:rgba(251,248,241,.18)}
+.vthumb .play svg{width:22px;height:22px;margin-left:3px;fill:var(--cream)}
+.vthumb .meta{position:absolute;left:18px;bottom:16px;z-index:2}
+.vthumb .meta .t{font-weight:500;font-size:15px}
+.vthumb .meta .s{font-size:12px;color:var(--cream-dim)}
+
+/* ---------- TARIFS ---------- */
+.tiers{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:22px;align-items:stretch}
+.tier{
+  border:1px solid var(--line);border-radius:26px;padding:36px 32px;
+  background:linear-gradient(180deg,rgba(251,248,241,.025),rgba(251,248,241,0));
+  display:flex;flex-direction:column;transition:transform .35s cubic-bezier(.16,1,.3,1),border-color .35s ease;
+}
+.tier:hover{transform:translateY(-6px);border-color:rgba(251,248,241,.25)}
+.tier.featured{border-color:transparent;background:linear-gradient(#121214,#121214) padding-box,var(--g-accent) border-box;border:1.5px solid transparent}
+.tier .badge{align-self:flex-start;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink);background:var(--cream);padding:5px 12px;border-radius:100px;margin-bottom:18px;font-weight:600}
+.tier .name{font-family:'Anton',sans-serif;font-size:24px;text-transform:uppercase;margin-bottom:8px}
+.tier .price{font-family:'Anton',sans-serif;font-size:52px;line-height:1;margin:8px 0 4px}
+.tier .price small{font-family:'Inter';font-size:15px;font-weight:400;color:var(--muted)}
+.tier .ptag{font-size:13px;color:var(--muted);margin-bottom:26px}
+.tier ul{list-style:none;display:flex;flex-direction:column;gap:13px;margin-bottom:30px;flex:1}
+.tier li{font-size:14px;color:var(--cream-dim);display:flex;gap:11px;align-items:flex-start;font-weight:300}
+.tier li svg{width:17px;height:17px;flex-shrink:0;margin-top:2px;stroke:#4ADE80;stroke-width:2.5;fill:none}
+.tier .btn{width:100%;justify-content:center}
+
+/* tabs */
+.tabs{display:inline-flex;gap:6px;padding:6px;border:1px solid var(--line);border-radius:100px;margin-bottom:44px;background:rgba(251,248,241,.02)}
+.tab{background:none;border:0;color:var(--cream-dim);font-family:'Inter';font-size:14px;font-weight:500;letter-spacing:.02em;padding:10px 22px;border-radius:100px;cursor:pointer;transition:color .25s ease,background .25s ease}
+.tab:hover{color:var(--cream)}
+.tab.active{background:var(--cream);color:var(--ink)}
+.tab-panel{display:none}
+.tab-panel.active{display:block;animation:panelIn .5s cubic-bezier(.16,1,.3,1)}
+@keyframes panelIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.tiers-4{grid-template-columns:repeat(auto-fit,minmax(230px,1fr))}
+.tier li.off{color:var(--muted)}
+.tier li.off svg{stroke:var(--muted)}
+.tier li.opt svg{stroke:#7DD3FC}
+/* abonnement */
+.abo-card{display:grid;grid-template-columns:1.1fr 1fr;gap:0;border:1.5px solid transparent;border-radius:30px;overflow:hidden;background:linear-gradient(#121214,#121214) padding-box,var(--g-accent) border-box}
+.abo-left{padding:44px 40px;display:flex;flex-direction:column;align-items:flex-start}
+.abo-left .name{font-family:'Anton',sans-serif;font-size:30px;text-transform:uppercase;margin:6px 0 6px}
+.abo-left .price{font-family:'Anton',sans-serif;font-size:56px;line-height:1;margin-bottom:18px}
+.abo-left .price small{font-family:'Inter';font-size:14px;font-weight:400;color:var(--muted)}
+.abo-desc{color:var(--cream-dim);font-weight:300;font-size:15px;margin-bottom:28px}
+.abo-right{padding:44px 40px;background:rgba(251,248,241,.03);border-left:1px solid var(--line)}
+.abo-inc{font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-bottom:20px}
+.abo-right ul{list-style:none;display:flex;flex-direction:column;gap:14px}
+.abo-right li{font-size:14px;color:var(--cream-dim);font-weight:300;display:flex;gap:11px;align-items:flex-start}
+.abo-right li svg{width:17px;height:17px;flex-shrink:0;margin-top:2px;stroke:#4ADE80;stroke-width:2.5;fill:none}
+@media(max-width:680px){.abo-card{grid-template-columns:1fr}.abo-right{border-left:0;border-top:1px solid var(--line)}}
+
+/* ---------- CONTACT ---------- */
+#contact{padding:120px 0 100px}
+.contact-box{
+  position:relative;border-radius:36px;overflow:hidden;padding:72px 48px;text-align:center;
+  border:1px solid var(--line);
+  background:linear-gradient(180deg,rgba(251,248,241,.03),rgba(251,248,241,0));
+}
+.contact-box .cglow{position:absolute;width:560px;height:560px;border-radius:50%;background:var(--g-web);filter:blur(150px);opacity:.28;top:-220px;left:50%;transform:translateX(-50%);pointer-events:none}
+.contact-box h2{position:relative;font-family:'Anton',sans-serif;font-weight:400;font-size:clamp(36px,6vw,72px);text-transform:uppercase;line-height:.98;margin-bottom:22px}
+.contact-box p{position:relative;color:var(--cream-dim);font-weight:300;max-width:460px;margin:0 auto 36px}
+.contact-actions{position:relative;display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+
+/* ---------- FOOTER ---------- */
+footer{border-top:1px solid var(--line);padding:40px 28px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:18px}
+footer .fbrand{font-family:'Anton',sans-serif;font-size:20px;letter-spacing:.04em}
+footer .fmeta{font-size:13px;color:var(--muted)}
+footer .fsoc{display:flex;gap:22px;font-size:13px;color:var(--cream-dim)}
+footer .fsoc a:hover{color:var(--cream)}
+
+/* ---------- REVEAL ---------- */
+.reveal{opacity:0;transform:translateY(34px);transition:opacity .8s cubic-bezier(.16,1,.3,1),transform .8s cubic-bezier(.16,1,.3,1)}
+.reveal.in{opacity:1;transform:none}
+
+/* ---------- GRAIN OVERLAY ---------- */
+#grain{
+  position:fixed;inset:-100px;z-index:900;pointer-events:none;opacity:.035;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  mix-blend-mode:overlay;
+}
+
+/* ---------- SCROLL PROGRESS ---------- */
+#progress{position:fixed;top:0;left:0;height:3px;width:0%;z-index:1001;background:var(--g-accent);transition:width .1s linear}
+
+/* ---------- CUSTOM CURSOR ---------- */
+#cur-dot,#cur-ring{position:fixed;top:0;left:0;z-index:1002;pointer-events:none;border-radius:50%;transform:translate3d(-50%,-50%,0);will-change:transform;display:none}
+#cur-dot{width:6px;height:6px;background:var(--cream)}
+#cur-ring{width:38px;height:38px;border:1px solid rgba(251,248,241,.55);transition:width .25s ease,height .25s ease,border-color .25s ease,opacity .25s ease,background .25s ease}
+body.has-cursor #cur-dot,body.has-cursor #cur-ring{display:block}
+body.has-cursor,body.has-cursor a,body.has-cursor button,body.has-cursor .tab{cursor:none}
+body.cursor-pop #cur-ring{width:64px;height:64px;border-color:rgba(251,248,241,.9);background:rgba(251,248,241,.06)}
+body.cursor-pop #cur-dot{opacity:0}
+
+/* ---------- MAGNETIC / TILT ---------- */
+.magnetic{transition:transform .25s cubic-bezier(.16,1,.3,1)}
+.tilt{transform-style:preserve-3d;transition:transform .5s cubic-bezier(.16,1,.3,1)}
+.tilt.tilting{transition:transform .08s linear}
+
+/* ---------- HERO REVEAL (mask lines) ---------- */
+.hero-title .line{display:block;overflow:hidden}
+.hero-title .line-inner{display:block;transform:translateY(112%);animation:lineUp 1s cubic-bezier(.16,1,.3,1) forwards}
+.hero-title .line:nth-child(1) .line-inner{animation-delay:2.95s}
+.hero-title .line:nth-child(2) .line-inner{animation-delay:3.08s}
+.hero-title .line:nth-child(3) .line-inner{animation-delay:3.21s}
+@keyframes lineUp{to{transform:translateY(0)}}
+h1.hero-title em{background-size:200% auto;animation:shimmer 5s linear infinite}
+@keyframes shimmer{to{background-position:-200% center}}
+.hero-anim{opacity:0;animation:fadeIn .8s ease forwards}
+.eyebrow.hero-anim{animation-delay:3.3s}
+.hero-sub.hero-anim{animation-delay:3.4s}
+.hero-actions.hero-anim{animation-delay:3.52s}
+
+/* ---------- MARQUEE ---------- */
+.marquee{position:relative;overflow:hidden;border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:26px 0}
+.marquee .track{display:flex;width:max-content;gap:48px;animation:marquee 26s linear infinite}
+.marquee:hover .track{animation-play-state:paused}
+.marquee span{font-family:'Anton',sans-serif;font-size:clamp(22px,3.4vw,38px);text-transform:uppercase;white-space:nowrap;letter-spacing:.01em;color:transparent;-webkit-text-stroke:1px var(--cream-dim);display:flex;align-items:center;gap:48px}
+.marquee span.fill{color:var(--cream);-webkit-text-stroke:0}
+@keyframes marquee{to{transform:translateX(-50%)}}
+
+/* ---------- COUNT-UP ---------- */
+.price .num{font-variant-numeric:tabular-nums}
+
+/* ---------- RESPONSIVE ---------- */
+@media(max-width:760px){
+  nav{position:fixed;inset:0 0 0 auto;width:min(78vw,320px);flex-direction:column;justify-content:center;gap:34px;background:rgba(10,10,11,.96);backdrop-filter:blur(18px);transform:translateX(100%);transition:transform .4s cubic-bezier(.16,1,.3,1);border-left:1px solid var(--line)}
+  nav.open{transform:translateX(0)}
+  nav a{font-size:18px}
+  .burger{display:flex;z-index:120}
+  .sec-pad{padding:84px 0}
+  #contact{padding:84px 0 70px}
+  .contact-box{padding:52px 24px}
+}
+@media(max-width:760px){
+  .marquee span{font-size:20px;-webkit-text-stroke-width:.7px}
+}
+@media(prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important}
+  #intro{display:none}
+  .reveal{opacity:1;transform:none}
+  .hero-title .line-inner{transform:none}
+  .hero-anim{opacity:1}
+  #cur-dot,#cur-ring,#grain,#progress{display:none!important}
+  .marquee .track{animation:none}
+}
+@media (hover:none),(pointer:coarse){
+  #cur-dot,#cur-ring{display:none!important}
+}
+</style>
+</head>
+<body>
+
+<div id="grain" aria-hidden="true"></div>
+<div id="progress" aria-hidden="true"></div>
+<div id="cur-dot" aria-hidden="true"></div>
+<div id="cur-ring" aria-hidden="true"></div>
+
+<!-- INTRO -->
+<div id="intro" aria-hidden="true">
+  <div class="intro-grad"></div>
+  <svg viewBox="0 0 760 300" role="img">
+    <title>MOSA Studio</title>
+    <text x="380" y="190" text-anchor="middle" font-size="240">MOSA</text>
+    <text class="substudio" x="380" y="250" text-anchor="middle">STUDIO</text>
+  </svg>
+</div>
+
+<!-- HEADER -->
+<header id="header">
+  <a href="#hero" class="brand">MOSA<span>STUDIO</span></a>
+  <button class="burger" id="burger" aria-label="Ouvrir le menu"><span></span><span></span><span></span></button>
+  <nav id="nav">
+    <a href="#services">Services</a>
+    <a href="#videos">Réalisations</a>
+    <a href="#tarifs">Tarifs</a>
+    <a href="#contact">Contact</a>
+    <a href="#contact" class="nav-cta magnetic">Démarrer un projet</a>
+  </nav>
+</header>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-glow"></div>
+  <div class="hero-glow two"></div>
+  <div class="wrap hero-inner">
+    <span class="eyebrow hero-anim"><span class="dot"></span>Studio créatif · Web & Image</span>
+    <h1 class="hero-title">
+      <span class="line"><span class="line-inner">On donne</span></span>
+      <span class="line"><span class="line-inner">une <em>présence</em></span></span>
+      <span class="line"><span class="line-inner">à votre marque</span></span>
+    </h1>
+    <p class="hero-sub hero-anim">MOSA Studio conçoit des sites web sur-mesure et réalise vos contenus photo et vidéo. Une identité forte, du premier pixel au dernier plan.</p>
+    <div class="hero-actions hero-anim">
+      <a href="#contact" class="btn btn-primary magnetic">Lancer mon projet
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </a>
+      <a href="#videos" class="btn btn-ghost magnetic">Voir les réalisations</a>
+    </div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee" aria-hidden="true">
+  <div class="track">
+    <span><span class="fill">Sites web</span> ✦ Identité visuelle ✦ Photo ✦ Vidéo ✦ SEO ✦ Motion design ✦ Stratégie digitale ✦</span>
+    <span><span class="fill">Sites web</span> ✦ Identité visuelle ✦ Photo ✦ Vidéo ✦ SEO ✦ Motion design ✦ Stratégie digitale ✦</span>
+  </div>
+</div>
+
+<!-- SERVICES -->
+<section id="services" class="sec-pad">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="sec-tag">Ce que je propose</span>
+      <h2 class="sec-title">Deux savoir-faire,<br>une même exigence</h2>
+      <p class="sec-desc">Du site qui convertit au film qui marque les esprits. Tout est pensé sur-mesure, pour tout type de structure.</p>
+    </div>
+    <div class="cards">
+      <article class="fcard web reveal">
+        <div class="glow"></div>
+        <div class="face tilt">
+          <div>
+            <div class="icn">
+              <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+            </div>
+            <h3>Web</h3>
+            <p>Des sites vitrines, portfolios et e-commerce rapides, soignés et pensés pixel par pixel. Responsive, optimisés et faciles à faire vivre.</p>
+          </div>
+          <ul><li>Sites vitrines</li><li>E-commerce</li><li>Landing pages</li><li>SEO</li><li>Animations</li></ul>
+        </div>
+      </article>
+      <article class="fcard photo reveal">
+        <div class="glow"></div>
+        <div class="face tilt">
+          <div>
+            <div class="icn">
+              <svg viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+            </div>
+            <h3>Photo · Vidéo</h3>
+            <p>Captation, montage, image de marque et réseaux. On filme, on cadre, on raconte votre histoire avec un rendu pro et cohérent.</p>
+          </div>
+          <ul><li>Clips & pubs</li><li>Réseaux sociaux</li><li>Événementiel</li><li>Photo produit</li><li>Montage</li></ul>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- VIDEOS -->
+<section id="videos" class="sec-pad">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="sec-tag">Réalisations</span>
+      <h2 class="sec-title">Quelques<br>exemples</h2>
+      <p class="sec-desc">Un aperçu du travail vidéo. Remplacez ces blocs par vos vraies vidéos quand elles sont prêtes.</p>
+    </div>
+    <div class="video-grid">
+      <div class="vthumb reveal tilt" style="--vg:var(--g-web)">
+        <div class="ph"></div>
+        <div class="play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+        <div class="meta"><div class="t">Clip — Artiste local</div><div class="s">Réalisation & montage</div></div>
+      </div>
+      <div class="vthumb reveal tilt" style="--vg:var(--g-photo)">
+        <div class="ph"></div>
+        <div class="play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+        <div class="meta"><div class="t">Pub — Marque</div><div class="s">Captation & étalonnage</div></div>
+      </div>
+      <div class="vthumb reveal tilt" style="--vg:var(--g-accent)">
+        <div class="ph"></div>
+        <div class="play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+        <div class="meta"><div class="t">Réseaux — Format vertical</div><div class="s">Contenu social</div></div>
+      </div>
+      <div class="vthumb reveal tilt" style="--vg:var(--g-photo)">
+        <div class="ph"></div>
+        <div class="play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+        <div class="meta"><div class="t">Événement</div><div class="s">Aftermovie</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TARIFS -->
+<section id="tarifs" class="sec-pad">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="sec-tag">Tarifs & offres</span>
+      <h2 class="sec-title">Des formules<br>claires</h2>
+      <p class="sec-desc">Trois univers, un devis gratuit. Les prix indiqués sont des points de départ ; chaque projet est affiné selon vos besoins réels.</p>
+    </div>
+
+    <div class="tabs reveal" role="tablist">
+      <button class="tab active" data-tab="web" role="tab">Site web</button>
+      <button class="tab" data-tab="video" role="tab">Vidéo</button>
+      <button class="tab" data-tab="abo" role="tab">Abonnement</button>
+    </div>
+
+    <!-- WEB -->
+    <div class="tab-panel active" id="tab-web">
+      <div class="tiers">
+        <div class="tier reveal tilt">
+          <div class="name">Classic</div>
+          <div class="price">999€</div>
+          <div class="ptag">One-page pour démarrer proprement</div>
+          <ul>
+            <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>One page responsive</li>
+            <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>Formulaire de contact par mail</li>
+            <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>Photos incluses</li>
+            <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>2 retouches</li>
+            <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>Avis Google intégrés</li>
+            <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>Suivi la première semaine</li>
+            <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>PDF explicatif hébergement</li>
+            <li class="off"><svg viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg>Pas de SEO · modifs sur devis</li>
+          </ul>
+          <a href="#contact" class="btn btn-ghost">Choisir Classic</a>
+        </div>
+
+        <div class="tier featured reveal tilt">
+          <span class="badge">Le plus choisi</span>
+          <div class="name">Pro</div>
+          <div class="price">1599€</div>
+          <div class="ptag">Site multi-sections complet</div>
+          <ul>
+            <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>Site multi-sections</li>
+            <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>Animation 2D</li>
+            <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>Photo / vidéo selon besoins</li>
+            <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>SEO de base · multilingue</li>
+            <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>Contact mail + WhatsApp</li>
+            <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>Réservation & Google Maps</li>
+            <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>Automatisation de devis</li>
+            <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>4 retouches · 2 modifs / an</li>
+            <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>Avis Google intégrés</li>
+            <li class="opt"><svg viewBox="0 0 24 24"><path d="M12 8v8M8 12h8"/></svg>Hébergement géré 30€/mois (option, 1 an)</li>
+          </ul>
+          <a href="#contact" class="btn btn-primary">Choisir Pro</a>
+        </div>
+
+        <div class="tier reveal tilt">
+          <div class="name">Signature</div>
+          <div class="price">2999€ <small>à partir de</small></div>
+          <div class="ptag">Le haut de gamme, options sur devis</div>
+          <ul>
+            <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>Tout le pack Pro, et en plus :</li>
+            <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>Animation 3D</li>
+            <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>Visite virtuelle 3D</li>
+            <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>Chat-bot & notifications intelligentes</li>
+            <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>Google Analytics</li>
+            <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>SEO supérieur</li>
+            <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>4 modifications / an</li>
+          </ul>
+          <a href="#contact" class="btn btn-ghost">En parler</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- VIDEO -->
+    <div class="tab-panel" id="tab-video">
+      <div class="tiers tiers-4">
+        <div class="tier reveal tilt">
+          <div class="name">Social</div>
+          <div class="price">399€</div>
+          <div class="ptag">Réels Insta / TikTok</div>
+          <ul>
+            <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>3 vidéos format vertical</li>
+            <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>Prêtes à poster</li>
+            <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>Montage dynamique</li>
+          </ul>
+          <a href="#contact" class="btn btn-ghost">Choisir</a>
+        </div>
+        <div class="tier reveal tilt">
+          <div class="name">Présentation</div>
+          <div class="price">999€ <small>à partir de</small></div>
+          <div class="ptag">Entreprise & reportage</div>
+          <ul>
+            <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>Présentation d'entreprise</li>
+            <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>Reportage court</li>
+            <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>Résumé de réunion</li>
+          </ul>
+          <a href="#contact" class="btn btn-ghost">Choisir</a>
+        </div>
+        <div class="tier featured reveal tilt">
+          <span class="badge">Populaire</span>
+          <div class="name">Publicitaire</div>
+          <div class="price">1899€ <small>à partir de</small></div>
+          <div class="ptag">Pub haute qualité</div>
+          <ul>
+            <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>Vidéo publicitaire</li>
+            <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>Production & réalisation gérées</li>
+            <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>Haute qualité</li>
+            <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>1 à 2 jours de tournage</li>
+          </ul>
+          <a href="#contact" class="btn btn-primary">Choisir</a>
+        </div>
+        <div class="tier reveal tilt">
+          <div class="name">Grosse prod</div>
+          <div class="price">2999€ <small>à partir de</small></div>
+          <div class="ptag">Options sur devis</div>
+          <ul>
+            <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>Grosse production</li>
+            <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>Plusieurs jours de tournage</li>
+            <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>Très haute qualité</li>
+          </ul>
+          <a href="#contact" class="btn btn-ghost">En parler</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- ABONNEMENT -->
+    <div class="tab-panel" id="tab-abo">
+      <div class="abo-card reveal tilt">
+        <div class="abo-left">
+          <span class="badge">Sur-mesure & mensualisé</span>
+          <div class="name">Présence digitale</div>
+          <div class="price">499€ <small>/ mois, à partir de</small></div>
+          <p class="abo-desc">Un pack de services mensuel construit selon vos besoins, avec options sur devis. Idéal pour commerçants, artisans et marques qui veulent une présence suivie sans s'en occuper.</p>
+          <a href="#contact" class="btn btn-primary">Composer mon abonnement</a>
+        </div>
+        <div class="abo-right">
+          <div class="abo-inc">Peut inclure</div>
+          <ul>
+            <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>Refonte Instagram & TikTok</li>
+            <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>Vidéos mensuelles</li>
+            <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>Publications & DA réseaux</li>
+            <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>Photos & logo</li>
+            <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>Conseil budget publicitaire</li>
+            <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>Suivi mensuel personnalisé</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="wrap">
+    <div class="contact-box reveal">
+      <div class="cglow"></div>
+      <h2>On lance<br>votre projet ?</h2>
+      <p>Parlez-moi de votre structure et de ce que vous voulez créer. Réponse rapide, devis gratuit.</p>
+      <div class="contact-actions">
+        <a href="mailto:contact@mosastudio.fr" class="btn btn-primary">contact@mosastudio.fr</a>
+        <a href="https://instagram.com/mosa" class="btn btn-ghost">Instagram</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="fbrand">MOSA STUDIO</div>
+  <div class="fmeta">© <span id="year"></span> — Studio créatif, région PACA</div>
+  <div class="fsoc">
+    <a href="https://instagram.com/mosa">@mosa</a>
+    <a href="mailto:contact@mosastudio.fr">Email</a>
+    <a href="#hero">Haut de page</a>
+  </div>
+</footer>
+
+<script>
+document.getElementById('year').textContent=new Date().getFullYear();
+
+window.addEventListener('load',()=>{
+  setTimeout(()=>{document.getElementById('intro').classList.add('done')},2900);
+});
+
+const header=document.getElementById('header');
+const progressBar=document.getElementById('progress');
+window.addEventListener('scroll',()=>{
+  header.classList.toggle('scrolled',window.scrollY>40);
+  const h=document.documentElement;
+  const scrolled=(h.scrollTop)/(h.scrollHeight-h.clientHeight)*100;
+  progressBar.style.width=scrolled+'%';
+},{passive:true});
+
+const burger=document.getElementById('burger'),nav=document.getElementById('nav');
+burger.addEventListener('click',()=>nav.classList.toggle('open'));
+nav.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>nav.classList.remove('open')));
+
+const io=new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}});
+},{threshold:.15});
+document.querySelectorAll('.reveal').forEach((el,i)=>{
+  el.style.transitionDelay=(i%3*0.08)+'s';
+  io.observe(el);
+});
+
+// tarifs tabs
+const tabs=document.querySelectorAll('.tab');
+tabs.forEach(t=>t.addEventListener('click',()=>{
+  tabs.forEach(x=>x.classList.remove('active'));
+  t.classList.add('active');
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  const panel=document.getElementById('tab-'+t.dataset.tab);
+  panel.classList.add('active');
+  panel.querySelectorAll('.reveal').forEach(el=>el.classList.add('in'));
+  panel.querySelectorAll('.price .num').forEach(animateCount);
+}));
+
+// ---------- price count-up ----------
+document.querySelectorAll('.tier .price, .abo-left .price').forEach(el=>{
+  const m=el.innerHTML.match(/\d[\d.,]*/);
+  if(!m) return;
+  const target=parseInt(m[0].replace(/[.,]/g,''),10);
+  el.innerHTML=el.innerHTML.replace(m[0],'<span class="num" data-target="'+target+'">0</span>');
+});
+function animateCount(span){
+  if(span.dataset.done) return;
+  span.dataset.done='1';
+  const target=parseInt(span.dataset.target,10),dur=1200,start=performance.now();
+  (function step(now){
+    const p=Math.min((now-start)/dur,1),eased=1-Math.pow(1-p,3);
+    span.textContent=Math.round(eased*target);
+    if(p<1) requestAnimationFrame(step);
+  })(start);
+}
+const countIO=new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{
+    if(!e.isIntersecting) return;
+    const span=e.target.querySelector('.num');
+    if(span) animateCount(span);
+    countIO.unobserve(e.target);
+  });
+},{threshold:.4});
+document.querySelectorAll('.tier .price, .abo-left .price').forEach(el=>countIO.observe(el));
+
+// ---------- reduced motion / touch guard ----------
+const reduceMotion=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const finePointer=window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+
+// ---------- custom cursor ----------
+if(!reduceMotion && finePointer){
+  document.body.classList.add('has-cursor');
+  const dot=document.getElementById('cur-dot'),ring=document.getElementById('cur-ring');
+  let mx=0,my=0,rx=0,ry=0;
+  window.addEventListener('mousemove',(e)=>{
+    mx=e.clientX;my=e.clientY;
+    dot.style.transform=`translate3d(${mx}px,${my}px,0) translate(-50%,-50%)`;
+  });
+  (function loop(){
+    rx+=(mx-rx)*0.16;ry+=(my-ry)*0.16;
+    ring.style.transform=`translate3d(${rx}px,${ry}px,0) translate(-50%,-50%)`;
+    requestAnimationFrame(loop);
+  })();
+  document.querySelectorAll('a,button,.tilt').forEach(el=>{
+    el.addEventListener('mouseenter',()=>document.body.classList.add('cursor-pop'));
+    el.addEventListener('mouseleave',()=>document.body.classList.remove('cursor-pop'));
+  });
+}
+
+// ---------- magnetic buttons ----------
+if(!reduceMotion && finePointer){
+  document.querySelectorAll('.magnetic').forEach(el=>{
+    el.addEventListener('mousemove',(e)=>{
+      const r=el.getBoundingClientRect();
+      const x=e.clientX-r.left-r.width/2,y=e.clientY-r.top-r.height/2;
+      el.style.transform=`translate(${x*0.28}px,${y*0.4}px)`;
+    });
+    el.addEventListener('mouseleave',()=>{el.style.transform='';});
+  });
+}
+
+// ---------- 3D tilt ----------
+if(!reduceMotion && finePointer){
+  document.querySelectorAll('.tilt').forEach(el=>{
+    el.addEventListener('mousemove',(e)=>{
+      const r=el.getBoundingClientRect();
+      const px=(e.clientX-r.left)/r.width,py=(e.clientY-r.top)/r.height;
+      const rotY=(px-0.5)*14,rotX=(0.5-py)*14;
+      el.classList.add('tilting');
+      el.style.transform=`perspective(900px) rotateX(${rotX}deg) rotateY(${rotY}deg) translateY(-6px)`;
+    });
+    el.addEventListener('mouseleave',()=>{
+      el.classList.remove('tilting');
+      el.style.transform='';
+    });
+  });
+}
+</script>
+</body>
+</html>
