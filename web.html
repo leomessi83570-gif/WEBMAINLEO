@@ -1,0 +1,891 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Exemples de sites internet | MOSA Studio — Bouches-du-Rhône</title>
+<meta name="description" content="Vitrines, e-commerce, landing pages : découvrez des exemples de sites internet réalisés par MOSA Studio pour des professionnels des Bouches-du-Rhône.">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://www.mosastudio.fr/web.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Exemples de sites internet | MOSA Studio">
+<meta property="og:description" content="Vitrines, e-commerce, landing pages réalisés par MOSA Studio.">
+<meta property="og:url" content="https://www.mosastudio.fr/web.html">
+<meta property="og:locale" content="fr_FR">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0A0A0B;
+  --cream:#FBF8F1;
+  --cream-dim:#C9C5BC;
+  --ink:#0a0a0a;
+  --muted:#8A8A8F;
+  --line:rgba(251,248,241,.10);
+  --g-web:linear-gradient(137deg,#FF3D77 0%,#FFB1CE 45%,#FF9D3C 100%);
+  --g-photo:linear-gradient(137deg,#FFFFFF 0%,#7DD3FC 45%,#06B6D4 100%);
+  --g-accent:linear-gradient(137deg,#4361EE 0%,#E0AEFF 45%,#F72585 100%);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;background:var(--bg)}
+body{
+  color:var(--cream);
+  font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
+  font-weight:400;line-height:1.6;overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+a{color:inherit;text-decoration:none}
+img{max-width:100%;display:block}
+.wrap{max-width:1100px;margin:0 auto;padding:0 28px}
+section{position:relative}
+
+/* ---------- INTRO ---------- */
+#intro{
+  position:fixed;inset:0;z-index:1000;background:var(--cream);
+  display:flex;align-items:center;justify-content:center;
+  transition:opacity .8s ease,visibility .8s ease;
+}
+#intro.done{opacity:0;visibility:hidden}
+#intro .intro-grad{
+  position:absolute;inset:0;pointer-events:none;opacity:0;z-index:0;
+  background:
+    radial-gradient(120% 90% at 18% 12%, rgba(255,61,119,.55) 0%, rgba(255,61,119,0) 50%),
+    radial-gradient(120% 90% at 88% 22%, rgba(255,157,60,.50) 0%, rgba(255,157,60,0) 52%),
+    radial-gradient(130% 100% at 70% 100%, rgba(125,211,252,.50) 0%, rgba(6,182,212,0) 55%),
+    radial-gradient(120% 110% at 30% 90%, rgba(224,174,255,.45) 0%, rgba(247,37,133,0) 55%);
+  filter:blur(20px);
+  animation:introGrad 2.4s ease forwards .35s;
+}
+@keyframes introGrad{0%{opacity:0}100%{opacity:.85}}
+#intro svg{position:relative;z-index:1;width:min(78vw,760px);height:auto;overflow:visible}
+#intro text{
+  font-family:'Anton',sans-serif;font-weight:400;
+  fill:var(--ink);stroke:var(--ink);stroke-width:2;
+  fill-opacity:0;stroke-dasharray:2400;stroke-dashoffset:2400;
+  animation:draw 1.7s cubic-bezier(.65,0,.35,1) forwards,fill .8s ease forwards 1.45s;
+}
+#intro .substudio{
+  font-family:'Inter',sans-serif;font-weight:500;letter-spacing:.5em;
+  fill:var(--ink);stroke:none;font-size:34px;opacity:0;
+  animation:fadeIn .7s ease forwards 2.1s;
+}
+@keyframes draw{to{stroke-dashoffset:0}}
+@keyframes fill{to{fill-opacity:1}}
+@keyframes fadeIn{to{opacity:1}}
+
+/* ---------- HEADER ---------- */
+header{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:20px 28px;
+  background:rgba(10,10,11,0);backdrop-filter:blur(0);
+  transition:background .4s ease,backdrop-filter .4s ease,border-color .4s ease,padding .4s ease;
+  border-bottom:1px solid transparent;
+}
+header.scrolled{
+  background:rgba(10,10,11,.72);backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--line);padding:14px 28px;
+}
+.brand{font-family:'Anton',sans-serif;font-size:26px;letter-spacing:.04em}
+.brand span{font-size:11px;font-family:'Inter';letter-spacing:.35em;color:var(--cream-dim);margin-left:8px;vertical-align:3px;font-weight:500}
+nav{display:flex;gap:30px;align-items:center}
+nav a{font-size:13px;letter-spacing:.06em;color:var(--cream-dim);transition:color .25s ease;position:relative}
+nav a::after{content:"";position:absolute;left:0;bottom:-6px;width:0;height:1px;background:var(--cream);transition:width .3s ease}
+nav a:hover{color:var(--cream)}
+nav a:hover::after{width:100%}
+nav .nav-cta{
+  color:var(--ink);background:var(--cream);padding:8px 18px;border-radius:100px;
+  font-weight:500;transition:transform .2s ease,opacity .2s ease;
+}
+nav .nav-cta::after{display:none}
+nav .nav-cta:hover{transform:translateY(-1px);opacity:.9;color:var(--ink)}
+.burger{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:0;padding:6px}
+.burger span{width:24px;height:2px;background:var(--cream);transition:.3s}
+
+/* ---------- HERO ---------- */
+#hero{min-height:100vh;display:flex;align-items:center;overflow:hidden}
+.hero-video{
+  position:absolute;inset:0;width:100%;height:100%;
+  object-fit:cover;z-index:0;pointer-events:none;
+}
+.hero-video-overlay{
+  position:absolute;inset:0;z-index:1;pointer-events:none;
+  background:
+    linear-gradient(90deg,rgba(10,10,11,.92) 0%,rgba(10,10,11,.62) 45%,rgba(10,10,11,.32) 100%),
+    linear-gradient(180deg,rgba(10,10,11,.55) 0%,rgba(10,10,11,0) 30%,rgba(10,10,11,.75) 100%);
+}
+.hero-glow{
+  position:absolute;width:900px;height:900px;border-radius:50%;z-index:1;
+  top:-280px;right:-220px;pointer-events:none;opacity:.5;
+  background:var(--g-accent);filter:blur(140px);
+  animation:float 14s ease-in-out infinite alternate;
+  mix-blend-mode:screen;
+}
+.hero-glow.two{
+  top:auto;bottom:-380px;left:-260px;right:auto;width:760px;height:760px;
+  background:var(--g-photo);opacity:.32;animation-duration:18s;
+}
+@keyframes float{from{transform:translate(0,0) scale(1)}to{transform:translate(-40px,40px) scale(1.08)}}
+.hero-inner{position:relative;z-index:3}
+.eyebrow{
+  display:inline-flex;align-items:center;gap:10px;font-size:12px;letter-spacing:.22em;
+  color:var(--cream-dim);text-transform:uppercase;margin-bottom:30px;
+  border:1px solid var(--line);padding:8px 16px;border-radius:100px;
+}
+.eyebrow .dot{width:7px;height:7px;border-radius:50%;background:#4ADE80;box-shadow:0 0 12px #4ADE80}
+h1.hero-title{
+  font-family:'Anton',sans-serif;font-weight:400;
+  font-size:clamp(48px,9vw,118px);line-height:.92;letter-spacing:-.01em;
+  text-transform:uppercase;margin-bottom:28px;
+}
+h1.hero-title em{font-style:normal;-webkit-text-fill-color:transparent;-webkit-background-clip:text;background-clip:text;background-image:var(--g-web)}
+.hero-sub{font-size:clamp(16px,2.1vw,20px);color:var(--cream-dim);max-width:560px;font-weight:300;margin-bottom:40px}
+.hero-actions{display:flex;gap:16px;flex-wrap:wrap}
+.btn{
+  display:inline-flex;align-items:center;gap:10px;padding:15px 30px;border-radius:100px;
+  font-size:14px;font-weight:500;letter-spacing:.02em;cursor:pointer;border:1px solid transparent;
+  transition:transform .2s ease,opacity .2s ease,background .25s ease;
+}
+.btn-primary{background:var(--cream);color:var(--ink)}
+.btn-primary:hover{transform:translateY(-2px);opacity:.92}
+.btn-ghost{border-color:var(--line);color:var(--cream)}
+.btn-ghost:hover{background:rgba(251,248,241,.06);transform:translateY(-2px)}
+
+/* ---------- FOND DERIVANT AU SCROLL (sensation de descente) ---------- */
+#scrollBg{position:fixed;inset:0;z-index:-1;overflow:hidden;pointer-events:none;background:var(--bg)}
+.sbg-track{position:absolute;inset:0;will-change:transform}
+.sbg-track .sbg-layer{
+  position:absolute;left:0;right:0;top:-15%;height:130%;opacity:0;
+  transition:opacity 1.3s ease;
+}
+#scrollBg .sbg-layer.active{opacity:1}
+#scrollBg .sbg-hero{
+  background:
+    radial-gradient(45% 40% at 28% 22%, rgba(67,97,238,.30) 0%, rgba(67,97,238,.14) 30%, rgba(67,97,238,0) 70%),
+    radial-gradient(42% 38% at 82% 68%, rgba(6,182,212,.20) 0%, rgba(6,182,212,.09) 30%, rgba(6,182,212,0) 70%);
+}
+#scrollBg .sbg-services{
+  background:
+    radial-gradient(44% 38% at 18% 30%, rgba(255,61,119,.32) 0%, rgba(255,61,119,.15) 30%, rgba(255,61,119,0) 70%),
+    radial-gradient(46% 40% at 86% 72%, rgba(125,211,252,.28) 0%, rgba(125,211,252,.13) 30%, rgba(125,211,252,0) 70%);
+}
+#scrollBg .sbg-tarifs{
+  background:
+    radial-gradient(48% 42% at 78% 22%, rgba(224,174,255,.28) 0%, rgba(224,174,255,.13) 30%, rgba(224,174,255,0) 70%),
+    radial-gradient(44% 38% at 16% 78%, rgba(247,37,133,.24) 0%, rgba(247,37,133,.11) 30%, rgba(247,37,133,0) 70%);
+}
+
+/* ---------- SECTION SHELL ---------- */
+.sec-pad{padding:120px 0}
+.sec-head{margin-bottom:60px;max-width:680px}
+.sec-tag{font-size:12px;letter-spacing:.24em;text-transform:uppercase;color:var(--muted);margin-bottom:18px;display:block}
+.sec-title{font-family:'Anton',sans-serif;font-weight:400;font-size:clamp(34px,5.4vw,64px);line-height:1;text-transform:uppercase;letter-spacing:-.01em}
+.sec-desc{margin-top:22px;color:var(--cream-dim);font-weight:300;font-size:17px;max-width:540px}
+
+/* ---------- SERVICES ---------- */
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px;align-items:stretch}
+.fcard{position:relative;border-radius:32px;display:flex;flex-direction:column;height:100%}
+.fcard .glow{
+  position:absolute;inset:0;border-radius:40px;opacity:.45;filter:blur(48px);
+  pointer-events:none;transition:opacity .4s ease;z-index:0;
+}
+.fcard:hover .glow{opacity:.75}
+.fcard .face{
+  position:relative;z-index:1;border-radius:32px;overflow:hidden;flex:1;
+  border:1.5px solid transparent;min-height:320px;
+  background:linear-gradient(#141416,#141416) padding-box,var(--cg) border-box;
+  padding:34px;display:flex;flex-direction:column;justify-content:space-between;
+  transition:transform .35s cubic-bezier(.16,1,.3,1);
+}
+.fcard:hover .face{transform:translateY(-6px)}
+.fcard.web .glow{background:var(--g-web)} .fcard.web .face{--cg:var(--g-web)}
+.fcard.photo .glow{background:var(--g-photo)} .fcard.photo .face{--cg:var(--g-photo)}
+.fcard .icn{width:54px;height:54px;border-radius:16px;display:flex;align-items:center;justify-content:center;background:rgba(251,248,241,.06);border:1px solid var(--line)}
+.fcard .icn svg{width:26px;height:26px;stroke:var(--cream);stroke-width:2;fill:none}
+.fcard h3{font-family:'Anton',sans-serif;font-weight:400;font-size:30px;text-transform:uppercase;letter-spacing:0;margin:26px 0 14px}
+.fcard p{color:var(--cream-dim);font-weight:300;font-size:15px}
+.fcard ul{list-style:none;margin-top:20px;display:flex;flex-wrap:wrap;gap:8px}
+.fcard li{font-size:12px;color:var(--cream-dim);border:1px solid var(--line);padding:6px 12px;border-radius:100px}
+
+/* Fond réactif de la section services */
+#services{position:relative;overflow:hidden}
+.services-bg{position:absolute;inset:-15% -10%;z-index:0;pointer-events:none}
+.sb-glow{position:absolute;width:70vw;height:70vw;max-width:900px;max-height:900px;border-radius:50%;filter:blur(150px);opacity:.10;transition:opacity .8s ease,transform 1.2s ease}
+.sb-web{top:-10%;left:-10%;background:var(--g-web)}
+.sb-photo{bottom:-10%;right:-10%;background:var(--g-photo)}
+#services.hover-web .sb-web{opacity:.55;transform:scale(1.08)}
+#services.hover-web .sb-photo{opacity:.04}
+#services.hover-photo .sb-photo{opacity:.55;transform:scale(1.08)}
+#services.hover-photo .sb-web{opacity:.04}
+
+/* ---------- CARROUSEL 3D REALISATIONS ---------- */
+.c3d-stage{
+  position:relative;width:100%;height:62vh;min-height:440px;max-height:600px;
+  margin-top:20px;overflow:hidden;
+}
+.c3d-perspective{
+  position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  perspective:1350px;
+}
+.c3d-viewport{position:relative;transform-style:preserve-3d}
+.c3d-card{position:absolute;inset:0;transform-style:preserve-3d;cursor:pointer;will-change:transform}
+.c3d-layer{
+  position:absolute;inset:0;border-radius:20px;overflow:hidden;
+  backface-visibility:hidden;box-shadow:0 20px 60px rgba(0,0,0,.55);
+}
+.c3d-layer.mid{background:#333336;transform:translateZ(0)}
+.c3d-layer.front{
+  background:#141416;border:1px solid rgba(251,248,241,.14);
+  box-shadow:inset 0 1px 1px rgba(255,255,255,.12),0 20px 60px rgba(0,0,0,.55);
+}
+.c3d-layer.back{
+  background:#141416;border:1px solid rgba(251,248,241,.14);
+  transform:rotateX(180deg);
+  box-shadow:inset 0 1px 1px rgba(255,255,255,.12),0 20px 60px rgba(0,0,0,.55);
+}
+.c3d-layer video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.c3d-layer.back video{filter:blur(16px);transform:scale(1.15)}
+.c3d-scrim{position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,10,11,0) 40%,rgba(10,10,11,.88) 100%)}
+.c3d-mark{position:absolute;top:16px;right:18px;font-family:'Anton',sans-serif;font-size:14px;letter-spacing:.04em;color:rgba(251,248,241,.85)}
+.c3d-badge{
+  position:absolute;top:16px;left:18px;font-size:10px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--ink);background:var(--cream);padding:5px 11px;border-radius:100px;font-weight:600;
+}
+.c3d-front-meta{position:absolute;left:18px;bottom:16px;right:18px}
+.c3d-front-meta .t{font-weight:500;font-size:16px;margin-bottom:3px}
+.c3d-front-meta .s{font-size:12px;color:var(--cream-dim)}
+.c3d-stripe{position:absolute;left:0;right:0;top:18px;height:34px;background:rgba(0,0,0,.85);backdrop-filter:blur(4px);z-index:2;display:flex;align-items:center;padding:0 16px}
+.c3d-stripe span{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.12em;color:rgba(251,248,241,.55);text-transform:uppercase}
+.c3d-back-meta{position:absolute;left:18px;bottom:16px;right:18px;z-index:2;font-family:'JetBrains Mono',monospace}
+.c3d-back-meta .client{font-size:12px;letter-spacing:.06em;color:var(--cream);margin-bottom:4px}
+.c3d-back-meta .info{font-size:10px;color:rgba(251,248,241,.55);display:flex;gap:8px;align-items:center}
+.c3d-hint{text-align:center;font-size:12px;color:var(--muted);margin-top:8px}
+@media(max-width:640px){.c3d-stage{height:52vh;min-height:340px}}
+
+/* ---------- TARIFS ---------- */
+.tiers{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:22px;align-items:stretch}
+.tier{
+  border:1px solid var(--line);border-radius:26px;padding:36px 32px;
+  background:linear-gradient(180deg,rgba(251,248,241,.025),rgba(251,248,241,0));
+  display:flex;flex-direction:column;transform-origin:center;
+  transition:transform .4s cubic-bezier(.16,1,.3,1),border-color .3s ease,box-shadow .4s ease;
+}
+.tier.reveal:hover{
+  transform:translateY(-10px) scale(1.055);
+  border-color:rgba(251,248,241,.3);
+  box-shadow:0 24px 60px rgba(0,0,0,.45);
+  z-index:2;
+}
+.tier.featured{border-color:transparent;background:linear-gradient(#121214,#121214) padding-box,var(--g-accent) border-box;border:1.5px solid transparent}
+.tier .badge{align-self:flex-start;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink);background:var(--cream);padding:5px 12px;border-radius:100px;margin-bottom:18px;font-weight:600}
+.tier .name{font-family:'Anton',sans-serif;font-size:24px;text-transform:uppercase;margin-bottom:8px}
+.tier .price{font-family:'Anton',sans-serif;font-size:52px;line-height:1;margin:8px 0 4px}
+.tier .price small{font-family:'Inter';font-size:15px;font-weight:400;color:var(--muted)}
+.tier .ptag{font-size:13px;color:var(--muted);margin-bottom:26px}
+.tier ul{list-style:none;display:flex;flex-direction:column;gap:13px;margin-bottom:30px;flex:1}
+.tier li{font-size:14px;color:var(--cream-dim);display:flex;gap:11px;align-items:flex-start;font-weight:300}
+.tier li svg{width:17px;height:17px;flex-shrink:0;margin-top:2px;stroke:#4ADE80;stroke-width:2.5;fill:none}
+.tier .btn{width:100%;justify-content:center}
+
+/* tabs */
+.tabs{display:inline-flex;gap:6px;padding:6px;border:1px solid var(--line);border-radius:100px;margin-bottom:44px;background:rgba(251,248,241,.02)}
+.tab{background:none;border:0;color:var(--cream-dim);font-family:'Inter';font-size:14px;font-weight:500;letter-spacing:.02em;padding:10px 22px;border-radius:100px;cursor:pointer;transition:color .25s ease,background .25s ease}
+.tab:hover{color:var(--cream)}
+.tab.active{background:var(--cream);color:var(--ink)}
+.tab-panel{display:none}
+.tab-panel.active{display:block;animation:panelIn .5s cubic-bezier(.16,1,.3,1)}
+@keyframes panelIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.tiers-4{grid-template-columns:repeat(auto-fit,minmax(230px,1fr))}
+.tier li.off{color:var(--muted)}
+.tier li.off svg{stroke:var(--muted)}
+.tier li.opt svg{stroke:#7DD3FC}
+/* abonnement */
+.abo-card{display:grid;grid-template-columns:1.1fr 1fr;gap:0;border:1.5px solid transparent;border-radius:30px;overflow:hidden;background:linear-gradient(#121214,#121214) padding-box,var(--g-accent) border-box;transition:transform .4s cubic-bezier(.16,1,.3,1),box-shadow .4s ease}
+.abo-card.reveal:hover{transform:scale(1.02);box-shadow:0 24px 60px rgba(0,0,0,.45)}
+.abo-left{padding:44px 40px;display:flex;flex-direction:column;align-items:flex-start}
+.abo-left .name{font-family:'Anton',sans-serif;font-size:30px;text-transform:uppercase;margin:6px 0 6px}
+.abo-left .price{font-family:'Anton',sans-serif;font-size:56px;line-height:1;margin-bottom:18px}
+.abo-left .price small{font-family:'Inter';font-size:14px;font-weight:400;color:var(--muted)}
+.abo-desc{color:var(--cream-dim);font-weight:300;font-size:15px;margin-bottom:28px}
+.abo-right{padding:44px 40px;background:rgba(251,248,241,.03);border-left:1px solid var(--line)}
+.abo-inc{font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-bottom:20px}
+.abo-right ul{list-style:none;display:flex;flex-direction:column;gap:14px}
+.abo-right li{font-size:14px;color:var(--cream-dim);font-weight:300;display:flex;gap:11px;align-items:flex-start}
+.abo-right li svg{width:17px;height:17px;flex-shrink:0;margin-top:2px;stroke:#4ADE80;stroke-width:2.5;fill:none}
+@media(max-width:680px){.abo-card{grid-template-columns:1fr}.abo-right{border-left:0;border-top:1px solid var(--line)}}
+
+/* ---------- CONTACT ---------- */
+#contact{padding:120px 0 100px}
+.contact-box{
+  position:relative;border-radius:36px;overflow:hidden;padding:72px 48px;text-align:center;
+  border:1px solid var(--line);
+  background:linear-gradient(180deg,rgba(251,248,241,.03),rgba(251,248,241,0));
+}
+.contact-box .cglow{position:absolute;width:560px;height:560px;border-radius:50%;background:var(--g-web);filter:blur(150px);opacity:.28;top:-220px;left:50%;transform:translateX(-50%);pointer-events:none}
+.contact-box h2{position:relative;font-family:'Anton',sans-serif;font-weight:400;font-size:clamp(36px,6vw,72px);text-transform:uppercase;line-height:.98;margin-bottom:22px}
+.contact-box p{position:relative;color:var(--cream-dim);font-weight:300;max-width:460px;margin:0 auto 36px}
+.contact-actions{position:relative;display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+
+/* ---------- FOOTER ---------- */
+footer{border-top:1px solid var(--line);padding:40px 28px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:18px}
+footer .fbrand{font-family:'Anton',sans-serif;font-size:20px;letter-spacing:.04em}
+footer .fmeta{font-size:13px;color:var(--muted)}
+footer .fsoc{display:flex;gap:22px;font-size:13px;color:var(--cream-dim)}
+footer .fsoc a:hover{color:var(--cream)}
+
+/* ---------- REVEAL ---------- */
+.reveal{opacity:0;transform:translateY(34px);transition:opacity .8s cubic-bezier(.16,1,.3,1),transform .8s cubic-bezier(.16,1,.3,1)}
+.reveal.in{opacity:1;transform:none}
+
+/* ---------- RESPONSIVE ---------- */
+@media(max-width:760px){
+  nav{position:fixed;inset:0 0 0 auto;width:min(78vw,320px);flex-direction:column;justify-content:center;gap:34px;background:rgba(10,10,11,.96);backdrop-filter:blur(18px);transform:translateX(100%);transition:transform .4s cubic-bezier(.16,1,.3,1);border-left:1px solid var(--line)}
+  nav.open{transform:translateX(0)}
+  nav a{font-size:18px}
+  .burger{display:flex;z-index:120}
+  .sec-pad{padding:84px 0}
+  #contact{padding:84px 0 70px}
+  .contact-box{padding:52px 24px}
+}
+@media(prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important}
+  #intro{display:none}
+  .reveal{opacity:1;transform:none}
+}
+
+/* ---------- PAGES SECONDAIRES (web / réalisations) ---------- */
+/* ---------- ZONE DE FOND — PAGE REALISATIONS ---------- */
+.realisations-bgzone{position:relative;overflow:hidden}
+.page-bg-video{
+  position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;
+  opacity:.4;pointer-events:none;
+}
+.page-bg-fallback{position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.pbf-orb{position:absolute;border-radius:50%;opacity:.30;animation:float 18s ease-in-out infinite alternate}
+.pbf-orb.one{width:640px;height:640px;top:-160px;left:-120px;background:var(--g-accent);animation-duration:20s}
+.pbf-orb.two{width:520px;height:520px;top:20%;right:-160px;background:var(--g-photo);opacity:.22;animation-duration:24s}
+.pbf-orb.three{width:460px;height:460px;bottom:-180px;left:20%;background:var(--g-web);opacity:.20;animation-duration:22s}
+.page-bg-overlay{
+  position:absolute;inset:0;z-index:1;pointer-events:none;
+  background:linear-gradient(180deg,rgba(10,10,11,.35) 0%,rgba(10,10,11,.7) 55%,rgba(10,10,11,.96) 100%);
+}
+.realisations-bgzone .page-hero,.realisations-bgzone .sec-pad{position:relative;z-index:2}
+
+/* ---------- ZONE DE FOND — PAGE WEB (exemples de sites uniquement) ---------- */
+.web-bgzone{position:relative;overflow:hidden}
+.web-bg-video{
+  position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;
+  opacity:.55;pointer-events:none;
+}
+.web-bg-overlay{
+  position:absolute;inset:0;z-index:1;pointer-events:none;
+  background:linear-gradient(180deg,
+    rgba(10,10,11,.15) 0%,
+    rgba(10,10,11,.05) 22%,
+    rgba(67,97,238,.22) 45%,
+    rgba(224,174,255,.28) 65%,
+    rgba(247,37,133,.20) 82%,
+    var(--bg) 100%
+  );
+}
+.web-bgzone .page-hero{position:relative;z-index:2}
+
+.page-hero{padding:170px 0 60px}
+.page-hero .sec-tag{margin-bottom:18px}
+.page-hero .sec-title{font-size:clamp(38px,6.5vw,80px)}
+.page-hero .sec-desc{font-size:18px;max-width:600px}
+.back-link{display:inline-flex;align-items:center;gap:8px;font-size:13px;color:var(--cream-dim);margin-bottom:28px;transition:color .25s ease}
+.back-link:hover{color:var(--cream)}
+.back-link svg{width:15px;height:15px}
+
+.soon-box{
+  position:relative;border-radius:32px;overflow:hidden;padding:80px 40px;text-align:center;
+  border:1px solid var(--line);
+  background:linear-gradient(180deg,rgba(251,248,241,.03),rgba(251,248,241,0));
+  margin:20px 0 40px;
+}
+.soon-box .sglow{position:absolute;width:600px;height:600px;border-radius:50%;filter:blur(150px);opacity:.3;top:-260px;left:50%;transform:translateX(-50%);pointer-events:none}
+.soon-badge{position:relative;display:inline-flex;align-items:center;gap:8px;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink);background:var(--cream);padding:7px 16px;border-radius:100px;font-weight:600;margin-bottom:26px}
+.soon-box h2{position:relative;font-family:'Anton',sans-serif;font-weight:400;font-size:clamp(30px,5vw,52px);text-transform:uppercase;line-height:1;margin-bottom:18px}
+.soon-box p{position:relative;color:var(--cream-dim);font-weight:300;max-width:480px;margin:0 auto 32px}
+
+.placeholder-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px}
+.placeholder-card{
+  border:1px dashed var(--line);border-radius:20px;aspect-ratio:4/3;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;
+  color:var(--muted);font-size:13px;background:rgba(251,248,241,.015);
+}
+.placeholder-card svg{width:26px;height:26px;stroke:var(--muted);fill:none;stroke-width:1.6}
+
+/* ---------- EXEMPLES DE SITES PAR PACK ---------- */
+.pack-examples{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:28px}
+.pack-col{display:flex;flex-direction:column;gap:16px}
+.pack-label{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:2px}
+.pack-label .pname{font-family:'Anton',sans-serif;font-weight:400;font-size:20px;text-transform:uppercase;letter-spacing:.01em}
+.pack-label .pprice{font-size:13px;color:var(--muted)}
+.site-card{
+  position:relative;border-radius:22px;overflow:hidden;aspect-ratio:4/5;cursor:pointer;
+  border:1px solid var(--line);transition:transform .35s cubic-bezier(.16,1,.3,1),border-color .3s ease;
+}
+.site-card:hover{transform:translateY(-6px);border-color:rgba(251,248,241,.3)}
+.site-card .sc-bg{position:absolute;inset:0;background:var(--sc-bg);background-size:cover;background-position:top center;background-repeat:no-repeat}
+.site-card .sc-scrim{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0) 42%,rgba(0,0,0,.78) 100%)}
+.site-card.light .sc-scrim{background:linear-gradient(180deg,rgba(255,255,255,0) 42%,rgba(120,110,90,.35) 100%)}
+.site-card .sc-meta{position:absolute;left:16px;right:16px;bottom:14px}
+.site-card .sc-tag{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.75);margin-bottom:4px}
+.site-card .sc-title{font-weight:500;font-size:16px;color:#fff}
+.site-card.light .sc-tag{color:rgba(10,10,11,.6)}
+.site-card.light .sc-title{color:var(--ink)}
+.site-card .sc-expand{
+  position:absolute;top:14px;right:14px;width:30px;height:30px;border-radius:50%;
+  background:rgba(255,255,255,.14);backdrop-filter:blur(4px);
+  display:flex;align-items:center;justify-content:center;transition:transform .3s ease,background .3s ease;
+}
+.site-card:hover .sc-expand{transform:scale(1.1);background:rgba(255,255,255,.24)}
+.site-card .sc-expand svg{width:14px;height:14px;stroke:#fff}
+.site-card.light .sc-expand{background:rgba(10,10,11,.08)}
+.site-card.light .sc-expand svg{stroke:var(--ink)}
+
+/* modale plein écran */
+.site-modal{
+  position:fixed;inset:0;z-index:500;display:flex;align-items:center;justify-content:center;
+  background:rgba(5,5,6,.88);backdrop-filter:blur(10px);padding:40px;
+  opacity:0;visibility:hidden;transition:opacity .35s ease,visibility .35s ease;
+}
+.site-modal.open{opacity:1;visibility:visible}
+.site-modal-inner{
+  position:relative;width:min(920px,92vw);max-height:86vh;aspect-ratio:16/10;border-radius:28px;overflow:hidden;
+  border:1px solid var(--line);transform:scale(.92);transition:transform .4s cubic-bezier(.16,1,.3,1);
+}
+.site-modal.open .site-modal-inner{transform:scale(1)}
+.site-modal-inner .sm-bg{position:absolute;inset:0}
+.site-modal-inner .sm-scrim{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.05) 35%,rgba(0,0,0,.85) 100%)}
+.site-modal-body{position:relative;height:100%;padding:44px;display:flex;flex-direction:column;justify-content:flex-end;gap:14px}
+.site-modal-body .sm-tag{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.75)}
+.site-modal-body h3{font-family:'Anton',sans-serif;font-weight:400;font-size:clamp(26px,4vw,44px);color:#fff;text-transform:uppercase;line-height:1}
+.site-modal-body p{color:rgba(255,255,255,.75);max-width:460px;font-weight:300;font-size:15px}
+.site-modal-body .btn{align-self:flex-start}
+.site-modal-close{
+  position:absolute;top:18px;right:18px;z-index:2;width:38px;height:38px;border-radius:50%;
+  background:rgba(255,255,255,.12);backdrop-filter:blur(6px);border:1px solid rgba(255,255,255,.2);
+  display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background .25s ease,transform .25s ease;
+}
+.site-modal-close:hover{background:rgba(255,255,255,.22);transform:rotate(90deg)}
+.site-modal-close svg{width:16px;height:16px;stroke:#fff}
+@media(max-width:640px){
+  .pack-examples{grid-template-columns:1fr}
+  .site-modal-inner{aspect-ratio:auto;height:82vh}
+}
+
+
+/* ---------- CHATBOT FAQ (widget par défaut, à redesigner) ---------- */
+.mosa-chat-toggle{
+  position:fixed;right:24px;bottom:24px;z-index:600;width:58px;height:58px;border-radius:50%;
+  background:var(--cream);color:var(--ink);border:0;display:flex;align-items:center;justify-content:center;
+  cursor:pointer;box-shadow:0 10px 30px rgba(0,0,0,.45);transition:transform .25s ease;
+}
+.mosa-chat-toggle:hover{transform:scale(1.06)}
+.mosa-chat-toggle svg{width:24px;height:24px}
+.mosa-chat-panel{
+  position:fixed;right:24px;bottom:94px;z-index:600;width:340px;max-width:88vw;max-height:70vh;
+  border-radius:22px;overflow:hidden;background:#141416;border:1px solid var(--line);
+  box-shadow:0 20px 60px rgba(0,0,0,.55);display:flex;flex-direction:column;
+  opacity:0;visibility:hidden;transform:translateY(16px) scale(.97);
+  transition:opacity .3s ease,transform .3s ease,visibility .3s ease;
+}
+.mosa-chat-panel.open{opacity:1;visibility:visible;transform:translateY(0) scale(1)}
+.mosa-chat-header{
+  display:flex;align-items:center;justify-content:space-between;padding:16px 18px;
+  border-bottom:1px solid var(--line);font-weight:500;font-size:14px;color:var(--cream);
+}
+.mosa-chat-close{background:none;border:0;color:var(--cream-dim);font-size:22px;cursor:pointer;line-height:1;padding:0}
+.mosa-chat-close:hover{color:var(--cream)}
+.mosa-chat-body{flex:1;overflow-y:auto;padding:16px 18px;display:flex;flex-direction:column;gap:10px;font-size:13px;min-height:160px;max-height:340px}
+.mosa-chat-msg{max-width:85%;padding:10px 14px;border-radius:14px;line-height:1.5;font-weight:300}
+.mosa-chat-msg.bot{background:rgba(251,248,241,.06);align-self:flex-start;border-bottom-left-radius:4px;color:var(--cream-dim)}
+.mosa-chat-msg.user{background:var(--cream);color:var(--ink);align-self:flex-end;border-bottom-right-radius:4px;font-weight:400}
+.mosa-chat-msg.typing{color:var(--muted);letter-spacing:2px}
+.mosa-chat-suggestions{display:flex;flex-wrap:wrap;gap:6px;padding:0 18px 12px}
+.mosa-chat-chip{
+  font-size:11px;border:1px solid var(--line);color:var(--cream-dim);padding:6px 10px;border-radius:100px;
+  cursor:pointer;background:none;transition:background .2s ease,color .2s ease;
+}
+.mosa-chat-chip:hover{background:rgba(251,248,241,.08);color:var(--cream)}
+.mosa-chat-form{display:flex;gap:8px;padding:14px 18px;border-top:1px solid var(--line)}
+.mosa-chat-form input{
+  flex:1;background:rgba(251,248,241,.05);border:1px solid var(--line);border-radius:100px;
+  padding:9px 14px;color:var(--cream);font-size:13px;outline:none;font-family:'Inter',sans-serif;
+}
+.mosa-chat-form input::placeholder{color:var(--muted)}
+.mosa-chat-form button{
+  background:var(--cream);color:var(--ink);border:0;border-radius:100px;padding:9px 16px;
+  font-size:12px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;
+}
+@media(max-width:480px){
+  .mosa-chat-panel{right:12px;left:12px;width:auto;bottom:88px}
+  .mosa-chat-toggle{right:16px;bottom:16px}
+}
+
+
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header id="header" class="scrolled">
+  <a href="index.html" class="brand">MOSA<span>STUDIO</span></a>
+  <button class="burger" id="burger" aria-label="Ouvrir le menu"><span></span><span></span><span></span></button>
+  <nav id="nav">
+    <a href="index.html#services">Services</a>
+    <a href="realisations.html">Réalisations</a>
+    <a href="index.html#tarifs">Tarifs</a>
+    <a href="index.html#contact">Contact</a>
+    <a href="index.html#contact" class="nav-cta">Démarrer un projet</a>
+  </nav>
+</header>
+
+<!-- ZONE DE FOND — UNIQUEMENT SUR CETTE PAGE (exemples de sites) -->
+<div class="web-bgzone">
+  <video class="web-bg-video" autoplay muted loop playsinline>
+    <source src="assets/web-bg.mp4" type="video/mp4">
+  </video>
+  <div class="web-bg-overlay"></div>
+
+  <!-- PAGE HERO -->
+  <section class="page-hero">
+    <div class="wrap">
+      <a href="index.html" class="back-link reveal">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        Retour à l'accueil
+      </a>
+      <span class="sec-tag">Ce que je propose · Web</span>
+      <h1 class="sec-title">Exemples<br>de sites</h1>
+      <p class="sec-desc">Vitrines, e-commerce, landing pages : un aperçu de ce que MOSA Studio peut construire pour votre structure.</p>
+    </div>
+  </section>
+</div>
+
+<!-- EXEMPLES PAR PACK -->
+<section class="sec-pad" style="padding-top:0">
+  <div class="wrap">
+    <p class="sec-desc reveal" style="margin-top:0;margin-bottom:44px">Des exemples réels de sites livrés par MOSA Studio. Cliquez sur un aperçu pour l'ouvrir en grand et visiter le site en ligne.</p>
+
+    <div class="pack-examples">
+
+      <div class="pack-col reveal">
+        <div class="pack-label"><span class="pname">Classic</span><span class="pprice">999€</span></div>
+        <div class="site-card"
+             style="--sc-bg:linear-gradient(160deg,#0c0f0d 0%,#1a1a1c 100%)"
+             data-tag="Site vitrine · Club sportif"
+             data-title="AS Entrecasteaux"
+             data-desc="Site vitrine one-page pour un club de football local : présentation du club, effectif, saison et rejoindre le club. Accès administrateur inclus pour modifier textes et images en autonomie."
+             data-url="https://as-entrecasteaux.netlify.app/"
+             data-image="assets/site-as-entrecasteaux.jpg">
+          <div class="sc-bg" style="background-image:url('assets/site-as-entrecasteaux.jpg')"></div><div class="sc-scrim"></div>
+          <div class="sc-expand"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></div>
+          <div class="sc-meta"><div class="sc-tag">Site vitrine · Club sportif</div><div class="sc-title">AS Entrecasteaux</div></div>
+        </div>
+      </div>
+
+      <div class="pack-col reveal">
+        <div class="pack-label"><span class="pname">Pro</span><span class="pprice">1599€</span></div>
+        <div class="site-card"
+             style="--sc-bg:linear-gradient(160deg,#3a1620 0%,#5c1f2e 100%)"
+             data-tag="Fleuriste · E-commerce"
+             data-title="Floralie"
+             data-desc="Site multi-sections avec boutique en ligne, réservation et devis pour une fleuriste. Accès administrateur inclus pour modifier textes et images en autonomie."
+             data-url="https://floralie.netlify.app/"
+             data-image="assets/site-floralie.jpg">
+          <div class="sc-bg" style="background-image:url('assets/site-floralie.jpg')"></div><div class="sc-scrim"></div>
+          <div class="sc-expand"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></div>
+          <div class="sc-meta"><div class="sc-tag">Fleuriste · E-commerce</div><div class="sc-title">Floralie</div></div>
+        </div>
+        <div class="site-card"
+             style="--sc-bg:linear-gradient(160deg,#3d1f2b 0%,#241318 100%)"
+             data-tag="Salon de coiffure"
+             data-title="Maison Rosée"
+             data-desc="Site multi-sections avec réservation en ligne, devis automatique et avis Google intégrés pour un salon de coiffure. Accès administrateur inclus pour modifier textes et images en autonomie."
+             data-url="https://maisonrosee.netlify.app/"
+             data-image="assets/site-maison-rosee.jpg">
+          <div class="sc-bg" style="background-image:url('assets/site-maison-rosee.jpg')"></div><div class="sc-scrim"></div>
+          <div class="sc-expand"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></div>
+          <div class="sc-meta"><div class="sc-tag">Salon de coiffure</div><div class="sc-title">Maison Rosée</div></div>
+        </div>
+      </div>
+
+      <div class="pack-col reveal">
+        <div class="pack-label"><span class="pname">Signature</span><span class="pprice">2999€+</span></div>
+        <div class="site-card"
+             style="--sc-bg:var(--g-accent)"
+             data-tag="Portfolio photographe"
+             data-title="Lilou Armando"
+             data-desc="Portfolio signature avec séries photo, visite virtuelle et animations sur-mesure pour une photographe professionnelle. Accès administrateur inclus pour modifier textes et images en autonomie."
+             data-url="https://lilou-armando.netlify.app/"
+             data-image="assets/site-portfolio-lilou.jpg">
+          <div class="sc-bg" style="background-image:url('assets/site-portfolio-lilou.jpg')"></div><div class="sc-scrim"></div>
+          <div class="sc-expand"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></div>
+          <div class="sc-meta"><div class="sc-tag">Portfolio photographe</div><div class="sc-title">Lilou Armando</div></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- MODALE PLEIN ECRAN -->
+<div class="site-modal" id="siteModal">
+  <div class="site-modal-inner" id="siteModalInner">
+    <button class="site-modal-close" id="siteModalClose" aria-label="Fermer">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>
+    </button>
+    <div class="sm-bg" id="smBg"></div>
+    <div class="sm-scrim"></div>
+    <div class="site-modal-body">
+      <div class="sm-tag" id="smTag"></div>
+      <h3 id="smTitle"></h3>
+      <p id="smDesc"></p>
+      <div style="display:flex;gap:12px;flex-wrap:wrap">
+        <a href="index.html#contact" class="btn btn-primary" style="align-self:flex-start">Un projet similaire ?</a>
+        <a href="#" id="smUrl" target="_blank" rel="noopener" class="btn btn-ghost" style="align-self:flex-start;display:none">Voir le site en ligne ↗</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CONTACT CTA -->
+<section id="contact">
+  <div class="wrap">
+    <div class="contact-box reveal">
+      <div class="cglow"></div>
+      <h2>Un site à<br>faire naître ?</h2>
+      <p>Décrivez-moi votre structure et vos objectifs. Réponse rapide, devis gratuit.</p>
+      <div class="contact-actions">
+        <a href="mailto:contact@mosastudio.fr" class="btn btn-primary">contact@mosastudio.fr</a>
+        <a href="index.html#tarifs" class="btn btn-ghost">Voir les tarifs web</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="fbrand">MOSA STUDIO</div>
+  <div class="fmeta">© <span id="year"></span> — Studio créatif, région PACA</div>
+  <div class="fsoc">
+    <a href="https://instagram.com/mosa.studioo">@mosa.studioo</a>
+    <a href="mailto:contact@mosastudio.fr">Email</a>
+    <a href="#">Haut de page</a>
+  </div>
+</footer>
+
+<script>
+document.getElementById('year').textContent=new Date().getFullYear();
+
+const header=document.getElementById('header');
+window.addEventListener('scroll',()=>{
+  header.classList.toggle('scrolled',window.scrollY>40);
+});
+
+const burger=document.getElementById('burger'),nav=document.getElementById('nav');
+burger.addEventListener('click',()=>nav.classList.toggle('open'));
+nav.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>nav.classList.remove('open')));
+
+const io=new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}});
+},{threshold:.15});
+document.querySelectorAll('.reveal').forEach((el,i)=>{
+  el.style.transitionDelay=(i%3*0.08)+'s';
+  io.observe(el);
+});
+
+/* ---------- MODALE PLEIN ECRAN : APERCU DE SITE ---------- */
+const modal=document.getElementById('siteModal');
+const modalInner=document.getElementById('siteModalInner');
+const smBg=document.getElementById('smBg');
+const smTag=document.getElementById('smTag');
+const smTitle=document.getElementById('smTitle');
+const smDesc=document.getElementById('smDesc');
+const smUrl=document.getElementById('smUrl');
+const modalClose=document.getElementById('siteModalClose');
+
+function openSiteModal(card){
+  // si data-image est renseigné (vraie capture), on l'affiche ; sinon on garde le dégradé de la vignette
+  const img=card.dataset.image;
+  if(img && img.trim()!==''){
+    smBg.style.background='#0a0a0b url("'+img+'") top center/cover no-repeat';
+  } else {
+    const bg=getComputedStyle(card).getPropertyValue('--sc-bg') || card.style.getPropertyValue('--sc-bg');
+    smBg.style.background=bg;
+  }
+  smTag.textContent=card.dataset.tag||'';
+  smTitle.textContent=card.dataset.title||'';
+  smDesc.textContent=card.dataset.desc||'';
+
+  const url=card.dataset.url;
+  if(url && url.trim()!==''){
+    smUrl.href=url;
+    smUrl.style.display='inline-flex';
+  } else {
+    smUrl.style.display='none';
+  }
+
+  modal.classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeSiteModal(){
+  modal.classList.remove('open');
+  document.body.style.overflow='';
+}
+
+document.querySelectorAll('.site-card').forEach(card=>{
+  card.addEventListener('click',()=>openSiteModal(card));
+});
+modalClose.addEventListener('click',closeSiteModal);
+modal.addEventListener('click',(e)=>{ if(e.target===modal) closeSiteModal(); });
+document.addEventListener('keydown',(e)=>{ if(e.key==='Escape') closeSiteModal(); });
+
+
+</script>
+<script>
+/* ============================================================
+   MOSA STUDIO — Chatbot FAQ (widget autonome, à re-designer)
+   Ce script injecte le bouton + le panneau de chat dans la page.
+   Toutes les couleurs viennent des variables CSS du site (--bg, --cream, etc.)
+   Personnalisez librement via les classes : mosa-chat-toggle, mosa-chat-panel,
+   mosa-chat-header, mosa-chat-body, mosa-chat-msg, mosa-chat-chip, mosa-chat-form.
+   Pour changer les réponses, modifiez le tableau FAQS ci-dessous.
+============================================================ */
+(function(){
+
+  const FAQS = [
+    { keys:['tarif','prix','coût','cout','combien','budget'],
+      answer:"Nos sites démarrent à 999€ (pack Classic), 1599€ (Pro) et à partir de 2999€ (Signature). Côté vidéo, ça va de 399€ (Social) à 2999€+ (Grosse production). Tous les détails sont dans la section Tarifs de la page d'accueil." },
+    { keys:['délai','delai','combien de temps','durée','duree','rapide'],
+      answer:"Les délais dépendent de la formule choisie, en général de 1 à 3 semaines pour un site. On vous donne un planning précis dès le premier échange." },
+    { keys:['hébergement','hebergement','héberger','heberger'],
+      answer:"Pour le pack Classic, l'hébergement n'est pas géré par nous (un PDF explicatif est fourni). Pour Pro et Signature, on peut s'en occuper pour 30€/mois avec engagement d'un an, en option." },
+    { keys:['contact','joindre','écrire','ecrire','email','mail','téléphone','telephone'],
+      answer:"Vous pouvez nous écrire à contact@mosastudio.fr ou nous suivre sur Instagram @mosa.studioo. On répond rapidement !" },
+    { keys:['réalisation','realisation','exemple','portfolio','projet','voir'],
+      answer:"Vous pouvez voir nos réalisations photo et vidéo sur la page Réalisations, et des exemples de sites sur la page Web." },
+    { keys:['modification','retouche','changer','changement'],
+      answer:"Le nombre de retouches et modifications incluses dépend du pack choisi (2 à 4 retouches, puis modifications sur devis ou incluses selon la formule)." },
+    { keys:['administrateur','admin','modifier moi-même','modifier moi meme','autonomie','gérer le site','gerer le site'],
+      answer:"Oui ! Sur toutes les formules, vous avez un accès administrateur pour modifier vous-même les textes et les images de votre site, en toute autonomie." },
+    { keys:['vidéo','video','clip','pub','réel','reel','instagram','tiktok'],
+      answer:"Côté vidéo : Social (399€, 3 vidéos réseaux), Présentation (dès 999€), Publicitaire (dès 1899€) et Grosse production (dès 2999€). Détails dans l'onglet Vidéo de la section Tarifs." },
+    { keys:['abonnement','mensuel','mois','présence digitale','presence digitale'],
+      answer:"L'abonnement Présence digitale démarre à 499€/mois, sur-mesure selon vos besoins (réseaux, vidéos mensuelles, photos, logo...). Voir l'onglet Abonnement dans les Tarifs." },
+    { keys:['bonjour','salut','hello','coucou'],
+      answer:"Bonjour ! Je suis l'assistant MOSA Studio. Posez-moi une question sur nos tarifs, nos délais ou nos réalisations." },
+    { keys:['merci'],
+      answer:"Avec plaisir ! N'hésitez pas si vous avez d'autres questions." },
+  ];
+
+  const FALLBACK = "Je n'ai pas de réponse toute prête pour cette question, mais vous pouvez écrire directement à contact@mosastudio.fr, on vous répond rapidement.";
+
+  const SUGGESTIONS = [
+    "Quels sont vos tarifs ?",
+    "Quels sont vos délais ?",
+    "Gérez-vous l'hébergement ?",
+    "Comment vous contacter ?"
+  ];
+
+  function findAnswer(text){
+    const t=text.toLowerCase();
+    for(const faq of FAQS){
+      if(faq.keys.some(k=>t.includes(k))) return faq.answer;
+    }
+    return FALLBACK;
+  }
+
+  // ---------- injection DOM ----------
+  const toggle=document.createElement('button');
+  toggle.className='mosa-chat-toggle';
+  toggle.setAttribute('aria-label','Ouvrir le chat');
+  toggle.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>';
+
+  const panel=document.createElement('div');
+  panel.className='mosa-chat-panel';
+  panel.innerHTML=
+    '<div class="mosa-chat-header">'+
+      '<span>MOSA Studio · Assistant</span>'+
+      '<button class="mosa-chat-close" aria-label="Fermer">&times;</button>'+
+    '</div>'+
+    '<div class="mosa-chat-body"></div>'+
+    '<div class="mosa-chat-suggestions"></div>'+
+    '<form class="mosa-chat-form">'+
+      '<input type="text" placeholder="Posez votre question…" autocomplete="off" maxlength="200">'+
+      '<button type="submit">Envoyer</button>'+
+    '</form>';
+
+  document.body.appendChild(toggle);
+  document.body.appendChild(panel);
+
+  const body=panel.querySelector('.mosa-chat-body');
+  const suggestionsBox=panel.querySelector('.mosa-chat-suggestions');
+  const form=panel.querySelector('.mosa-chat-form');
+  const input=panel.querySelector('input');
+  const closeBtn=panel.querySelector('.mosa-chat-close');
+
+  function addMsg(text,from){
+    const msg=document.createElement('div');
+    msg.className='mosa-chat-msg '+from;
+    msg.textContent=text;
+    body.appendChild(msg);
+    body.scrollTop=body.scrollHeight;
+  }
+
+  function botReply(text){
+    const typing=document.createElement('div');
+    typing.className='mosa-chat-msg bot typing';
+    typing.textContent='···';
+    body.appendChild(typing);
+    body.scrollTop=body.scrollHeight;
+    setTimeout(()=>{
+      typing.remove();
+      addMsg(text,'bot');
+    },500);
+  }
+
+  function renderSuggestions(){
+    suggestionsBox.innerHTML='';
+    SUGGESTIONS.forEach(s=>{
+      const chip=document.createElement('button');
+      chip.type='button';
+      chip.className='mosa-chat-chip';
+      chip.textContent=s;
+      chip.addEventListener('click',()=>{
+        addMsg(s,'user');
+        botReply(findAnswer(s));
+      });
+      suggestionsBox.appendChild(chip);
+    });
+  }
+
+  let greeted=false;
+  toggle.addEventListener('click',()=>{
+    panel.classList.toggle('open');
+    if(panel.classList.contains('open') && !greeted){
+      greeted=true;
+      renderSuggestions();
+      botReply("Bonjour ! Je suis l'assistant MOSA Studio. Posez-moi une question sur nos tarifs, nos délais ou nos réalisations.");
+    }
+  });
+  closeBtn.addEventListener('click',()=>panel.classList.remove('open'));
+
+  form.addEventListener('submit',(e)=>{
+    e.preventDefault();
+    const val=input.value.trim();
+    if(!val) return;
+    addMsg(val,'user');
+    input.value='';
+    botReply(findAnswer(val));
+  });
+
+})();
+
+</script>
+</body>
+</html>
