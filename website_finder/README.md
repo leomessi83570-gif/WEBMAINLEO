@@ -39,6 +39,27 @@ prospects en premier.
    node index.js "fleuriste,boulangerie" "Gignac-la-Nerthe,Martigues"
    ```
 
+   **Sans préciser de secteur** : mets `tous` (ou laisse vide) pour boucler
+   automatiquement sur une liste de secteurs de proximité courants
+   (fleuriste, boulangerie, coiffeur, restaurant, boucherie, pharmacie,
+   garage automobile, plombier, électricien, agence immobilière) :
+   ```
+   node index.js "tous" "Gignac-la-Nerthe"
+   ```
+
+   **Département ou région au lieu d'une ville** : le script récupère
+   automatiquement la liste des communes concernées (via l'API publique
+   gratuite geo.api.gouv.fr, sans clé) :
+   ```
+   node index.js "fleuriste" "dept:83"
+   node index.js "fleuriste" "region:Provence-Alpes-Côte d'Azur"
+   ```
+   ⚠️ Un département ou une région peut contenir des centaines de
+   communes. Combiné à plusieurs secteurs, ça peut représenter des
+   milliers d'appels à l'API Google (donc du temps et potentiellement du
+   coût). Le script affiche toujours le nombre de recherches prévues
+   avant de démarrer, et demande confirmation au-delà de 50.
+
 5. **Regarder le résultat**
    Deux fichiers sont créés à la racine du projet : `resultats.csv` et
    `resultats.xlsx`, avec les colonnes suivantes :

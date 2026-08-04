@@ -1,28 +1,105 @@
 // Prospection MOSA — trouve les entreprises sans site web ou avec un site défaillant
 // Usage : node index.js "secteur1,secteur2,..." "ville1,ville2,..."
+//         node index.js "tous" "dept:83"
+//         node index.js "fleuriste" "region:Provence-Alpes-Côte d'Azur"
 // Exemple : node index.js "fleuriste,boulangerie" "Gignac-la-Nerthe,Marseille"
 
 import axios from "axios";
 import { createObjectCsvWriter } from "csv-writer";
 import ExcelJS from "exceljs";
 import dotenv from "dotenv";
+import readline from "node:readline/promises";
+import { stdin, stdout } from "node:process";
 
 dotenv.config();
 
 const API_KEY = process.env.GOOGLE_PLACES_API_KEY;
-const [secteursArg, zonesArg] = process.argv.slice(2);
+const [secteursArgRaw, zonesArgRaw] = process.argv.slice(2);
 
 if (!API_KEY) {
   console.error("❌ Il manque GOOGLE_PLACES_API_KEY dans le fichier .env");
   process.exit(1);
 }
-if (!secteursArg || !zonesArg) {
-  console.error('Usage : node index.js "secteur1,secteur2" "ville1,ville2"');
+if (!zonesArgRaw) {
+  console.error('Usage : node index.js "secteur1,secteur2 (ou \'tous\')" "ville1,ville2 (ou dept:83, region:NomRegion)"');
   console.error('Exemple : node index.js "fleuriste,boulangerie" "Gignac-la-Nerthe,Marseille"');
+  console.error('Exemple : node index.js "tous" "dept:83"');
   process.exit(1);
 }
 
+// Secteurs utilisés quand aucun secteur précis n'est demandé ("tous" ou argument vide)
+const SECTEURS_PAR_DEFAUT = [
+  "fleuriste",
+  "boulangerie",
+  "coiffeur",
+  "restaurant",
+  "boucherie",
+  "pharmacie",
+  "garage automobile",
+  "plombier",
+  "électricien",
+  "agence immobilière",
+];
+
+// Au-delà de ce nombre de recherches prévues, on demande confirmation avant de lancer
+const SEUIL_CONFIRMATION = 50;
+
 const REGEX_VIEWPORT = /<meta[^>]+name=["']viewport["'][^>]+content=["'][^"']*width=device-width/i;
+
+// 0. Résout la zone demandée en liste de villes (liste directe, ou toutes les
+//    communes d'un département/d'une région via l'API publique geo.api.gouv.fr)
+async function communesDuDepartement(code) {
+  const res = await axios.get(`https://geo.api.gouv.fr/departements/${code}/communes`, {
+    params: { fields: "nom", format: "json" },
+    timeout: 10000,
+  });
+  if (!Array.isArray(res.data) || res.data.length === 0) {
+    throw new Error(`Aucune commune trouvée pour le département "${code}"`);
+  }
+  return res.data.map((c) => c.nom);
+}
+
+async function communesDeLaRegion(codeOuNom) {
+  let code = codeOuNom;
+  if (!/^\d+$/.test(codeOuNom)) {
+    const resRegion = await axios.get("https://geo.api.gouv.fr/regions", {
+      params: { nom: codeOuNom, fields: "code,nom", format: "json" },
+      timeout: 10000,
+    });
+    if (!Array.isArray(resRegion.data) || resRegion.data.length === 0) {
+      throw new Error(`Région "${codeOuNom}" introuvable`);
+    }
+    code = resRegion.data[0].code;
+  }
+
+  const res = await axios.get("https://geo.api.gouv.fr/communes", {
+    params: { codeRegion: code, fields: "nom", format: "json" },
+    timeout: 10000,
+  });
+  if (!Array.isArray(res.data) || res.data.length === 0) {
+    throw new Error(`Aucune commune trouvée pour la région "${codeOuNom}"`);
+  }
+  return res.data.map((c) => c.nom);
+}
+
+async function resoudreVilles(zoneArg) {
+  const arg = zoneArg.trim();
+
+  const matchDept = arg.match(/^(dept|département|departement)\s*:\s*(.+)$/i);
+  if (matchDept) return communesDuDepartement(matchDept[2].trim());
+
+  const matchRegion = arg.match(/^region\s*:\s*(.+)$/i);
+  if (matchRegion) return communesDeLaRegion(matchRegion[1].trim());
+
+  return arg.split(",").map((v) => v.trim()).filter(Boolean);
+}
+
+async function demanderConfirmation(question) {
+  const rl = readline.createInterface({ input: stdin, output: stdout });
+  const reponse = await rl.question(question);
+  rl.close();
+  return /^o(ui)?$/i.test(reponse.trim());
+}
 
 // 1. Cherche les entreprises via l'API Google Places (Text Search)
 async function chercherEntreprises(query) {
@@ -143,8 +220,31 @@ async function exporterExcel(lignes, chemin) {
 
 // 6. Boucle principale — sur tous les secteurs x toutes les villes
 async function main() {
-  const secteurs = secteursArg.split(",").map((s) => s.trim()).filter(Boolean);
-  const villes = zonesArg.split(",").map((v) => v.trim()).filter(Boolean);
+  const secteurs =
+    !secteursArgRaw || secteursArgRaw.trim().toLowerCase() === "tous"
+      ? SECTEURS_PAR_DEFAUT
+      : secteursArgRaw.split(",").map((s) => s.trim()).filter(Boolean);
+
+  const villes = await resoudreVilles(zonesArgRaw);
+  if (villes.length === 0) {
+    console.error("❌ Aucune ville/commune à traiter.");
+    process.exit(1);
+  }
+
+  const totalRecherches = secteurs.length * villes.length;
+  console.log(
+    `\n${villes.length} commune(s) × ${secteurs.length} secteur(s) = ${totalRecherches} recherche(s) prévue(s) auprès de l'API Google Places.`
+  );
+
+  if (totalRecherches > SEUIL_CONFIRMATION) {
+    const confirme = await demanderConfirmation(
+      `⚠️  Ça fait beaucoup de recherches (coût API à prévoir). Continuer ? (o/n) `
+    );
+    if (!confirme) {
+      console.log("Annulé.");
+      process.exit(0);
+    }
+  }
 
   const lignes = [];
 
@@ -189,6 +289,10 @@ async function main() {
           score,
         });
       }
+
+      // Petite pause pour rester correct vis-à-vis de l'API, surtout utile
+      // en mode département/région où il peut y avoir des centaines de communes
+      await new Promise((r) => setTimeout(r, 150));
     }
   }
 
