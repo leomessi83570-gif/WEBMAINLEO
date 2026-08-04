@@ -1,0 +1,16 @@
+{
+  "name": "prospection-mosa",
+  "version": "1.0.0",
+  "description": "Trouve les entreprises sans site web ou avec un site défaillant, par secteur et zone géographique.",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "axios": "^1.7.2",
+    "csv-writer": "^1.6.0",
+    "dotenv": "^16.4.5",
+    "exceljs": "^4.4.0"
+  }
+}

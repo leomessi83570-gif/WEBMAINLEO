@@ -1,0 +1,4 @@
+node_modules/
+.env
+resultats.csv
+resultats.xlsx
