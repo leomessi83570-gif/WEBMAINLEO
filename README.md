@@ -19,6 +19,8 @@ outils/                     ← ne part pas en production
   exporter_banniere.py  capture cette bannière en 1200 × 630
   verifier_jetons.py    garde-fou : aucun var(--x) orphelin
   verifier_contrastes.py audit WCAG de la palette, clair et sombre
+  verifier_pages.py     ouvre les 6 pages dans Chromium : erreurs JS, régions
+                        vides, débordement horizontal
   paquet_unique.py      aperçu en un seul fichier HTML, ouvrable hors ligne
 
 presentation/               ← support de présentation au conseil municipal
@@ -31,6 +33,7 @@ presentation/               ← support de présentation au conseil municipal
 python3 outils/generer.py           # les 6 pages
 python3 outils/verifier_jetons.py     # aucun var(--x) orphelin
 python3 outils/verifier_contrastes.py # contrastes, thèmes clair et sombre
+python3 outils/verifier_pages.py      # les 6 pages dans un vrai navigateur
 python3 outils/exporter_banniere.py # image de partage (nécessite Chromium + Pillow)
 ```
 
@@ -108,11 +111,20 @@ palette décline ces quatre émaux plutôt que d'inventer des couleurs.
 
 | Émail | Rôle dans l'interface |
 |---|---|
-| **Sable** | Les neutres sombres — brun chaud, jamais bleuté |
-| **Argent** | Les neutres clairs, cassés vers la pierre sèche |
-| **Or** | L'accent : liens, boutons, marque |
-| **Gueules** | Les alertes, et le champ du blason |
+| **Or** | Les fonds — papier crème — et l'accent : liens, boutons, marque |
+| **Gueules** | Les sections alternées en terre cuite pâle, les alertes, le champ du blason |
+| **Argent** | Les filets et les surfaces élevées |
+| **Sable** | Les textes et le thème sombre — brun chaud, jamais bleuté |
 | *Garrigue* | Contrepoint olive, hors blason |
+
+Les fonds ne sont pas blancs : le papier est un crème pastel (`#FDF7E8`), les
+sections alternées une terre cuite pâle (`#F6E4D8`), les cartes un cran plus
+clair que le papier. C'est là que se joue la chaleur d'ensemble — bien plus que
+sur les accents, qui n'occupent que quelques pour cent de la surface.
+
+Une section reste sombre, l'agenda et le pied de page, dans un brun-rouge
+profond : tout en pastel, la page perdrait son rythme et l'œil n'aurait plus de
+point d'ancrage.
 
 Le vert de garrigue ne figure pas dans les armes : il est ajouté parce que sans
 lui une page tout en or et terre cuite vire au monochrome.
@@ -128,10 +140,13 @@ solaire, un or solaire n'est plus lisible : il en faut deux.
 Sécurité en gueules, Solidarité en or, Vie pratique en garrigue. Deux rouges
 voisins se confondraient d'un coup d'œil.
 
-`outils/verifier_contrastes.py` résout les jetons en couleurs réelles, compose
-les fonds semi-transparents et vérifie chaque paire de l'interface dans les deux
-thèmes. C'est lui qui a révélé que la palette précédente descendait à 3,77:1 sur
-les marqueurs de catégorie et 3,94:1 sur les sur-titres.
+Des fonds teintés rapprochent tous les textes de leur arrière-plan : c'est le
+risque du pastel, et il ne se voit pas à l'œil. `outils/verifier_contrastes.py`
+résout les jetons en couleurs réelles, compose les fonds semi-transparents et
+vérifie chaque paire dans les deux thèmes. Le plus juste est à 4,95:1 (les
+mentions sur la section terre cuite), pour un seuil de 4,5. C'est aussi lui qui
+a révélé que la palette d'origine descendait à 3,77:1 sur les marqueurs de
+catégorie et 3,94:1 sur les sur-titres.
 
 ### Les polices sont auto-hébergées
 
@@ -169,6 +184,23 @@ horizontal parasite — et il resterait atteignable au clavier.
 démarches, arborescence, dictionnaire des trois langues. Les structures sont
 plates et sérialisables : elles correspondent une pour une à des collections de
 CMS, si la commune souhaite un jour éditer depuis une interface.
+
+Chaque rubrique de navigation porte une clé (`id`). Le pied de page et l'index
+de recherche la désignent par cette clé, jamais par sa position : indexer
+`EC.MENUS[1]` avait vidé le pied de page des six pages le jour où la navigation
+est passée de douze à six entrées.
+
+### Pourquoi un test qui ouvre un navigateur
+
+Le pied de page, la navigation et l'état d'ouverture de la mairie sont remplis
+par JavaScript. Une exception au chargement les laisse simplement **vides** : la
+page s'affiche, le contenu principal est là, rien ne signale le problème. Le
+défaut ci-dessus a survécu à plusieurs relectures pour cette raison.
+
+`outils/verifier_pages.py` ouvre les six pages dans Chromium et vérifie qu'il
+n'y a aucune erreur JS, qu'aucune région pilotée par script n'est vide, et que
+rien ne déborde horizontalement. Il a été validé en réintroduisant le défaut :
+21 problèmes signalés, sortie 1.
 
 ## Ce qui reste à faire avant une mise en ligne
 

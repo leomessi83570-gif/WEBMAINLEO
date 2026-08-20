@@ -43,6 +43,11 @@
        les tons foncés portent le texte (≥ 4,5:1 sur fond clair), les tons
        vifs ne servent qu'aux surfaces et aux filets. Un or lisible n'est
        plus solaire ; un or solaire n'est plus lisible. — */
+  /* Les trois plus clairs ne sont pas des « presque blancs » : ce sont les
+     fonds du site. Un papier crème plutôt que blanc, c'est ce qui donne la
+     lumière du Sud sans toucher au texte. */
+  --or-025: #FFFDF6;
+  --or-050: #FDF7E8;
   --or-900: #4E3405;
   --or-800: #6E4A08;
   --or-700: #8A5C0A;
@@ -52,6 +57,8 @@
   --or-100: #FCF3DE;
 
   /* — Gueules : le champ du blason, tuile et terre cuite — */
+  --gue-050: #F6E4D8;
+  --gue-900: #3A1F16;
   --gue-800: #7E2318;
   --gue-700: #9B2E1F;
   --gue-600: #B8392A;
@@ -142,19 +149,22 @@
    confondrait d'un coup d'œil.
    ──────────────────────────────────────────────────────────────────────── */
 :root {
-  --fond:            var(--arg-050);
-  --fond-doux:       var(--arg-200);
-  --fond-inverse:    var(--sab-800);
-  --fond-eleve:      var(--arg-050);
+  /* Le papier est crème, les sections alternées terre cuite pâle, les cartes
+     un cran plus clair que le papier. L'ancrage sombre reste un brun-rouge :
+     tout en pastel, la page perdrait son rythme. */
+  --fond:            var(--or-050);
+  --fond-doux:       var(--gue-050);
+  --fond-inverse:    var(--gue-900);
+  --fond-eleve:      var(--or-025);
 
   --texte:           var(--sab-800);
   --texte-doux:      var(--sab-600);
   --texte-tenu:      var(--sab-500);
-  --texte-inverse:   var(--arg-100);
+  --texte-inverse:   var(--or-050);
   --texte-sur-accent:var(--arg-050);
 
-  --ligne:           var(--arg-400);
-  --ligne-forte:     var(--arg-500);
+  --ligne:           #E7DBC0;
+  --ligne-forte:     #D2C3A2;
   --ligne-inverse:   rgb(255 255 255 / .18);
 
   --accent:          var(--or-800);

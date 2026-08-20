@@ -22,13 +22,13 @@ window.EC = (function () {
      de liens profonds. Le doublon « Découvrir » de l'ancienne arborescence a
      disparu : une rubrique = un seul point d'entrée. */
   var MENUS = [
-    { page: 'actualites', h: 'actualites.html',
+    { id: 'actualites', page: 'actualites', h: 'actualites.html',
       t: ['Actualités', 'News', 'Attualità'] },
 
-    { page: 'agenda', h: 'agenda.html',
+    { id: 'agenda', page: 'agenda', h: 'agenda.html',
       t: ['Agenda', 'What’s on', 'Eventi'] },
 
-    { page: 'decouvrir', h: 'decouvrir.html',
+    { id: 'decouvrir', page: 'decouvrir', h: 'decouvrir.html',
       t: ['Découvrir', 'Visit', 'Scoprire'], items: [
       { t: ['Le château et son jardin', 'The château and its garden', 'Il castello e il giardino'], h: 'decouvrir.html#patrimoine' },
       { t: ['Église Saint-Sauveur et chapelles', 'Saint-Sauveur church & chapels', 'Chiesa e cappelle'], h: 'decouvrir.html#patrimoine' },
@@ -39,7 +39,7 @@ window.EC = (function () {
       { t: ['Films et reportages', 'Films & reports', 'Film e reportage'], h: 'http://www.entrecasteaux.fr/liens.php' }
     ]},
 
-    { page: 'demarches', h: 'demarches.html',
+    { id: 'demarches', page: 'demarches', h: 'demarches.html',
       t: ['Démarches', 'Services', 'Servizi'], items: [
       { t: ['Toutes les démarches', 'All services', 'Tutte le pratiche'], h: 'demarches.html' },
       { titre: ['Urbanisme', 'Planning', 'Urbanistica'] },
@@ -51,7 +51,8 @@ window.EC = (function () {
       { t: ['D.I.A. et C.U. par les notaires', 'Notary filings (D.I.A. / C.U.)', 'Pratiche notarili'], h: BASE + 'art37' }
     ]},
 
-    { t: ['Vie pratique', 'Everyday life', 'Vita pratica'], items: [
+    { id: 'viepratique',
+      t: ['Vie pratique', 'Everyday life', 'Vita pratica'], items: [
       { t: ['Commerces et artisans', 'Shops & craftspeople', 'Negozi e artigiani'], h: BASE + 'art13' },
       { t: ['Débroussaillement et feux', 'Brush clearing & fire rules', 'Sfrascatura e incendi'], h: BASE + 'art55' },
       { t: ['Cartographie des risques', 'Risk map', 'Mappa dei rischi'], h: BASE + 'art36' },
@@ -68,7 +69,7 @@ window.EC = (function () {
       { t: ['Centre de loisirs de Cotignac', 'Cotignac activity centre', 'Centro ricreativo di Cotignac'], h: BASE + 'art6' }
     ]},
 
-    { page: 'mairie', h: 'mairie.html',
+    { id: 'mairie', page: 'mairie', h: 'mairie.html',
       t: ['Mairie', 'Town hall', 'Municipio'], items: [
       { t: ['Horaires, contact et plan', 'Hours, contact and map', 'Orari, contatti e mappa'], h: 'mairie.html' },
       { t: ['Bienvenue à Entrecasteaux', 'Welcome', 'Benvenuti'], h: BASE + 'art5' },

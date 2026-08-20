@@ -235,17 +235,30 @@
     }).join('');
   }
 
+  /* Une rubrique se retrouve par sa clé, jamais par sa position : indexer
+     EC.MENUS[1] revenait à casser le pied de page dès qu'on réordonnait la
+     navigation. */
+  function rubrique(id) {
+    var trouve = EC.MENUS.filter(function (m) { return m.id === id; })[0];
+    return (trouve && trouve.items) || [];
+  }
+
   function rendrePied() {
     function liste(items) {
-      return items.map(function (it) {
+      return items.filter(function (it) { return it.t && it.h; }).map(function (it) {
         return '<li><a href="' + attr(it.h) + '"' + externe(it.h) + '>' + ech(it.t[L()]) + '</a></li>';
       }).join('');
     }
-    var m = $('#piedMunicipalite'), p = $('#piedPratique'), l = $('#piedLegal'), s = $('#piedPages');
-    if (m) { m.innerHTML = liste(EC.MENUS[1].items.slice(0, 6)); }
-    if (p) { p.innerHTML = liste(EC.MENUS[3].items.slice(0, 6)); }
-    if (l) { l.innerHTML = liste(EC.LIENS_LEGAUX); }
-    if (s) { s.innerHTML = liste(EC.PAGES); }
+    var blocs = [
+      ['#piedPages',        EC.PAGES],
+      ['#piedMunicipalite', rubrique('mairie').slice(0, 6)],
+      ['#piedPratique',     rubrique('viepratique').slice(0, 6)],
+      ['#piedLegal',        EC.LIENS_LEGAUX]
+    ];
+    blocs.forEach(function (b) {
+      var el = $(b[0]);
+      if (el) { el.innerHTML = liste(b[1]); }
+    });
   }
 
   /* ══════════════════════════════════════════════════════════════════════
@@ -357,7 +370,12 @@
     INDEX = [];
     EC.PAGES.forEach(function (p) { INDEX.push({ t: p.t[L()], s: T('sec.pages'), h: p.h }); });
     EC.MENUS.forEach(function (m) {
-      m.items.forEach(function (it) { INDEX.push({ t: it.t[L()], s: m.t[L()], h: it.h }); });
+      /* Actualités et Agenda n'ont pas de volet : `m.items` y est absent. */
+      if (m.h) { INDEX.push({ t: m.t[L()], s: T('sec.pages'), h: m.h }); }
+      (m.items || []).forEach(function (it) {
+        if (!it.t || !it.h) { return; }   /* les intertitres n'en sont pas */
+        INDEX.push({ t: it.t[L()], s: m.t[L()], h: it.h });
+      });
     });
     EC.CONTENU.demarches.forEach(function (d) { INDEX.push({ t: d.t[L()], s: T('sec.demarches'), h: d.h }); });
     EC.CONTENU.actus.forEach(function (a) {
