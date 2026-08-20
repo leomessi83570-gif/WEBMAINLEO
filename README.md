@@ -18,6 +18,7 @@ outils/                     ← ne part pas en production
   banniere-og.html      gabarit de l’image de partage
   exporter_banniere.py  capture cette bannière en 1200 × 630
   verifier_jetons.py    garde-fou : aucun var(--x) orphelin
+  paquet_unique.py      aperçu en un seul fichier HTML, ouvrable hors ligne
 
 presentation/               ← support de présentation au conseil municipal
   conseil-municipal.html
@@ -36,11 +37,29 @@ le pied de page sont identiques partout parce qu’ils viennent d’une seule so
 (`outils/gabarit.py`). Modifier `site/index.html` directement, c’est voir la
 modification disparaître au prochain `generer.py`.
 
-## Servir en local
+## Regarder le site
+
+Trois façons, de la plus simple à la plus fidèle.
+
+**Un seul fichier, sans rien installer.** `entrecasteaux-apercu.html` s'ouvre
+d'un double-clic, hors ligne : styles, scripts, polices et photo y sont
+incorporés. Les six rubriques y sont regroupées sur une page et les entrées de
+menu descendent par ancre. C'est un aperçu, pas le livrable.
+
+```bash
+python3 outils/paquet_unique.py   # pour le régénérer après une modification
+```
+
+**Le vrai site, en local.** C'est la version à six pages, celle qui sera mise
+en ligne :
 
 ```bash
 python3 -m http.server 8765 --directory site
+# puis http://localhost:8765
 ```
+
+Ouvrir `site/index.html` directement en `file://` ne marchera qu'à moitié : les
+liens entre pages fonctionneront, mais pas le plan OpenStreetMap.
 
 ## Décisions de conception
 
