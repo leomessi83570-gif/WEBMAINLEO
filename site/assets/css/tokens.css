@@ -1,0 +1,290 @@
+/* ============================================================================
+   ENTRECASTEAUX — JETONS DE DESIGN
+   Architecture à trois couches : primitive → sémantique → composant.
+   Voir docs/systeme-de-design.md pour la justification de chaque choix.
+   Aucune valeur brute (hex, px de couleur) ne doit apparaître ailleurs
+   que dans la couche PRIMITIVE de ce fichier.
+   ========================================================================= */
+
+/* ────────────────────────────────────────────────────────────────────────
+   COUCHE 1 — PRIMITIVES
+   Valeurs brutes, sans intention. Elles ne changent quasiment jamais.
+   Palette relevée sur le village : calcaire des façades, encre des ombres
+   au crépuscule, vert de la vallée de la Bresque, ocre des calades et
+   des tuiles.
+   ──────────────────────────────────────────────────────────────────────── */
+:root {
+  /* — Encre (neutres sombres) — */
+  --enc-900: #0B1013;
+  --enc-800: #101519;
+  --enc-700: #1C242A;
+  --enc-600: #39454D;
+  --enc-500: #5B6871;
+  --enc-400: #76828B;
+
+  /* — Calcaire (neutres clairs) — */
+  --cal-050: #FFFFFF;
+  --cal-100: #FAF9F6;
+  --cal-200: #F0EEE9;
+  --cal-300: #E4E1D9;
+  --cal-400: #DEDBD3;
+  --cal-500: #C9C4B8;
+
+  /* — Bresque (vert de la vallée) — */
+  --bre-700: #1D3529;
+  --bre-600: #2C4A3B;
+  --bre-500: #3D6350;
+  --bre-400: #4C7460;
+  --bre-200: #A7C0B2;
+  --bre-100: #E6EDE8;
+
+  /* — Ocre (pierre, tuile, calade) — */
+  --ocr-700: #8A5A20;
+  --ocr-600: #B4762C;
+  --ocr-400: #D2A268;
+  --ocr-100: #F6EDE0;
+
+  /* — Signal — */
+  --sig-rouge-600: #C0392B;
+  --sig-rouge-100: #FBEDEB;
+  --sig-ambre-600: #B26B00;
+  --sig-vert-600: #2E7D52;
+
+  /* — Familles typographiques — */
+  --pol-display: "Archivo", "Archivo Fallback", system-ui, sans-serif;
+  --pol-texte:   "Instrument Sans", "Instrument Sans Fallback", system-ui, sans-serif;
+
+  /* — Échelle typographique (ratio ~1.22, base 16px) — */
+  --ts-2xs: 0.625rem;  /* 10px — sur-titres, mentions */
+  --ts-xs:  0.6875rem; /* 11px */
+  --ts-sm:  0.8125rem; /* 13px */
+  --ts-md:  0.875rem;  /* 14px */
+  --ts-base:1rem;      /* 16px — corps, jamais moins sur mobile */
+  --ts-lg:  1.125rem;  /* 18px */
+  --ts-xl:  1.375rem;  /* 22px */
+  --ts-2xl: 1.75rem;   /* 28px */
+  --ts-3xl: 2.25rem;   /* 36px */
+
+  /* — Graisses — */
+  --gr-normal: 400;
+  --gr-moyen:  500;
+  --gr-demi:   600;
+  --gr-gras:   700;
+
+  /* — Interlignage — */
+  --il-serre:  1.15;
+  --il-titre:  0.92;
+  --il-normal: 1.55;
+  --il-lache:  1.7;
+
+  /* — Rythme d'espacement (base 4px) — */
+  --esp-1:  0.25rem;  /* 4  */
+  --esp-2:  0.5rem;   /* 8  */
+  --esp-3:  0.75rem;  /* 12 */
+  --esp-4:  1rem;     /* 16 */
+  --esp-5:  1.25rem;  /* 20 */
+  --esp-6:  1.5rem;   /* 24 */
+  --esp-8:  2rem;     /* 32 */
+  --esp-10: 2.5rem;   /* 40 */
+  --esp-12: 3rem;     /* 48 */
+  --esp-16: 4rem;     /* 64 */
+  --esp-20: 5rem;     /* 80 */
+
+  /* — Rayons — */
+  --ray-0:  0;
+  --ray-1:  2px;
+  --ray-2:  4px;
+  --ray-pilule: 999px;
+
+  /* — Ombres (douces, jamais neumorphiques) — */
+  --omb-1: 0 1px 2px rgb(11 16 19 / .06);
+  --omb-2: 0 2px 8px rgb(11 16 19 / .08);
+  --omb-3: 0 12px 34px rgb(11 16 19 / .14);
+
+  /* — Durées et courbes — */
+  --dur-1: 120ms;
+  --dur-2: 200ms;
+  --dur-3: 320ms;
+  --cbz-sortie: cubic-bezier(.16, 1, .3, 1);
+  --cbz-entree: cubic-bezier(.4, 0, 1, 1);
+
+  /* — Plans (z-index) — */
+  --plan-fond: 0;
+  --plan-eleve: 10;
+  --plan-entete: 50;
+  --plan-bandeau: 60;
+  --plan-voile: 100;
+  --plan-barre: 200;
+}
+
+/* ────────────────────────────────────────────────────────────────────────
+   COUCHE 2 — SÉMANTIQUE
+   Le rôle, pas la valeur. C'est cette couche que le thème sombre redéfinit.
+   ──────────────────────────────────────────────────────────────────────── */
+:root {
+  --fond:            var(--cal-050);
+  --fond-doux:       var(--cal-200);
+  --fond-inverse:    var(--enc-800);
+  --fond-eleve:      var(--cal-050);
+
+  --texte:           var(--enc-800);
+  --texte-doux:      var(--enc-600);
+  --texte-tenu:      var(--enc-400);
+  --texte-inverse:   var(--cal-050);
+  --texte-sur-accent:var(--cal-050);
+
+  --ligne:           var(--cal-400);
+  --ligne-forte:     var(--cal-500);
+  --ligne-inverse:   rgb(255 255 255 / .18);
+
+  --accent:          var(--bre-600);
+  --accent-survol:   var(--bre-700);
+  --accent-doux:     var(--bre-100);
+  --second:          var(--ocr-600);
+  --second-doux:     var(--ocr-100);
+
+  --danger:          var(--sig-rouge-600);
+  --danger-doux:     var(--sig-rouge-100);
+  --attention:       var(--sig-ambre-600);
+  --succes:          var(--sig-vert-600);
+
+  --anneau:          var(--bre-600);
+
+  /* Mise en page */
+  --gouttiere: clamp(20px, 5vw, 72px);
+  --largeur-max: 1560px;
+  --largeur-texte: 68ch;
+}
+
+/* — Thème sombre : redéfinition sémantique uniquement, jamais d'inversion —
+     Déclenché par la préférence système ou par [data-theme] posé sur <html>. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="clair"]) {
+    --fond:         var(--enc-900);
+    --fond-doux:    var(--enc-800);
+    --fond-inverse: var(--cal-200);
+    --fond-eleve:   var(--enc-800);
+
+    --texte:        #EDEBE6;
+    --texte-doux:   #B9C0C5;
+    --texte-tenu:   #8A949B;
+    --texte-inverse:var(--enc-900);
+
+    --ligne:        rgb(255 255 255 / .14);
+    --ligne-forte:  rgb(255 255 255 / .26);
+    --ligne-inverse:rgb(11 16 19 / .18);
+
+    --accent:       var(--bre-200);
+    --accent-survol:#C6D9CC;
+    --accent-doux:  rgb(167 192 178 / .14);
+    --second:       var(--ocr-400);
+    --second-doux:  rgb(210 162 104 / .14);
+
+    --danger:       #F08074;
+    --danger-doux:  rgb(240 128 116 / .14);
+    --anneau:       var(--bre-200);
+
+    --omb-1: 0 1px 2px rgb(0 0 0 / .5);
+    --omb-2: 0 2px 8px rgb(0 0 0 / .55);
+    --omb-3: 0 12px 34px rgb(0 0 0 / .6);
+  }
+}
+:root[data-theme="sombre"] {
+  --fond:         var(--enc-900);
+  --fond-doux:    var(--enc-800);
+  --fond-inverse: var(--cal-200);
+  --fond-eleve:   var(--enc-800);
+  --texte:        #EDEBE6;
+  --texte-doux:   #B9C0C5;
+  --texte-tenu:   #8A949B;
+  --texte-inverse:var(--enc-900);
+  --ligne:        rgb(255 255 255 / .14);
+  --ligne-forte:  rgb(255 255 255 / .26);
+  --ligne-inverse:rgb(11 16 19 / .18);
+  --accent:       var(--bre-200);
+  --accent-survol:#C6D9CC;
+  --accent-doux:  rgb(167 192 178 / .14);
+  --second:       var(--ocr-400);
+  --second-doux:  rgb(210 162 104 / .14);
+  --danger:       #F08074;
+  --danger-doux:  rgb(240 128 116 / .14);
+  --anneau:       var(--bre-200);
+  --omb-1: 0 1px 2px rgb(0 0 0 / .5);
+  --omb-2: 0 2px 8px rgb(0 0 0 / .55);
+  --omb-3: 0 12px 34px rgb(0 0 0 / .6);
+}
+
+/* ────────────────────────────────────────────────────────────────────────
+   COUCHE 3 — COMPOSANTS
+   Un composant ne lit jamais la couche primitive : il lit ces jetons-ci,
+   qui pointent eux-mêmes vers la couche sémantique.
+   ──────────────────────────────────────────────────────────────────────── */
+:root {
+  /* Héros — type « index_5 » : titre hors-norme, méta discrète */
+  --heros-hauteur:        clamp(420px, 62vw, 720px);
+  --heros-hauteur-page:   clamp(240px, 34vw, 380px);
+  /* « Entrecasteaux » fait 13 signes : la chasse étroite d'Archivo (variable,
+     62–125 %) est ce qui permet de garder le titre géant sur UNE ligne, comme
+     dans le gabarit d'origine où le nom n'en faisait que huit. Mesuré à
+     4,42 em de large à 66 % de chasse, crénage compris. */
+  --heros-titre-taille:   clamp(2.5rem, 16.5vw, 15.5rem);
+  --heros-titre-chasse:   66%;
+  --heros-titre-approche: -0.045em;
+  --heros-titre-couleur:  var(--cal-050);
+  --heros-meta-taille:    var(--ts-2xs);
+  --heros-meta-couleur:   rgb(255 255 255 / .92);
+  /* Le titre est blanc sur photo : le voile doit garantir 4,5:1 partout, y
+     compris sur les façades claires. Dégradé vertical pour le titre et le
+     bas de page, plus un lavis latéral côté texte. */
+  --heros-voile:          linear-gradient(180deg,
+                            rgb(11 16 19 / .68) 0%,
+                            rgb(11 16 19 / .46) 30%,
+                            rgb(11 16 19 / .22) 52%,
+                            rgb(11 16 19 / .40) 78%,
+                            rgb(11 16 19 / .78) 100%),
+                          linear-gradient(100deg,
+                            rgb(11 16 19 / .42) 0%,
+                            rgb(11 16 19 / .10) 46%,
+                            rgb(11 16 19 / 0) 70%);
+
+  /* Barre de navigation */
+  --nav-hauteur:      52px;
+  --nav-taille:       var(--ts-sm);
+  --nav-couleur:      var(--texte-doux);
+  --nav-couleur-actif:var(--texte);
+  --nav-ligne:        var(--ligne);
+
+  /* Cartes */
+  --carte-fond:       var(--fond-eleve);
+  --carte-ligne:      var(--ligne);
+  --carte-marge:      var(--esp-5);
+  --carte-rayon:      var(--ray-1);
+  --carte-ombre:      none;
+  --carte-ombre-survol: var(--omb-2);
+
+  /* Boutons */
+  --btn-hauteur:      44px;             /* cible tactile minimale */
+  --btn-marge-x:      var(--esp-5);
+  --btn-rayon:        var(--ray-pilule);
+  --btn-taille:       var(--ts-md);
+  --btn-primaire-fond:        var(--accent);
+  --btn-primaire-texte:       var(--texte-sur-accent);
+  --btn-primaire-fond-survol: var(--accent-survol);
+  --btn-fantome-ligne:        var(--ligne-forte);
+
+  /* Champs */
+  --champ-hauteur: 46px;
+  --champ-ligne:   var(--ligne-forte);
+  --champ-fond:    var(--fond);
+
+  /* Bandeau d'alerte */
+  --alerte-fond:  var(--danger);
+  --alerte-texte: #FFFFFF;
+
+  /* Agenda */
+  --agenda-date-largeur: 74px;
+
+  /* Anneau de focus — jamais supprimé */
+  --focus-epaisseur: 2px;
+  --focus-decalage:  3px;
+}

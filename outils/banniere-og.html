@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Bannière OG — Entrecasteaux</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  /* Direction artistique : Editorial + Bold Typography sur photo pleine page.
+     Zone de sécurité : contenu critique dans les 80 % centraux (1200 × 630). */
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{width:1200px;height:630px;overflow:hidden;background:#0B1013}
+  .toile{
+    position:relative;width:1200px;height:630px;
+    font-family:"Instrument Sans",system-ui,sans-serif;color:#fff;
+  }
+  .toile img{
+    position:absolute;inset:0;width:100%;height:100%;
+    object-fit:cover;object-position:center 45%;
+  }
+  /* Duotone pierre/vallée : la photo est teintée vers l'encre + le vert Bresque */
+  .voile{
+    position:absolute;inset:0;
+    background:
+      linear-gradient(180deg, rgba(11,16,19,.74) 0%, rgba(11,16,19,.30) 42%, rgba(11,16,19,.10) 62%, rgba(11,16,19,.55) 100%),
+      linear-gradient(115deg, rgba(44,74,59,.44) 0%, rgba(44,74,59,0) 58%);
+  }
+  .contenu{
+    position:absolute;inset:0;
+    padding:44px 60px 46px;
+    display:flex;flex-direction:column;
+  }
+  .entete{display:flex;align-items:flex-start;gap:18px}
+  .blason{width:38px;height:47px;flex:none}
+  .marque{font-family:"Archivo",sans-serif;font-weight:700;font-stretch:88%;
+          font-size:23px;letter-spacing:-.02em;line-height:1.05}
+  .sous{font-size:11.5px;letter-spacing:.18em;text-transform:uppercase;
+        color:rgba(255,255,255,.68);font-weight:500;margin-top:2px}
+  .coord{
+    margin-left:auto;text-align:right;
+    font-size:11.5px;letter-spacing:.13em;text-transform:uppercase;
+    color:rgba(255,255,255,.72);line-height:1.9;
+    font-variant-numeric:tabular-nums;
+  }
+  .titre{
+    margin-top:auto;
+    font-family:"Archivo",sans-serif;font-weight:700;font-stretch:74%;
+    font-size:124px;line-height:.84;letter-spacing:-.042em;
+    text-shadow:0 2px 44px rgba(0,0,0,.34);
+  }
+  .filet{height:1px;background:rgba(255,255,255,.34);margin:22px 0 16px}
+  .pied{display:flex;align-items:flex-end;gap:28px}
+  .baseline{font-size:17.5px;line-height:1.4;max-width:44ch;color:rgba(255,255,255,.9)}
+  .etiquette{
+    margin-left:auto;flex:none;
+    font-family:"Archivo",sans-serif;font-size:12px;font-weight:600;
+    letter-spacing:.15em;text-transform:uppercase;
+    border:1px solid rgba(255,255,255,.42);padding:9px 15px;
+    color:rgba(255,255,255,.92);white-space:nowrap;
+  }
+</style>
+</head>
+<body>
+  <div class="toile">
+    <img src="../site/assets/img/village-crepuscule.jpg" alt="">
+    <div class="voile"></div>
+    <div class="contenu">
+      <div class="entete">
+        <svg class="blason" viewBox="0 0 26 32" fill="none" aria-hidden="true">
+          <path d="M1 1h24v19c0 6.5-6.2 9.8-12 11.5C7.2 29.8 1 26.5 1 20V1z" stroke="#fff" stroke-width="1.4"/>
+          <path d="M6.5 20V11l3-2.4 3 2.4v9M13 20v-7.5l3-2.4 3 2.4V20" stroke="#fff" stroke-width="1.2" stroke-linejoin="round"/>
+          <path d="M4.5 20h17" stroke="#fff" stroke-width="1.2"/>
+        </svg>
+        <div>
+          <div class="marque">Entrecasteaux</div>
+          <div class="sous">Site officiel de la commune</div>
+        </div>
+        <div class="coord">
+          83570 · Var<br>
+          43°31′N 6°14′E
+        </div>
+      </div>
+
+      <div class="titre">Entrecasteaux</div>
+      <div class="filet"></div>
+      <div class="pied">
+        <div class="baseline">Village de caractère au cœur de la Provence&nbsp;Verte,
+          dominé par son château et son jardin à la française.</div>
+        <div class="etiquette">entrecasteaux.fr</div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

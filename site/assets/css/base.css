@@ -1,0 +1,207 @@
+/* ============================================================================
+   ENTRECASTEAUX — SOCLE
+   Réinitialisation, typographie, mise en page, accessibilité.
+   N'utilise que des jetons sémantiques.
+   ========================================================================= */
+
+*, *::before, *::after { box-sizing: border-box; }
+* { margin: 0; padding: 0; }
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+  scroll-padding-top: calc(var(--nav-hauteur) + var(--esp-4));
+  /* `clip` plutôt que `hidden` : pas de conteneur de défilement créé, donc
+     la barre de navigation `position: sticky` continue de coller. */
+  overflow-x: clip;
+}
+
+body {
+  font-family: var(--pol-texte);
+  font-size: var(--ts-base);
+  line-height: var(--il-normal);
+  color: var(--texte);
+  background: var(--fond);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  min-height: 100dvh;
+}
+
+img, svg, video, iframe { display: block; max-width: 100%; }
+img { height: auto; }
+a { color: inherit; text-decoration: none; }
+button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
+ul, ol { list-style: none; }
+table { border-collapse: collapse; width: 100%; }
+sup { font-size: .68em; vertical-align: super; line-height: 0; }
+
+/* — Focus : visible, jamais retiré (règle a11y n°1) — */
+:focus-visible {
+  outline: var(--focus-epaisseur) solid var(--anneau);
+  outline-offset: var(--focus-decalage);
+  border-radius: var(--ray-1);
+}
+
+/* — Lien d'évitement — */
+.evitement {
+  position: absolute;
+  left: var(--esp-4);
+  top: var(--esp-2);
+  z-index: var(--plan-barre);
+  padding: var(--esp-3) var(--esp-5);
+  background: var(--accent);
+  color: var(--texte-sur-accent);
+  font-size: var(--ts-md);
+  font-weight: var(--gr-demi);
+  border-radius: var(--ray-2);
+  transform: translateY(-200%);
+  transition: transform var(--dur-2) var(--cbz-sortie);
+}
+.evitement:focus { transform: translateY(0); }
+
+/* — Réservé aux lecteurs d'écran — */
+.sr {
+  position: absolute; width: 1px; height: 1px;
+  padding: 0; margin: -1px; overflow: hidden;
+  clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+
+/* — Mouvement réduit — */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ── Mise en page ────────────────────────────────────────────────────── */
+.wrap {
+  max-width: var(--largeur-max);
+  margin-inline: auto;
+  padding-inline: var(--gouttiere);
+}
+
+.section { padding-block: clamp(var(--esp-12), 7vw, var(--esp-20)); }
+.section--doux    { background: var(--fond-doux); }
+.section--inverse { background: var(--fond-inverse); color: var(--texte-inverse); }
+.section--inverse .section-titre { color: var(--texte-inverse); }
+.section--filet   { border-top: 1px solid var(--ligne); }
+
+.section-tete {
+  display: flex;
+  align-items: flex-end;
+  gap: var(--esp-8);
+  flex-wrap: wrap;
+  margin-bottom: clamp(var(--esp-8), 4vw, var(--esp-12));
+}
+
+/* ── Typographie ─────────────────────────────────────────────────────── */
+.display {
+  font-family: var(--pol-display);
+  font-weight: var(--gr-gras);
+  letter-spacing: -.035em;
+  line-height: var(--il-titre);
+}
+
+.section-titre {
+  font-family: var(--pol-display);
+  font-weight: var(--gr-gras);
+  font-size: clamp(2.25rem, 6vw, 4.75rem);
+  letter-spacing: -.045em;
+  line-height: var(--il-titre);
+  text-wrap: balance;
+}
+
+.surtitre {
+  display: block;
+  font-family: var(--pol-display);
+  font-size: var(--ts-xs);
+  font-weight: var(--gr-demi);
+  text-transform: uppercase;
+  letter-spacing: .16em;
+  color: var(--texte-tenu);
+}
+
+.chapo {
+  font-size: clamp(var(--ts-lg), 1.5vw, 1.25rem);
+  line-height: 1.5;
+  color: var(--texte-doux);
+  max-width: 56ch;
+  text-wrap: pretty;
+}
+
+.prose { max-width: var(--largeur-texte); }
+.prose p + p { margin-top: var(--esp-4); }
+.prose h3 {
+  font-family: var(--pol-display);
+  font-size: var(--ts-xl);
+  letter-spacing: -.02em;
+  margin-top: var(--esp-10);
+  margin-bottom: var(--esp-3);
+}
+.prose ul { margin-top: var(--esp-4); }
+.prose ul li {
+  position: relative;
+  padding-left: var(--esp-5);
+  margin-bottom: var(--esp-2);
+  color: var(--texte-doux);
+}
+.prose ul li::before {
+  content: "";
+  position: absolute;
+  left: 0; top: .62em;
+  width: 6px; height: 1px;
+  background: var(--ligne-forte);
+}
+
+/* — Nombres alignés : horaires, températures, tarifs — */
+.chiffres { font-variant-numeric: tabular-nums; }
+
+/* ── Boutons et liens d'action ───────────────────────────────────────── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--esp-2);
+  min-height: var(--btn-hauteur);
+  padding-inline: var(--btn-marge-x);
+  border-radius: var(--btn-rayon);
+  font-size: var(--btn-taille);
+  font-weight: var(--gr-moyen);
+  text-align: center;
+  transition: background var(--dur-2), color var(--dur-2), border-color var(--dur-2);
+}
+.btn--primaire {
+  background: var(--btn-primaire-fond);
+  color: var(--btn-primaire-texte);
+}
+.btn--primaire:hover { background: var(--btn-primaire-fond-survol); }
+.btn--fantome {
+  border: 1px solid var(--btn-fantome-ligne);
+  color: var(--texte);
+}
+.btn--fantome:hover { border-color: var(--texte); background: var(--fond-doux); }
+
+.lien-fleche {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--esp-2);
+  font-size: var(--ts-sm);
+  font-weight: var(--gr-moyen);
+  color: var(--texte-doux);
+  border-bottom: 1px solid transparent;
+  padding-bottom: 2px;
+  transition: color var(--dur-2), border-color var(--dur-2);
+}
+.lien-fleche:hover { color: var(--texte); border-bottom-color: currentColor; }
+.lien-fleche .fl { transition: transform var(--dur-2) var(--cbz-sortie); }
+.lien-fleche:hover .fl { transform: translateX(3px); }
+
+/* ── Utilitaires ─────────────────────────────────────────────────────── */
+.pile-2 > * + * { margin-top: var(--esp-2); }
+.pile-4 > * + * { margin-top: var(--esp-4); }
+.pile-6 > * + * { margin-top: var(--esp-6); }
+.auto-gauche { margin-left: auto; }

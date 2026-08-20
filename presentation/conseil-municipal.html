@@ -1,0 +1,565 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Nouveau site de la commune — Conseil municipal d’Entrecasteaux</title>
+<meta name="color-scheme" content="light dark">
+
+<!-- Source de vérité unique : les jetons et les polices du site lui-même.
+     Aucune couleur ni police n'est redéfinie ici. -->
+<link rel="stylesheet" href="../site/assets/css/polices.css">
+<link rel="stylesheet" href="../site/assets/css/tokens.css">
+
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:var(--pol-texte);
+    background:var(--fond);
+    color:var(--texte);
+    line-height:var(--il-normal);
+    overflow:hidden;
+  }
+  a{color:inherit}
+  :focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+
+  /* ─── Scène ─────────────────────────────────────────────────────────── */
+  .pont{position:relative;width:100vw;height:100dvh;overflow:hidden}
+  .vue{
+    position:absolute;inset:0;
+    display:grid;
+    /* Centrage vertical seulement : `place-content:center` dimensionnerait la
+       piste sur le contenu, et le `width:min(1180px,100%)` interne n'aurait
+       plus de référence. */
+    align-content:center;
+    padding:clamp(28px,5vw,88px);
+    /* Chaque vue est opaque : une diapositive transparente laisserait
+       transparaître celle du dessous pendant la transition. */
+    background:var(--fond);
+    opacity:0;visibility:hidden;pointer-events:none;
+    transform:translateY(14px);
+    transition:opacity .32s var(--cbz-sortie),
+               transform .32s var(--cbz-sortie),
+               visibility .32s var(--cbz-sortie);
+  }
+  .vue[data-actif="1"]{opacity:1;visibility:visible;pointer-events:auto;transform:none}
+  .vue-interne{width:min(1180px,100%);margin-inline:auto}
+
+  .vue--sombre{background:var(--enc-900);color:var(--cal-100)}
+  .vue--douce{background:var(--fond-doux)}
+
+  /* ─── Typographie de scène ──────────────────────────────────────────── */
+  .surtitre{
+    font-family:var(--pol-display);
+    font-size:clamp(10px,1vw,12px);
+    font-weight:var(--gr-demi);
+    letter-spacing:.18em;text-transform:uppercase;
+    color:var(--texte-tenu);
+    margin-bottom:var(--esp-5);
+  }
+  .vue--sombre .surtitre{color:rgb(255 255 255 / .55)}
+
+  .titre-geant{
+    font-family:var(--pol-display);
+    font-weight:var(--gr-gras);
+    font-stretch:70%;
+    font-size:clamp(3rem,10vw,9rem);
+    line-height:.84;letter-spacing:-.04em;
+  }
+  h2{
+    font-family:var(--pol-display);
+    font-weight:var(--gr-gras);
+    font-stretch:88%;
+    font-size:clamp(1.9rem,4.4vw,3.4rem);
+    line-height:.98;letter-spacing:-.035em;
+    text-wrap:balance;
+  }
+  h3{
+    font-family:var(--pol-display);
+    font-weight:var(--gr-demi);
+    font-size:var(--ts-lg);
+    letter-spacing:-.015em;
+    margin-bottom:var(--esp-2);
+  }
+  .chapo{
+    font-size:clamp(var(--ts-md),1.5vw,var(--ts-xl));
+    color:var(--texte-doux);
+    max-width:60ch;
+    margin-top:var(--esp-5);
+    text-wrap:pretty;
+  }
+  .vue--sombre .chapo{color:rgb(255 255 255 / .74)}
+  p.note{
+    margin-top:var(--esp-4);
+    font-size:var(--ts-sm);
+    color:var(--texte-tenu);
+    max-width:66ch;
+  }
+  .vue--sombre p.note{color:rgb(255 255 255 / .5)}
+
+  /* ─── Grilles ───────────────────────────────────────────────────────── */
+  .grille{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+    gap:1px;
+    background:var(--ligne);
+    border:1px solid var(--ligne);
+    margin-top:var(--esp-10);
+  }
+  .vue--sombre .grille{background:rgb(255 255 255 / .14);border-color:rgb(255 255 255 / .14)}
+  .case{background:var(--fond);padding:var(--esp-6) var(--esp-5)}
+  .vue--douce .case{background:var(--fond)}
+  .vue--sombre .case{background:var(--enc-900)}
+  .case p{font-size:var(--ts-md);color:var(--texte-doux);margin-top:var(--esp-2)}
+  .vue--sombre .case p{color:rgb(255 255 255 / .68)}
+
+  .chiffres-cles{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(170px,1fr));
+    gap:var(--esp-8) var(--esp-6);
+    margin-top:var(--esp-10);
+  }
+  .kpi-valeur{
+    font-family:var(--pol-display);
+    font-weight:var(--gr-gras);
+    font-stretch:78%;
+    font-size:clamp(2.6rem,5.5vw,4.4rem);
+    line-height:.9;letter-spacing:-.04em;
+    font-variant-numeric:tabular-nums;
+    color:var(--accent);
+  }
+  .vue--sombre .kpi-valeur{color:var(--bre-200)}
+  .kpi-libelle{
+    margin-top:var(--esp-3);
+    font-size:var(--ts-sm);
+    color:var(--texte-doux);
+    max-width:24ch;
+  }
+  .vue--sombre .kpi-libelle{color:rgb(255 255 255 / .7)}
+
+  /* ─── Avant / après ─────────────────────────────────────────────────── */
+  .bascule{
+    display:grid;grid-template-columns:1fr 1fr;
+    gap:var(--esp-8);margin-top:var(--esp-10);
+  }
+  .colonne{border-top:2px solid var(--ligne);padding-top:var(--esp-5)}
+  .colonne--apres{border-top-color:var(--accent)}
+  .vue--sombre .colonne{border-top-color:rgb(255 255 255 / .2)}
+  .vue--sombre .colonne--apres{border-top-color:var(--bre-200)}
+  .colonne h3{color:var(--texte-tenu)}
+  .colonne--apres h3{color:var(--accent)}
+  .vue--sombre .colonne--apres h3{color:var(--bre-200)}
+  .colonne ul{list-style:none;margin-top:var(--esp-4)}
+  .colonne li{
+    padding:var(--esp-3) 0;
+    border-bottom:1px solid var(--ligne);
+    font-size:var(--ts-md);
+    display:flex;gap:var(--esp-3);
+  }
+  .vue--sombre .colonne li{border-bottom-color:rgb(255 255 255 / .12)}
+  .colonne li::before{content:"—";color:var(--texte-tenu);flex:none}
+
+  /* ─── Graphique ─────────────────────────────────────────────────────── */
+  .cadre-graphe{
+    margin-top:var(--esp-8);
+    height:min(46vh,380px);
+    position:relative;
+  }
+  table.repli{
+    width:100%;border-collapse:collapse;margin-top:var(--esp-6);
+    font-size:var(--ts-sm);font-variant-numeric:tabular-nums;
+  }
+  table.repli caption{text-align:left;color:var(--texte-tenu);padding-bottom:var(--esp-3)}
+  table.repli th,table.repli td{
+    text-align:left;padding:var(--esp-2) var(--esp-3);
+    border-bottom:1px solid var(--ligne);
+  }
+  table.repli td:last-child{text-align:right}
+
+  /* ─── Pilotage ──────────────────────────────────────────────────────── */
+  .jauge{
+    position:fixed;inset:auto 0 0 0;height:3px;
+    background:var(--ligne);z-index:20;
+  }
+  .jauge i{
+    display:block;height:100%;width:0;
+    background:var(--accent);
+    transition:width .32s var(--cbz-sortie);
+  }
+  .pilote{
+    position:fixed;right:clamp(16px,3vw,40px);bottom:clamp(18px,3vw,34px);
+    display:flex;align-items:center;gap:var(--esp-3);
+    z-index:20;
+  }
+  .pilote button{
+    width:40px;height:40px;
+    display:grid;place-items:center;
+    border:1px solid var(--ligne);
+    border-radius:var(--ray-2);
+    background:var(--fond);
+    color:var(--texte);
+    cursor:pointer;
+    transition:background var(--dur-2),color var(--dur-2);
+  }
+  .pilote button:hover:not(:disabled){background:var(--accent);color:#fff;border-color:var(--accent)}
+  .pilote button:disabled{opacity:.35;cursor:default}
+  .compteur{
+    font-family:var(--pol-display);
+    font-size:var(--ts-sm);font-variant-numeric:tabular-nums;
+    letter-spacing:.1em;color:var(--texte-tenu);
+    min-width:56px;text-align:right;
+  }
+
+  .sr{
+    position:absolute;width:1px;height:1px;
+    padding:0;margin:-1px;overflow:hidden;
+    clip-path:inset(50%);white-space:nowrap;
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .vue{transition-duration:1ms}
+    .jauge i{transition-duration:1ms}
+  }
+  @media (max-width: 820px){
+    .bascule{grid-template-columns:1fr}
+  }
+  @media print{
+    body{overflow:visible}
+    .pont{height:auto}
+    .vue{position:static;opacity:1;visibility:visible;transform:none;
+         page-break-after:always;min-height:100vh}
+    .jauge,.pilote{display:none}
+  }
+</style>
+</head>
+<body>
+
+<div class="pont" id="pont">
+
+  <!-- 1 — Ouverture -->
+  <section class="vue vue--sombre" data-actif="1" aria-label="Diapositive 1">
+    <div class="vue-interne">
+      <p class="surtitre">Conseil municipal · Commune d’Entrecasteaux</p>
+      <h1 class="titre-geant">Un site<br>qui tient<br>en une page</h1>
+      <p class="chapo">Refonte du site officiel de la commune : la même information, mais
+        trouvable en un coup d’œil, lisible sur un téléphone, et tenue à jour sans prestataire.</p>
+    </div>
+  </section>
+
+  <!-- 2 — Le problème -->
+  <section class="vue" aria-label="Diapositive 2">
+    <div class="vue-interne">
+      <p class="surtitre">Ce que vit l’habitant aujourd’hui</p>
+      <h2>Douze entrées de menu,<br>et l’information reste enfouie.</h2>
+      <div class="grille">
+        <div class="case">
+          <h3>Rien en une page</h3>
+          <p>Alerte incendie, horaires d’accueil, prochaine fête : trois rubriques différentes,
+            trois clics chacune.</p>
+        </div>
+        <div class="case">
+          <h3>Illisible au téléphone</h3>
+          <p>La majorité des consultations d’un site communal se fait sur mobile.
+            La mise en page actuelle ne s’y adapte pas.</p>
+        </div>
+        <div class="case">
+          <h3>Doublons de navigation</h3>
+          <p>« Découvrir » apparaissait deux fois dans le menu, vers deux endroits distincts.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3 — Le parti pris -->
+  <section class="vue vue--douce" aria-label="Diapositive 3">
+    <div class="vue-interne">
+      <p class="surtitre">Le parti pris</p>
+      <h2>L’essentiel avant le défilement.</h2>
+      <p class="chapo">La page d’accueil répond d’emblée aux trois questions qu’on pose à une
+        mairie : y a-t-il une alerte, quand est-ce ouvert, que se passe-t-il au village ?
+        Le reste vient ensuite.</p>
+      <div class="grille">
+        <div class="case">
+          <h3>Bandeau d’alerte</h3>
+          <p>En tête de page, sur toutes les pages. Refermable, et il se souvient
+            qu’on l’a fermé.</p>
+        </div>
+        <div class="case">
+          <h3>Le village en direct</h3>
+          <p>Code postal, coordonnées, altitude et météo du jour, dans le bandeau
+            d’ouverture.</p>
+        </div>
+        <div class="case">
+          <h3>Ouvert / fermé</h3>
+          <p>La page Mairie indique si l’accueil est ouvert à l’instant où on la consulte,
+            et sinon quand il rouvre.</p>
+        </div>
+        <div class="case">
+          <h3>Trois raccourcis</h3>
+          <p>Démarches, agenda, contact : accessibles sans quitter l’écran d’accueil.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4 — Avant / après -->
+  <section class="vue" aria-label="Diapositive 4">
+    <div class="vue-interne">
+      <p class="surtitre">Navigation</p>
+      <h2>De douze entrées à six rubriques.</h2>
+      <div class="bascule">
+        <div class="colonne">
+          <h3>Avant</h3>
+          <ul>
+            <li>6 pages + 6 menus, côte à côte</li>
+            <li>« Découvrir » en double</li>
+            <li>Le menu passe à la ligne dès 1&nbsp;280&nbsp;px</li>
+            <li>Aucun repère de page courante</li>
+          </ul>
+        </div>
+        <div class="colonne colonne--apres">
+          <h3>Après</h3>
+          <ul>
+            <li>6 rubriques, une par intention d’usage</li>
+            <li>Un seul point d’entrée par sujet</li>
+            <li>Le libellé mène à la page, le chevron ouvre le volet</li>
+            <li>La page courante est signalée</li>
+          </ul>
+        </div>
+      </div>
+      <p class="note">Les liens profonds de l’ancien site sont conservés : ils sont regroupés
+        dans les volets, sous des intertitres.</p>
+    </div>
+  </section>
+
+  <!-- 5 — Chiffres -->
+  <section class="vue vue--sombre" aria-label="Diapositive 5">
+    <div class="vue-interne">
+      <p class="surtitre">Mesuré sur la version livrée</p>
+      <h2>Léger, lisible, autonome.</h2>
+      <div class="chiffres-cles">
+        <div>
+          <div class="kpi-valeur">0</div>
+          <p class="kpi-libelle">appel à un service tiers au chargement</p>
+        </div>
+        <div>
+          <div class="kpi-valeur">297<span style="font-size:.42em"> Ko</span></div>
+          <p class="kpi-libelle">pour la première visite, tout compris</p>
+        </div>
+        <div>
+          <div class="kpi-valeur">4,8<span style="font-size:.42em">:1</span></div>
+          <p class="kpi-libelle">contraste le plus faible mesuré sur le titre d’accueil</p>
+        </div>
+        <div>
+          <div class="kpi-valeur">3</div>
+          <p class="kpi-libelle">langues : français, anglais, italien</p>
+        </div>
+      </div>
+      <p class="note">Le seuil d’accessibilité applicable au grand texte est de 3:1, celui du
+        texte courant de 4,5:1 (RGAA 4.1, critère 3.3).</p>
+    </div>
+  </section>
+
+  <!-- 6 — Poids -->
+  <section class="vue" aria-label="Diapositive 6">
+    <div class="vue-interne">
+      <p class="surtitre">Poids transféré, compression comprise</p>
+      <h2>Ce qui se télécharge<br>à la première visite.</h2>
+      <div class="cadre-graphe">
+        <canvas id="graphePoids" role="img"
+          aria-label="Répartition du poids de la première visite : polices 120 kilo-octets,
+                      photo du village 139 kilo-octets, feuilles de style et scripts 31 kilo-octets,
+                      page HTML 7 kilo-octets."></canvas>
+      </div>
+      <table class="repli">
+        <caption>Détail — les pages suivantes ne rechargent que le HTML, soit environ 5 Ko.</caption>
+        <thead><tr><th scope="col">Ressource</th><th scope="col">Poids</th></tr></thead>
+        <tbody>
+          <tr><td>Photo du village (WebP)</td><td>139 Ko</td></tr>
+          <tr><td>Polices auto-hébergées (2 fichiers)</td><td>120 Ko</td></tr>
+          <tr><td>Styles et scripts (gzip)</td><td>31 Ko</td></tr>
+          <tr><td>Page d’accueil HTML (gzip)</td><td>7 Ko</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- 7 — Souveraineté -->
+  <section class="vue vue--douce" aria-label="Diapositive 7">
+    <div class="vue-interne">
+      <p class="surtitre">Données et dépendances</p>
+      <h2>Le site ne fait appel<br>à personne d’autre.</h2>
+      <div class="grille">
+        <div class="case">
+          <h3>Polices auto-hébergées</h3>
+          <p>Appeler le service de polices de Google transmet l’adresse IP du visiteur
+            à chaque page. Les fichiers sont désormais servis par la commune.</p>
+        </div>
+        <div class="case">
+          <h3>Aucun traceur</h3>
+          <p>Pas de mesure d’audience, pas de cookie publicitaire, donc pas de bandeau
+            de consentement à afficher.</p>
+        </div>
+        <div class="case">
+          <h3>Fichiers statiques</h3>
+          <p>Six pages HTML, trois feuilles de style, deux scripts. Hébergeable partout,
+            sans base de données ni serveur applicatif.</p>
+        </div>
+        <div class="case">
+          <h3>Contenu séparé du code</h3>
+          <p>Actualités, agenda et démarches vivent dans un seul fichier de données,
+            prêt à être branché sur un outil d’édition.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8 — Décision -->
+  <section class="vue vue--sombre" aria-label="Diapositive 8">
+    <div class="vue-interne">
+      <p class="surtitre">Ce qui est soumis au conseil</p>
+      <h2>Trois décisions,<br>puis la mise en ligne.</h2>
+      <div class="grille">
+        <div class="case">
+          <h3>1 · Valider la maquette</h3>
+          <p>Structure, rubriques et textes de la version présentée.</p>
+        </div>
+        <div class="case">
+          <h3>2 · Désigner un référent</h3>
+          <p>Un agent chargé des actualités, de l’agenda et du bandeau d’alerte.</p>
+        </div>
+        <div class="case">
+          <h3>3 · Arrêter l’hébergement</h3>
+          <p>Reprise du nom de domaine entrecasteaux.fr et redirection des anciennes adresses.</p>
+        </div>
+      </div>
+      <p class="note">Reste à produire avant la mise en ligne : la déclaration d’accessibilité,
+        les mentions légales et la politique de confidentialité — obligatoires pour un site public.</p>
+    </div>
+  </section>
+
+</div>
+
+<div class="jauge" aria-hidden="true"><i id="jauge"></i></div>
+
+<nav class="pilote" aria-label="Navigation de la présentation">
+  <button id="prec" type="button" aria-label="Diapositive précédente">
+    <svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor"
+         stroke-width="1.7" aria-hidden="true"><path d="M12.5 4 6.5 10l6 6"/></svg>
+  </button>
+  <span class="compteur" id="compteur" role="status" aria-live="polite">1 / 8</span>
+  <button id="suiv" type="button" aria-label="Diapositive suivante">
+    <svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor"
+         stroke-width="1.7" aria-hidden="true"><path d="M7.5 4l6 6-6 6"/></svg>
+  </button>
+</nav>
+
+<p class="sr">Naviguez avec les flèches du clavier, Page précédente et Page suivante,
+  ou la touche Origine pour revenir au début.</p>
+
+<script src="assets/chart.umd.js"></script>
+<script>
+(function () {
+  'use strict';
+
+  var vues = Array.prototype.slice.call(document.querySelectorAll('.vue'));
+  var jauge = document.getElementById('jauge');
+  var compteur = document.getElementById('compteur');
+  var prec = document.getElementById('prec');
+  var suiv = document.getElementById('suiv');
+  var index = 0;
+  var graphePose = false;
+
+  function afficher(n) {
+    index = Math.max(0, Math.min(vues.length - 1, n));
+    vues.forEach(function (v, i) {
+      v.setAttribute('data-actif', i === index ? '1' : '0');
+      v.setAttribute('aria-hidden', i === index ? 'false' : 'true');
+    });
+    jauge.style.width = ((index + 1) / vues.length * 100) + '%';
+    compteur.textContent = (index + 1) + ' / ' + vues.length;
+    prec.disabled = index === 0;
+    suiv.disabled = index === vues.length - 1;
+    if (location.hash !== '#' + (index + 1)) {
+      history.replaceState(null, '', '#' + (index + 1));
+    }
+    if (index === 5) { poserGraphe(); }
+  }
+
+  /* Le graphique n'est construit qu'à l'affichage de sa diapositive : avant,
+     son conteneur est masqué et Chart.js le mesurerait à zéro. */
+  function poserGraphe() {
+    if (graphePose || typeof Chart === 'undefined') { return; }
+    graphePose = true;
+
+    var styles = getComputedStyle(document.documentElement);
+    function jeton(nom) { return styles.getPropertyValue(nom).trim(); }
+
+    Chart.defaults.font.family = jeton('--pol-texte') || 'sans-serif';
+    Chart.defaults.font.size = 13;
+    Chart.defaults.color = jeton('--texte-doux');
+
+    new Chart(document.getElementById('graphePoids'), {
+      type: 'bar',
+      data: {
+        labels: ['Photo du village', 'Polices', 'Styles et scripts', 'Page HTML'],
+        datasets: [{
+          label: 'Kilo-octets',
+          data: [139, 120, 31, 7],
+          backgroundColor: [
+            jeton('--accent'), jeton('--bre-400'),
+            jeton('--ocr-600'), jeton('--enc-500')
+          ],
+          borderWidth: 0,
+          borderRadius: 2,
+          maxBarThickness: 76
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        animation: window.matchMedia('(prefers-reduced-motion: reduce)').matches
+          ? false : { duration: 550 },
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            callbacks: {
+              label: function (c) { return c.parsed.y + ' Ko'; }
+            }
+          }
+        },
+        scales: {
+          x: { grid: { display: false }, border: { color: jeton('--ligne') } },
+          y: {
+            beginAtZero: true,
+            grid: { color: jeton('--ligne') },
+            border: { display: false },
+            ticks: { callback: function (v) { return v + ' Ko'; } }
+          }
+        }
+      }
+    });
+  }
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'ArrowRight' || e.key === 'PageDown' || e.key === ' ') {
+      e.preventDefault(); afficher(index + 1);
+    } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+      e.preventDefault(); afficher(index - 1);
+    } else if (e.key === 'Home') {
+      e.preventDefault(); afficher(0);
+    } else if (e.key === 'End') {
+      e.preventDefault(); afficher(vues.length - 1);
+    }
+  });
+
+  prec.addEventListener('click', function () { afficher(index - 1); });
+  suiv.addEventListener('click', function () { afficher(index + 1); });
+
+  var depart = parseInt((location.hash || '').replace('#', ''), 10);
+  afficher(isNaN(depart) ? 0 : depart - 1);
+})();
+</script>
+</body>
+</html>
