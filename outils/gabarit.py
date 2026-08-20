@@ -7,19 +7,26 @@ les métadonnées restent identiques d'une page à l'autre — on régénère,
 on ne recopie pas.
 """
 
+# Les armes de la commune, ramassées à 24 px de large :
+# « De gueules au pal d'or accosté de deux tours donjonnées d'argent. »
+# Le champ et le pal sont des aplats — c'est là que l'or vif du blason peut
+# servir, puisqu'il ne porte pas de texte.
 BLASON = (
     '<svg class="blason" viewBox="0 0 26 32" fill="none" aria-hidden="true">'
     '<path d="M1 1h24v19c0 6.5-6.2 9.8-12 11.5C7.2 29.8 1 26.5 1 20V1z" '
-    'stroke="currentColor" stroke-width="1.4"/>'
-    '<path d="M6.5 20V11l3-2.4 3 2.4v9M13 20v-7.5l3-2.4 3 2.4V20" '
-    'stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/>'
-    '<path d="M4.5 20h17" stroke="currentColor" stroke-width="1.2"/></svg>'
+    'class="blason-champ"/>'
+    '<path d="M10.6 1h4.8v27.9a34 34 0 0 1-2.4 1.2 34 34 0 0 1-2.4-1.2z" '
+    'class="blason-pal"/>'
+    '<path d="M5.6 21.5V11.4l2.7-2.2 2.7 2.2v10.1M15 21.5V11.4l2.7-2.2 2.7 2.2v10.1" '
+    'class="blason-tours" stroke-width="1.5" stroke-linejoin="round" fill="none"/>'
+    '</svg>'
 )
 
 FAVICON = (
     "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 26 32'%3E"
-    "%3Cpath d='M1 1h24v19c0 6.5-6.2 9.8-12 11.5C7.2 29.8 1 26.5 1 20V1z' fill='%232C4A3B'/%3E"
-    "%3Cpath d='M6.5 21V11l3-2.4 3 2.4v10M13 21v-8.5l3-2.4 3 2.4V21' stroke='%23F0EEE9' "
+    "%3Cpath d='M1 1h24v19c0 6.5-6.2 9.8-12 11.5C7.2 29.8 1 26.5 1 20V1z' fill='%239B2E1F'/%3E"
+    "%3Cpath d='M11 1h4v30.5h-4z' fill='%23DDA92E'/%3E"
+    "%3Cpath d='M6.5 21V11l3-2.4 3 2.4v10M13 21v-8.5l3-2.4 3 2.4V21' stroke='%23F6F1E5' "
     "stroke-width='1.6' fill='none'/%3E%3C/svg%3E"
 )
 
@@ -205,8 +212,8 @@ def page(*, fichier, page_id, titre, description, corps, heros_html,
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{titre}</title>
 <meta name="description" content="{description}">
-<meta name="theme-color" content="#2C4A3B" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#0B1013" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#9B2E1F" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#17110A" media="(prefers-color-scheme: dark)">
 <meta name="color-scheme" content="light dark">
 <link rel="canonical" href="https://www.entrecasteaux.fr/{fichier}">
 <link rel="icon" href="{FAVICON}">

@@ -52,9 +52,9 @@ BANDEAU = """<div class="bandeau-apercu">
 </div>
 <style>
   .bandeau-apercu{
-    background:var(--ocr-100);
-    color:var(--enc-700);
-    border-bottom:1px solid var(--ocr-400);
+    background:var(--or-100);
+    color:var(--sab-700);
+    border-bottom:1px solid var(--or-500);
     font-size:var(--ts-sm);
   }
   .bandeau-apercu .wrap{padding-block:var(--esp-3)}
@@ -64,11 +64,11 @@ BANDEAU = """<div class="bandeau-apercu">
   }
   @media (prefers-color-scheme: dark){
     :root:not([data-theme="clair"]) .bandeau-apercu{
-      background:var(--enc-700);color:var(--cal-200);border-bottom-color:var(--enc-600);
+      background:var(--sab-700);color:var(--arg-200);border-bottom-color:var(--sab-600);
     }
   }
   :root[data-theme="sombre"] .bandeau-apercu{
-    background:var(--enc-700);color:var(--cal-200);border-bottom-color:var(--enc-600);
+    background:var(--sab-700);color:var(--arg-200);border-bottom-color:var(--sab-600);
   }
 </style>
 """

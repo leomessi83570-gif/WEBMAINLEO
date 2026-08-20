@@ -49,7 +49,7 @@
 .heros {
   position: relative;
   isolation: isolate;
-  background: var(--enc-800);
+  background: var(--sab-800);
   min-height: var(--heros-hauteur);
   display: flex;
   flex-direction: column;
@@ -200,7 +200,7 @@
   background: rgb(255 255 255 / .06);
   transition: background var(--dur-2), color var(--dur-2), border-color var(--dur-2);
 }
-.raccourci:hover { background: #fff; color: var(--enc-800); border-color: #fff; }
+.raccourci:hover { background: #fff; color: var(--sab-800); border-color: #fff; }
 
 /* ────────────────────────────────────────────────────────────────────────
    BARRE DE NAVIGATION — filet plein, collante au défilement
@@ -228,7 +228,13 @@
   flex: none;
   padding-block: var(--esp-2);
 }
-.blason { width: 24px; height: 30px; flex: none; color: var(--accent); }
+/* Le blason reprend les émaux réels : champ de gueules, pal d'or, tours
+   d'argent. Ce sont des aplats, pas du texte — c'est le seul endroit où l'or
+   vif peut servir sans poser de problème de lisibilité. */
+.blason { width: 24px; height: 30px; flex: none; }
+.blason-champ { fill: var(--gue-700); }
+.blason-pal   { fill: var(--accent-vif); }
+.blason-tours { stroke: var(--arg-200); }
 .marque-nom {
   display: block;
   font-family: var(--pol-display);
@@ -708,7 +714,7 @@
 }
 .section--inverse .reseaux a,
 .pied .reseaux a { border-color: rgb(255 255 255 / .2); }
-.pied .reseaux a:hover { background: #fff; color: var(--enc-800); }
+.pied .reseaux a:hover { background: #fff; color: var(--sab-800); }
 .pied-bas {
   display: flex;
   align-items: center;

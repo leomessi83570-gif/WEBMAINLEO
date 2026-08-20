@@ -18,6 +18,7 @@ outils/                     ← ne part pas en production
   banniere-og.html      gabarit de l’image de partage
   exporter_banniere.py  capture cette bannière en 1200 × 630
   verifier_jetons.py    garde-fou : aucun var(--x) orphelin
+  verifier_contrastes.py audit WCAG de la palette, clair et sombre
   paquet_unique.py      aperçu en un seul fichier HTML, ouvrable hors ligne
 
 presentation/               ← support de présentation au conseil municipal
@@ -28,7 +29,8 @@ presentation/               ← support de présentation au conseil municipal
 
 ```bash
 python3 outils/generer.py           # les 6 pages
-python3 outils/verifier_jetons.py   # contrôle des jetons de design
+python3 outils/verifier_jetons.py     # aucun var(--x) orphelin
+python3 outils/verifier_contrastes.py # contrastes, thèmes clair et sombre
 python3 outils/exporter_banniere.py # image de partage (nécessite Chromium + Pillow)
 ```
 
@@ -78,24 +80,58 @@ ligne de 320 px à 1920 px de large. C’est la raison d’être du choix de pol
 
 Le voile posé sur la photo n’est pas décoratif : le titre est blanc sur des
 façades claires. Mesuré sur le rendu, le pire contraste sous les lettres est de
-**4,83:1** — au-dessus du seuil de 4,5:1 du texte courant, alors que le grand
-texte n’exige que 3:1.
+**4,69:1** — au-dessus du seuil de 4,5:1 du texte courant, alors que le grand
+texte n’exige que 3:1. Il est teinté sable et non bleu-noir : un voile froid sur
+une photo de Provence en tue la lumière.
 
 ### Les jetons de design
 
 Trois couches, dans `assets/css/tokens.css` :
 
 ```
-primitive   --bre-600: #2C4A3B      valeur brute, relevée sur le village
+primitive   --or-800: #6E4A08        un émail du blason
     ↓
-sémantique  --accent: var(--bre-600)   intention
+sémantique  --accent: var(--or-800)  une intention
     ↓
 composant   --nav-couleur-actif: var(--texte)
 ```
 
-Aucune couleur en dur hors de la couche primitive. La palette vient du village
-lui-même : calcaire des façades, encre des ombres au crépuscule, vert de la
-vallée de la Bresque, ocre des calades et des tuiles.
+Aucune couleur en dur hors de la couche primitive. C'est ce qui a permis de
+refaire toute la palette en ne touchant qu'à un fichier : les composants ne
+connaissent que des rôles.
+
+### La palette vient du blason
+
+**« De gueules au pal d'or accosté de deux tours donjonnées d'argent, ouvertes
+du champ, ajourées et maçonnées de sable. »** Rouge, or, argent, noir : la
+palette décline ces quatre émaux plutôt que d'inventer des couleurs.
+
+| Émail | Rôle dans l'interface |
+|---|---|
+| **Sable** | Les neutres sombres — brun chaud, jamais bleuté |
+| **Argent** | Les neutres clairs, cassés vers la pierre sèche |
+| **Or** | L'accent : liens, boutons, marque |
+| **Gueules** | Les alertes, et le champ du blason |
+| *Garrigue* | Contrepoint olive, hors blason |
+
+Le vert de garrigue ne figure pas dans les armes : il est ajouté parce que sans
+lui une page tout en or et terre cuite vire au monochrome.
+
+Deux points sur lesquels la palette se joue :
+
+**L'or a deux registres, et c'est délibéré.** Les tons foncés (`--or-800`)
+portent le texte et tiennent 7,9:1 sur fond clair ; les tons vifs (`--or-500`)
+ne servent qu'aux aplats — blason, filets, jauges. Un or lisible n'est plus
+solaire, un or solaire n'est plus lisible : il en faut deux.
+
+**Les trois marqueurs de la page d'accueil prennent trois émaux distincts** —
+Sécurité en gueules, Solidarité en or, Vie pratique en garrigue. Deux rouges
+voisins se confondraient d'un coup d'œil.
+
+`outils/verifier_contrastes.py` résout les jetons en couleurs réelles, compose
+les fonds semi-transparents et vérifie chaque paire de l'interface dans les deux
+thèmes. C'est lui qui a révélé que la palette précédente descendait à 3,77:1 sur
+les marqueurs de catégorie et 3,94:1 sur les sur-titres.
 
 ### Les polices sont auto-hébergées
 
