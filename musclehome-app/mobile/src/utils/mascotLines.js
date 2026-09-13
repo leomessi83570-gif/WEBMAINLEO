@@ -164,6 +164,7 @@ const ONBOARDING_LINES = {
   level: ['Tu te situes où en muscu ?'],
   equipment: ["Qu'est-ce que t'as sous la main pour t'entraîner ? Tu peux cocher plusieurs cases."],
   sessions_per_week: ['Combien de séances par semaine tu vises ? Sois honnête, pas ambitieux.'],
+  focus_zones: ["Une zone que tu veux prioriser en particulier ? Tu peux en cocher plusieurs, ou passer si tu veux un programme équilibré."],
   limitations: ['Une douleur ou une blessure à surveiller ? Optionnel, mais ça m\'aide à adapter le programme.'],
   intro: ["Salut, moi c'est Buffalo. Je vais te poser quelques questions pour te construire un programme sur mesure."],
   outro: ["Parfait, j'ai ce qu'il me faut. On passe à l'analyse photo ?"],

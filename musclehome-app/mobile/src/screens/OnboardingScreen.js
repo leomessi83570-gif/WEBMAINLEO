@@ -33,6 +33,17 @@ const EQUIPMENT = [
 
 const SESSIONS_OPTIONS = ['2', '3', '4', '5', '6'];
 
+const FOCUS_ZONES = [
+  { key: 'bras', label: 'Bras', icon: '💪' },
+  { key: 'pecs', label: 'Pecs', icon: '🫸' },
+  { key: 'dos', label: 'Dos', icon: '🔺' },
+  { key: 'epaules', label: 'Épaules', icon: '🎯' },
+  { key: 'abdos', label: 'Abdos', icon: '🔥' },
+  { key: 'fessiers', label: 'Fessiers', icon: '🍑' },
+  { key: 'jambes', label: 'Jambes', icon: '🦵' },
+  { key: 'aucune', label: 'Pas de préférence', icon: '✅' },
+];
+
 function Chip({ label, icon, selected, onPress }) {
   return (
     <Tap onPress={onPress} style={[styles.chip, selected && styles.chipSelected]}>
@@ -52,12 +63,23 @@ export default function OnboardingScreen({ navigation }) {
   const [level, setLevel] = useState(null);
   const [equipment, setEquipment] = useState([]);
   const [sessionsPerWeek, setSessionsPerWeek] = useState('3');
+  const [focusZones, setFocusZones] = useState([]);
   const [limitations, setLimitations] = useState('');
 
   const toggleEquipment = (key) => {
     setEquipment((prev) =>
       prev.includes(key) ? prev.filter((e) => e !== key) : [...prev, key]
     );
+  };
+
+  const toggleFocusZone = (key) => {
+    setFocusZones((prev) => {
+      if (key === 'aucune') return prev.includes('aucune') ? [] : ['aucune'];
+      const withoutAucune = prev.filter((z) => z !== 'aucune');
+      return withoutAucune.includes(key)
+        ? withoutAucune.filter((z) => z !== key)
+        : [...withoutAucune, key];
+    });
   };
 
   // Une étape par question : c'est ce qui permet à la mascotte de commenter chacune
@@ -71,6 +93,7 @@ export default function OnboardingScreen({ navigation }) {
       { key: 'level', valid: !!level },
       { key: 'equipment', valid: equipment.length > 0 },
       { key: 'sessions_per_week', valid: !!sessionsPerWeek },
+      { key: 'focus_zones', valid: true }, // optionnel
       { key: 'limitations', valid: true }, // optionnel
     ],
     [age, height, weight, goal, level, equipment, sessionsPerWeek]
@@ -94,6 +117,7 @@ export default function OnboardingScreen({ navigation }) {
       level,
       equipment,
       sessions_per_week: Number(sessionsPerWeek),
+      focus_zones: focusZones.filter((z) => z !== 'aucune'),
       limitations: limitations.trim(),
     };
     await update({ profile });
@@ -209,6 +233,20 @@ export default function OnboardingScreen({ navigation }) {
             </View>
           )}
 
+          {current.key === 'focus_zones' && (
+            <View style={styles.chipRow}>
+              {FOCUS_ZONES.map((z) => (
+                <Chip
+                  key={z.key}
+                  label={z.label}
+                  icon={z.icon}
+                  selected={focusZones.includes(z.key)}
+                  onPress={() => toggleFocusZone(z.key)}
+                />
+              ))}
+            </View>
+          )}
+
           {current.key === 'limitations' && (
             <TextInput
               style={[styles.bigInput, styles.textArea]}
@@ -234,7 +272,11 @@ export default function OnboardingScreen({ navigation }) {
             onPress={goNext}
           >
             <Text style={styles.buttonText}>
-              {isLast ? "Continuer vers l'analyse photo" : current.key === 'limitations' ? 'Passer' : 'Suivant'}
+              {isLast
+                ? "Continuer vers l'analyse photo"
+                : current.key === 'limitations' || current.key === 'focus_zones'
+                ? 'Passer'
+                : 'Suivant'}
             </Text>
           </Tap>
         </View>

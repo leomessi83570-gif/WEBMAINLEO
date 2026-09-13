@@ -62,6 +62,9 @@ Contraintes :
 - Nombre de séances = "sessions_per_week" du profil.
 - Si des limitations/blessures sont mentionnées, adapte ou évite les exercices à risque.
 - Si l'analyse indique des déséquilibres ou une posture problématique, ajoute du travail correctif.
+- Si "focus_zones" du profil contient un ou plusieurs groupes musculaires, augmente sensiblement
+  le volume et/ou la fréquence dessus (exercices dédiés en plus, séries supplémentaires) sans
+  négliger le reste du corps ni casser l'équilibre général du programme.
 - Les calories/macros doivent être cohérentes avec l'objectif, le poids et le niveau d'activité.
 
 Réponds STRICTEMENT en JSON, sans texte autour, avec ce format exact :
