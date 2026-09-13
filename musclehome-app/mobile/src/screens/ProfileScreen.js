@@ -1,16 +1,26 @@
-import React from 'react';
-import { View, Text, StyleSheet, ScrollView, Alert, Image } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, ScrollView, Alert, Image, TextInput } from 'react-native';
 import { useUser } from '../context/UserContext';
 import { computeStreak } from '../utils/streak';
 import { BADGES } from '../utils/rewards';
+import { getLeagueInfo } from '../utils/leagues';
 import Tap from '../components/Tap';
+import WeightChart from '../components/WeightChart';
 
 const AVATAR = require('../../assets/mascot-idle.png');
 
 export default function ProfileScreen({ navigation }) {
-  const { profile, logs, weeklyGoal, badges, isPremium, reset } = useUser();
+  const { profile, logs, weeklyGoal, badges, isPremium, reset, addLog } = useUser();
   const streakInfo = computeStreak(logs, weeklyGoal);
   const sessionsDone = logs.filter((l) => l.type === 'session').length;
+  const league = getLeagueInfo(sessionsDone);
+
+  const weightEntries = logs
+    .filter((l) => l.type === 'weight')
+    .map((l) => ({ date: l.date, value: l.value }))
+    .sort((a, b) => new Date(a.date) - new Date(b.date));
+
+  const [newWeight, setNewWeight] = useState('');
 
   const confirmReset = () => {
     Alert.alert(
@@ -21,6 +31,13 @@ export default function ProfileScreen({ navigation }) {
         { text: 'Réinitialiser', style: 'destructive', onPress: reset },
       ]
     );
+  };
+
+  const submitWeight = async () => {
+    const value = parseFloat(newWeight.replace(',', '.'));
+    if (!value || value <= 0) return;
+    await addLog({ type: 'weight', value });
+    setNewWeight('');
   };
 
   return (
@@ -36,10 +53,48 @@ export default function ProfileScreen({ navigation }) {
         </View>
       </View>
 
+      <View style={styles.leagueCard}>
+        <View style={styles.leagueTop}>
+          <Text style={styles.leagueIcon}>{league.current.icon}</Text>
+          <View style={{ flex: 1 }}>
+            <Text style={styles.leagueEyebrow}>Ligue actuelle</Text>
+            <Text style={styles.leagueName}>{league.current.label}</Text>
+          </View>
+        </View>
+        {league.next && (
+          <>
+            <View style={styles.leagueTrack}>
+              <View style={[styles.leagueFill, { width: `${league.progress * 100}%` }]} />
+            </View>
+            <Text style={styles.leagueSub}>
+              {league.remaining} séance{league.remaining > 1 ? 's' : ''} avant {league.next.label} {league.next.icon}
+            </Text>
+          </>
+        )}
+      </View>
+
       <View style={styles.statsRow}>
         <Stat value={streakInfo.streakWeeks} label="Semaines de streak" />
         <Stat value={sessionsDone} label="Séances au total" />
         <Stat value={badges.length} label="Badges" />
+      </View>
+
+      <Text style={styles.sectionTitle}>Poids</Text>
+      <View style={styles.weightCard}>
+        <WeightChart entries={weightEntries} />
+        <View style={styles.weightInputRow}>
+          <TextInput
+            style={styles.weightInput}
+            keyboardType="numeric"
+            value={newWeight}
+            onChangeText={setNewWeight}
+            placeholder={profile?.weight_kg ? String(profile.weight_kg) : '75'}
+            placeholderTextColor="#7C6A57"
+          />
+          <Tap style={styles.weightButton} onPress={submitWeight}>
+            <Text style={styles.weightButtonText}>Ajouter la pesée</Text>
+          </Tap>
+        </View>
       </View>
 
       <Text style={styles.sectionTitle}>Badges débloqués</Text>
@@ -107,15 +162,36 @@ const styles = StyleSheet.create({
   title: { color: '#F3E7D6', fontSize: 24, fontFamily: 'ArchivoBlack_400Regular' },
   subtitle: { color: '#B39D85', fontSize: 13, marginTop: 4 },
 
-  statsRow: { flexDirection: 'row', gap: 10, marginBottom: 28 },
+  leagueCard: {
+    backgroundColor: '#201409', borderWidth: 1, borderColor: '#3A2A1A',
+    borderRadius: 18, padding: 16, marginBottom: 20,
+  },
+  leagueTop: { flexDirection: 'row', alignItems: 'center', gap: 12, marginBottom: 12 },
+  leagueIcon: { fontSize: 30 },
+  leagueEyebrow: { color: '#B39D85', fontSize: 10.5, fontWeight: '800', textTransform: 'uppercase', letterSpacing: 0.6 },
+  leagueName: { color: '#F3E7D6', fontSize: 18, fontFamily: 'ArchivoBlack_400Regular' },
+  leagueTrack: { height: 8, borderRadius: 4, backgroundColor: '#2E2019', overflow: 'hidden' },
+  leagueFill: { height: '100%', backgroundColor: '#E8623F', borderRadius: 4 },
+  leagueSub: { color: '#B39D85', fontSize: 11.5, marginTop: 8 },
+
+  statsRow: { flexDirection: 'row', gap: 10, marginBottom: 8 },
   stat: { flex: 1, backgroundColor: '#201409', borderWidth: 1, borderColor: '#3A2A1A', borderRadius: 14, padding: 14, alignItems: 'center' },
   statValue: { color: '#F3E7D6', fontSize: 20, fontFamily: 'ArchivoBlack_400Regular', fontVariant: ['tabular-nums'] },
   statLabel: { color: '#B39D85', fontSize: 10.5, marginTop: 4, textAlign: 'center' },
 
-  sectionTitle: { color: '#E8623F', fontSize: 13, fontWeight: '800', textTransform: 'uppercase', letterSpacing: 0.6, marginBottom: 10, marginTop: 8 },
+  sectionTitle: { color: '#E8623F', fontSize: 13, fontWeight: '800', textTransform: 'uppercase', letterSpacing: 0.6, marginBottom: 10, marginTop: 20 },
   paragraph: { color: '#B39D85', fontSize: 13.5, lineHeight: 19, marginBottom: 20 },
 
-  badgeRow: { flexDirection: 'row', flexWrap: 'wrap', gap: 10, marginBottom: 24 },
+  weightCard: { backgroundColor: '#201409', borderWidth: 1, borderColor: '#3A2A1A', borderRadius: 18, padding: 16 },
+  weightInputRow: { flexDirection: 'row', gap: 10, marginTop: 12 },
+  weightInput: {
+    width: 80, backgroundColor: '#2E2019', color: '#F3E7D6', borderRadius: 10,
+    paddingHorizontal: 12, paddingVertical: 10, fontSize: 15, borderWidth: 1, borderColor: '#3A2A1A',
+  },
+  weightButton: { flex: 1, backgroundColor: '#E8623F', borderRadius: 10, alignItems: 'center', justifyContent: 'center' },
+  weightButtonText: { color: '#F3E7D6', fontSize: 13, fontWeight: '700' },
+
+  badgeRow: { flexDirection: 'row', flexWrap: 'wrap', gap: 10, marginBottom: 8 },
   badgeChip: {
     flexDirection: 'row', alignItems: 'center', gap: 8,
     backgroundColor: '#201409', borderWidth: 1, borderColor: '#3A2A1A',

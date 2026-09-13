@@ -8,6 +8,7 @@ import Tap from '../components/Tap';
 import ShareStreakCard from '../components/ShareStreakCard';
 import { computeStreak, getWeekDayStatus } from '../utils/streak';
 import { getDashboardState } from '../utils/mascotLines';
+import { getDailyQuest } from '../utils/quests';
 
 const DAY_LABELS = ['L', 'M', 'M', 'J', 'V', 'S', 'D'];
 const HERO_MASCOT = require('../../assets/mascot-celebrate.png');
@@ -24,7 +25,11 @@ export default function DashboardScreen({ navigation }) {
 
   const streakInfo = computeStreak(logs, weeklyGoal);
   const weekDays = getWeekDayStatus(logs);
-  const mascotState = getDashboardState(streakInfo);
+  const daysSinceLastActivity = logs.length
+    ? Math.floor((Date.now() - Math.max(...logs.map((l) => new Date(l.date).getTime()))) / 86400000)
+    : null;
+  const mascotState = getDashboardState(streakInfo, new Date(), daysSinceLastActivity);
+  const quest = getDailyQuest(logs);
 
   return (
     <ScrollView style={styles.container} contentContainerStyle={{ paddingBottom: 28 }}>
@@ -87,6 +92,16 @@ export default function DashboardScreen({ navigation }) {
           </View>
 
           <ShareStreakCard streakWeeks={streakInfo.streakWeeks} weeklyGoal={weeklyGoal} />
+        </Animated.View>
+
+        <Animated.View entering={FadeInDown.duration(400).delay(STAGGER * 2.5).springify()} style={[styles.questCard, quest.done && styles.questCardDone]}>
+          <View style={styles.questCheck}>
+            <Text style={styles.questCheckText}>{quest.done ? '✓' : '·'}</Text>
+          </View>
+          <View style={{ flex: 1 }}>
+            <Text style={styles.questEyebrow}>Quête du jour</Text>
+            <Text style={[styles.questLabel, quest.done && styles.questLabelDone]}>{quest.label}</Text>
+          </View>
         </Animated.View>
 
         <Animated.View entering={FadeInDown.duration(400).delay(STAGGER * 3).springify()} style={styles.statsRow}>
@@ -201,6 +216,21 @@ const styles = StyleSheet.create({
   weekGoalRow: { flexDirection: 'row', justifyContent: 'space-between', marginTop: 12 },
   weekGoalLabel: { color: '#B39D85', fontSize: 11.5 },
   weekGoalValue: { color: '#F3E7D6', fontSize: 11.5, fontWeight: '700', fontVariant: ['tabular-nums'] },
+
+  questCard: {
+    flexDirection: 'row', alignItems: 'center', gap: 12,
+    backgroundColor: '#201409', borderWidth: 1, borderColor: '#3A2A1A',
+    borderRadius: 16, padding: 14, marginBottom: 20,
+  },
+  questCardDone: { borderColor: 'rgba(232,98,63,0.4)', backgroundColor: 'rgba(232,98,63,0.08)' },
+  questCheck: {
+    width: 28, height: 28, borderRadius: 14, borderWidth: 2, borderColor: '#3A2A1A',
+    alignItems: 'center', justifyContent: 'center',
+  },
+  questCheckText: { color: '#E8623F', fontWeight: '800' },
+  questEyebrow: { color: '#B39D85', fontSize: 10.5, fontWeight: '800', textTransform: 'uppercase', letterSpacing: 0.6 },
+  questLabel: { color: '#F3E7D6', fontSize: 14, fontWeight: '700', marginTop: 2 },
+  questLabelDone: { color: '#B39D85', textDecorationLine: 'line-through' },
 
   statsRow: { flexDirection: 'row', gap: 12, marginBottom: 20 },
   stat: { flex: 1, backgroundColor: '#201409', borderWidth: 1, borderColor: '#3A2A1A', borderRadius: 14, padding: 16 },

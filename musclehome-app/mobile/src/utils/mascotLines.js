@@ -46,6 +46,13 @@ const LINES = {
     "Ça arrive. Le bouclier t'a couvert cette fois, la série n'est pas cassée.",
   ],
 
+  // Plusieurs jours sans la moindre activité (pas juste la streak hebdo)
+  neglected: [
+    "Ça fait {days} jours sans nouvelles. Tout va bien ?",
+    "{days} jours d'absence. Pas de jugement, juste content de te revoir.",
+    "On dirait que la vie s'est mise en travers. Une petite séance pour repartir ?",
+  ],
+
   // Streak cassée (bouclier déjà utilisé, deuxième semaine ratée)
   streak_broken: [
     "La série est retombée à zéro. Ce n'est qu'un chiffre, on en relance une nouvelle.",
@@ -83,6 +90,29 @@ const LINES = {
   ],
 };
 
+// Anecdotes/conseils piochés quand on tape sur la mascotte, façon hibou Duolingo.
+// Volontairement variés (pas que du fitness) pour donner envie de retaper dessus.
+export const TIPS = [
+  "Le muscle ne se construit pas pendant la séance, mais pendant le repos qui suit.",
+  "3 séances par semaine tenues sur la durée battent 6 séances abandonnées au bout d'un mois.",
+  "La protéine, c'est bien, mais le sommeil répare plus que n'importe quel shaker.",
+  "Une série presque ratée en fin d'exercice compte souvent plus qu'une série facile.",
+  "Le cœur humain bat environ 100 000 fois par jour. Le tien vient d'en gagner quelques-unes.",
+  "Progresser de 2,5 kg par mois sur un exercice, c'est déjà énorme sur un an.",
+  "S'échauffer 5 minutes réduit vraiment le risque de blessure, ce n'est pas une légende.",
+  "La motivation démarre l'action, mais c'est l'habitude qui la fait durer.",
+  "Respire à fond avant l'effort, bloque pendant, souffle en le terminant.",
+  "Un buffle adulte peut peser jusqu'à 900 kg. Toi t'as encore de la marge.",
+];
+
+// Répliques spéciales après plusieurs taps rapides d'affilée sur la mascotte.
+export const EASTER_EGGS = [
+  "Ok ok, j'ai compris, tu m'aimes bien.",
+  "Arrête de me chatouiller et va t'entraîner.",
+  "Chaque tap est enregistré. Je plaisante. Ou pas.",
+  "Bon d'accord, un badge secret pour toi : 'Fan de Buffalo'.",
+];
+
 // Pose de la mascotte associée à chaque catégorie de réplique (voir components/Mascot.js).
 const MOOD_BY_KEY = {
   welcome: 'idle',
@@ -92,12 +122,21 @@ const MOOD_BY_KEY = {
   streak_risk: 'worried',
   shield_used: 'worried',
   streak_broken: 'worried',
+  neglected: 'worried',
   session_done: 'celebrate',
   milestone: 'celebrate',
   photo_tip_face: 'idle',
   photo_tip_profil: 'idle',
   workout_start: 'dumbbells',
 };
+
+export function getRandomTip() {
+  return pick(TIPS);
+}
+
+export function getRandomEasterEgg() {
+  return pick(EASTER_EGGS);
+}
 
 export function getMascotMood(key) {
   return MOOD_BY_KEY[key] || 'idle';
@@ -135,12 +174,15 @@ export function getOnboardingLine(stepKey) {
   return pool ? pick(pool) : '';
 }
 
-export function getDashboardState(streakInfo, now = new Date()) {
+export function getDashboardState(streakInfo, now = new Date(), daysSinceLastActivity = null) {
   const { streakWeeks, currentWeekCount, weeklyGoal, currentWeekDone, remainingForGoal } = streakInfo;
 
   let key;
   let vars = {};
-  if (streakWeeks === 0 && currentWeekCount === 0) {
+  if (daysSinceLastActivity !== null && daysSinceLastActivity >= 3) {
+    key = 'neglected';
+    vars = { days: daysSinceLastActivity };
+  } else if (streakWeeks === 0 && currentWeekCount === 0) {
     key = 'cold_start';
   } else if (currentWeekDone) {
     key = 'week_done';

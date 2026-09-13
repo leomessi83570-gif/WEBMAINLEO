@@ -84,7 +84,14 @@ Réponds STRICTEMENT en JSON, sans texte autour, avec ce format exact :
     "fat_g": 70,
     "advice": "conseils nutritionnels généraux en 2-4 phrases",
     "meal_ideas": [
-      { "moment": "Petit-déjeuner", "description": "idée de repas adaptée" }
+      {
+        "moment": "Petit-déjeuner",
+        "description": "idée de repas adaptée",
+        "recipe": {
+          "ingredients": ["liste concrète d'ingrédients avec quantités approximatives"],
+          "steps": ["étapes de préparation, courtes et dans l'ordre"]
+        }
+      }
     ]
   }
 }`;
