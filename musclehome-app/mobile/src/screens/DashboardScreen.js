@@ -179,7 +179,7 @@ const styles = StyleSheet.create({
     marginTop: -10,
   },
   hello: { color: '#A6927E', fontSize: 15 },
-  title: { color: '#F3E7D6', fontSize: 26, fontWeight: '700' },
+  title: { color: '#F3E7D6', fontSize: 26, fontFamily: 'ArchivoBlack_400Regular' },
 
   body: { padding: 20, paddingTop: 8 },
 
@@ -194,7 +194,7 @@ const styles = StyleSheet.create({
   streakTop: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 14 },
   streakCountRow: { flexDirection: 'row', alignItems: 'baseline', gap: 8 },
   flame: { fontSize: 20 },
-  streakNum: { color: '#F3E7D6', fontSize: 26, fontWeight: '800', fontVariant: ['tabular-nums'] },
+  streakNum: { color: '#F3E7D6', fontSize: 28, fontFamily: 'ArchivoBlack_400Regular', fontVariant: ['tabular-nums'] },
   streakUnit: { color: '#B39D85', fontSize: 13, fontWeight: '700' },
   shieldBadge: {
     backgroundColor: 'rgba(206,106,46,0.14)',
@@ -204,7 +204,7 @@ const styles = StyleSheet.create({
     paddingVertical: 5,
     paddingHorizontal: 10,
   },
-  shieldText: { color: '#F0954B', fontSize: 11, fontWeight: '800' },
+  shieldText: { color: '#F5885E', fontSize: 11, fontWeight: '800' },
   weekRow: { flexDirection: 'row', gap: 7 },
   weekDayCol: { flex: 1, alignItems: 'center', gap: 6 },
   weekDot: {
@@ -217,8 +217,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  weekDotDone: { backgroundColor: '#CE6A2E', borderColor: '#CE6A2E' },
-  weekDotToday: { borderColor: '#F0954B', borderWidth: 2 },
+  weekDotDone: { backgroundColor: '#E8623F', borderColor: '#E8623F' },
+  weekDotToday: { borderColor: '#F5885E', borderWidth: 2 },
   weekDotText: { color: '#1E1006', fontWeight: '800', fontSize: 13 },
   weekDayLabel: { color: '#7C6A57', fontSize: 10, textTransform: 'uppercase' },
   weekGoalRow: { flexDirection: 'row', justifyContent: 'space-between', marginTop: 12 },
@@ -230,11 +230,11 @@ const styles = StyleSheet.create({
   statValue: { color: '#F3E7D6', fontSize: 22, fontWeight: '700', fontVariant: ['tabular-nums'] },
   statLabel: { color: '#B39D85', fontSize: 12, marginTop: 4 },
   card: {
-    backgroundColor: '#CE6A2E', borderRadius: 16, padding: 20, marginBottom: 16,
+    backgroundColor: '#E8623F', borderRadius: 16, padding: 20, marginBottom: 16,
     flexDirection: 'row', alignItems: 'center',
   },
   cardLabel: { color: '#FFE3CC', fontSize: 12, fontWeight: '700', textTransform: 'uppercase' },
-  cardTitle: { color: '#1E1006', fontSize: 22, fontWeight: '700', marginTop: 6 },
+  cardTitle: { color: '#1E1006', fontSize: 22, fontFamily: 'ArchivoBlack_400Regular', marginTop: 6 },
   cardSub: { color: '#4A2E17', fontSize: 13, marginTop: 4 },
   cardArrow: {
     width: 38, height: 38, borderRadius: 12, backgroundColor: 'rgba(30,16,6,0.18)',
@@ -245,9 +245,9 @@ const styles = StyleSheet.create({
   linkCardText: { color: '#F3E7D6', fontSize: 15, fontWeight: '600' },
   paragraph: { color: '#B39D85', fontSize: 14, marginBottom: 16 },
   premiumCard: {
-    borderWidth: 1, borderColor: '#CE6A2E', borderRadius: 14, padding: 16, marginTop: 12,
+    borderWidth: 1, borderColor: '#E8623F', borderRadius: 14, padding: 16, marginTop: 12,
   },
-  premiumTitle: { color: '#F0954B', fontSize: 16, fontWeight: '700' },
+  premiumTitle: { color: '#F5885E', fontSize: 16, fontWeight: '700' },
   premiumSub: { color: '#B39D85', fontSize: 13, marginTop: 4 },
   resetLink: { marginTop: 24, alignItems: 'center' },
   resetLinkText: { color: '#5A4A38', fontSize: 12, textDecorationLine: 'underline' },

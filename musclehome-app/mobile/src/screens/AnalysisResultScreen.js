@@ -46,7 +46,7 @@ export default function AnalysisResultScreen({ navigation, route }) {
       )}
 
       {generating ? (
-        <ActivityIndicator size="large" color="#CE6A2E" style={{ marginTop: 30 }} />
+        <ActivityIndicator size="large" color="#E8623F" style={{ marginTop: 30 }} />
       ) : (
         <TouchableOpacity style={styles.button} onPress={handleGenerateProgram}>
           <Text style={styles.buttonText}>Générer mon programme</Text>
@@ -70,10 +70,10 @@ const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#130D09' },
   title: { color: '#F3E7D6', fontSize: 26, fontWeight: '700', marginBottom: 20 },
   section: { marginBottom: 18 },
-  sectionTitle: { color: '#CE6A2E', fontSize: 14, fontWeight: '700', marginBottom: 6, textTransform: 'uppercase' },
+  sectionTitle: { color: '#E8623F', fontSize: 14, fontWeight: '700', marginBottom: 6, textTransform: 'uppercase' },
   paragraph: { color: '#D8C9B8', fontSize: 15, lineHeight: 22 },
   button: {
-    backgroundColor: '#CE6A2E',
+    backgroundColor: '#E8623F',
     borderRadius: 14,
     paddingVertical: 16,
     alignItems: 'center',

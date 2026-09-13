@@ -54,10 +54,10 @@ const styles = StyleSheet.create({
   title: { color: '#F3E7D6', fontSize: 26, fontWeight: '700' },
   subtitle: { color: '#A6927E', fontSize: 14, marginTop: 6, marginBottom: 24 },
   featureRow: { flexDirection: 'row', alignItems: 'flex-start', marginBottom: 14 },
-  checkmark: { color: '#CE6A2E', fontSize: 16, fontWeight: '700', marginRight: 10 },
+  checkmark: { color: '#E8623F', fontSize: 16, fontWeight: '700', marginRight: 10 },
   featureText: { color: '#D8C9B8', fontSize: 15, flex: 1 },
   button: {
-    backgroundColor: '#CE6A2E', borderRadius: 14, paddingVertical: 16,
+    backgroundColor: '#E8623F', borderRadius: 14, paddingVertical: 16,
     alignItems: 'center', marginTop: 24,
   },
   buttonText: { color: '#F3E7D6', fontSize: 16, fontWeight: '700' },

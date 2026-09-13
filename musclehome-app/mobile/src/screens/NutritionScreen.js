@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
   macro: { backgroundColor: '#201409', borderRadius: 12, padding: 14, minWidth: '45%' },
   macroValue: { color: '#F3E7D6', fontSize: 18, fontWeight: '700' },
   macroLabel: { color: '#B39D85', fontSize: 12, marginTop: 2 },
-  sectionTitle: { color: '#CE6A2E', fontSize: 14, fontWeight: '700', marginBottom: 6, textTransform: 'uppercase' },
+  sectionTitle: { color: '#E8623F', fontSize: 14, fontWeight: '700', marginBottom: 6, textTransform: 'uppercase' },
   paragraph: { color: '#D8C9B8', fontSize: 14, lineHeight: 21, marginBottom: 16 },
   mealCard: { backgroundColor: '#201409', borderRadius: 12, padding: 14, marginBottom: 10 },
   mealTitle: { color: '#F3E7D6', fontSize: 15, fontWeight: '700', marginBottom: 4 },

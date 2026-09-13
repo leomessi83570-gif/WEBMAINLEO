@@ -15,10 +15,13 @@ import PaywallScreen from '../screens/PaywallScreen';
 const Stack = createNativeStackNavigator();
 
 const screenOptions = {
-  headerStyle: { backgroundColor: '#0F0F0F' },
-  headerTintColor: '#fff',
+  headerStyle: { backgroundColor: '#130D09' },
+  headerTintColor: '#F3E7D6',
   headerShadowVisible: false,
-  contentStyle: { backgroundColor: '#0F0F0F' },
+  contentStyle: { backgroundColor: '#130D09' },
+  // Transition native (pas de JS hand-rolled) pour que chaque changement d'écran
+  // glisse au lieu d'apparaître d'un coup façon page web.
+  animation: 'slide_from_right',
 };
 
 export default function AppNavigator() {
@@ -26,8 +29,8 @@ export default function AppNavigator() {
 
   if (!loaded) {
     return (
-      <View style={{ flex: 1, backgroundColor: '#0F0F0F', justifyContent: 'center' }}>
-        <ActivityIndicator size="large" color="#FF3B30" />
+      <View style={{ flex: 1, backgroundColor: '#130D09', justifyContent: 'center' }}>
+        <ActivityIndicator size="large" color="#E8623F" />
       </View>
     );
   }
@@ -49,7 +52,7 @@ export default function AppNavigator() {
           <Stack.Screen
             name="Paywall"
             component={PaywallScreen}
-            options={{ title: '', presentation: 'modal' }}
+            options={{ title: '', presentation: 'modal', animation: 'slide_from_bottom' }}
           />
         </>
       )}

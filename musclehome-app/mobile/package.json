@@ -9,6 +9,7 @@
     "web": "expo start --web"
   },
   "dependencies": {
+    "@expo-google-fonts/archivo-black": "^0.4.1",
     "@expo/metro-runtime": "~57.0.15",
     "@react-native-async-storage/async-storage": "2.2.0",
     "@react-navigation/native": "^7.3.18",
@@ -16,6 +17,7 @@
     "axios": "^1.7.2",
     "expo": "~57.0.22",
     "expo-camera": "~57.0.5",
+    "expo-font": "~57.0.4",
     "expo-haptics": "~57.0.3",
     "expo-image-picker": "~57.0.17",
     "expo-linear-gradient": "~57.0.2",

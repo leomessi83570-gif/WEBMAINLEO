@@ -68,13 +68,13 @@ const styles = StyleSheet.create({
   shareButton: {
     backgroundColor: '#201409',
     borderWidth: 1,
-    borderColor: '#CE6A2E',
+    borderColor: '#E8623F',
     borderRadius: 14,
     paddingVertical: 14,
     alignItems: 'center',
     marginTop: 12,
   },
-  shareButtonText: { color: '#F0954B', fontSize: 14, fontWeight: '700' },
+  shareButtonText: { color: '#F5885E', fontSize: 14, fontWeight: '700' },
 
   offscreen: { position: 'absolute', top: -9999, left: -9999 },
   card: {

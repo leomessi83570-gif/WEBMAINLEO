@@ -121,44 +121,53 @@ export default function OnboardingScreen({ navigation }) {
         </View>
 
         <View style={{ marginBottom: 24 }}>
-          <Mascot line={mascotLine} tag="Buffalo demande" variant="hero" size={180} />
+          <Mascot line={mascotLine} tag="Buffalo demande" variant="hero" size={260} />
         </View>
 
         <Animated.View key={current.key} entering={FadeInRight.duration(250)} exiting={FadeOutLeft.duration(150)}>
           {current.key === 'age' && (
-            <TextInput
-              style={styles.bigInput}
-              keyboardType="numeric"
-              value={age}
-              onChangeText={setAge}
-              placeholder="25"
-              placeholderTextColor="#7C6A57"
-              autoFocus
-            />
+            <View style={styles.numberWrap}>
+              <TextInput
+                style={styles.numberInput}
+                keyboardType="numeric"
+                value={age}
+                onChangeText={setAge}
+                placeholder="25"
+                placeholderTextColor="#4A3A28"
+                autoFocus
+              />
+              <Text style={styles.numberUnit}>ans</Text>
+            </View>
           )}
 
           {current.key === 'height_cm' && (
-            <TextInput
-              style={styles.bigInput}
-              keyboardType="numeric"
-              value={height}
-              onChangeText={setHeight}
-              placeholder="178"
-              placeholderTextColor="#7C6A57"
-              autoFocus
-            />
+            <View style={styles.numberWrap}>
+              <TextInput
+                style={styles.numberInput}
+                keyboardType="numeric"
+                value={height}
+                onChangeText={setHeight}
+                placeholder="178"
+                placeholderTextColor="#4A3A28"
+                autoFocus
+              />
+              <Text style={styles.numberUnit}>cm</Text>
+            </View>
           )}
 
           {current.key === 'weight_kg' && (
-            <TextInput
-              style={styles.bigInput}
-              keyboardType="numeric"
-              value={weight}
-              onChangeText={setWeight}
-              placeholder="75"
-              placeholderTextColor="#7C6A57"
-              autoFocus
-            />
+            <View style={styles.numberWrap}>
+              <TextInput
+                style={styles.numberInput}
+                keyboardType="numeric"
+                value={weight}
+                onChangeText={setWeight}
+                placeholder="75"
+                placeholderTextColor="#4A3A28"
+                autoFocus
+              />
+              <Text style={styles.numberUnit}>kg</Text>
+            </View>
           )}
 
           {current.key === 'goal' && (
@@ -234,11 +243,11 @@ export default function OnboardingScreen({ navigation }) {
 
 const styles = StyleSheet.create({
   flex: { flex: 1, backgroundColor: '#130D09' },
-  container: { padding: 20, paddingTop: 60, paddingBottom: 40, flexGrow: 1 },
+  container: { padding: 20, paddingTop: 50, paddingBottom: 40, flexGrow: 1 },
 
   progressRow: { flexDirection: 'row', gap: 6, marginBottom: 28 },
   progressDot: { flex: 1, height: 4, borderRadius: 2, backgroundColor: '#2E2019' },
-  progressDotDone: { backgroundColor: '#CE6A2E' },
+  progressDotDone: { backgroundColor: '#E8623F' },
 
   bigInput: {
     backgroundColor: '#201409',
@@ -253,6 +262,16 @@ const styles = StyleSheet.create({
   },
   textArea: { height: 120, textAlignVertical: 'top', fontSize: 15, fontWeight: '400' },
 
+  numberWrap: { alignItems: 'center', paddingVertical: 20 },
+  numberInput: {
+    fontSize: 64,
+    fontFamily: 'ArchivoBlack_400Regular',
+    color: '#F3E7D6',
+    textAlign: 'center',
+    minWidth: 160,
+  },
+  numberUnit: { color: '#B39D85', fontSize: 15, fontWeight: '700', textTransform: 'uppercase', letterSpacing: 1, marginTop: -6 },
+
   chipCol: { gap: 10 },
   chipRow: { flexDirection: 'row', flexWrap: 'wrap', gap: 10 },
   chip: {
@@ -263,7 +282,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: 14,
   },
-  chipSelected: { backgroundColor: '#CE6A2E', borderColor: '#CE6A2E' },
+  chipSelected: { backgroundColor: '#E8623F', borderColor: '#E8623F' },
   chipText: { color: '#D8C9B8', fontSize: 14 },
   chipTextSelected: { color: '#F3E7D6', fontWeight: '700' },
 
@@ -275,7 +294,7 @@ const styles = StyleSheet.create({
   backButtonText: { color: '#D8C9B8', fontSize: 20 },
   button: {
     flex: 1,
-    backgroundColor: '#CE6A2E',
+    backgroundColor: '#E8623F',
     borderRadius: 14,
     paddingVertical: 18,
     alignItems: 'center',

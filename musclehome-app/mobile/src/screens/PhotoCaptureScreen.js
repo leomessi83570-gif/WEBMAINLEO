@@ -129,7 +129,7 @@ export default function PhotoCaptureScreen({ navigation }) {
       </View>
 
       {loading ? (
-        <ActivityIndicator size="large" color="#CE6A2E" style={{ marginTop: 24 }} />
+        <ActivityIndicator size="large" color="#E8623F" style={{ marginTop: 24 }} />
       ) : hasCurrentPhoto ? (
         <View style={styles.rowButtons}>
           <Tap style={[styles.button, styles.buttonSecondary]} onPress={retake}>
@@ -177,7 +177,7 @@ const styles = StyleSheet.create({
   rowButtons: { flexDirection: 'row', marginTop: 16, gap: 12 },
   button: {
     flex: 1,
-    backgroundColor: '#CE6A2E',
+    backgroundColor: '#E8623F',
     borderRadius: 14,
     paddingVertical: 16,
     alignItems: 'center',

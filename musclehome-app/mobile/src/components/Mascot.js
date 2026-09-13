@@ -110,7 +110,7 @@ const styles = StyleSheet.create({
   },
   heroLine: { textAlign: 'center', fontSize: 15 },
   tag: {
-    color: '#F0954B',
+    color: '#F5885E',
     fontSize: 10.5,
     fontWeight: '800',
     textTransform: 'uppercase',
