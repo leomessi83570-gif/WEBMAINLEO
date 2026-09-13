@@ -1,7 +1,7 @@
 import React, { createContext, useState, useEffect, useContext } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { computeStreak } from '../utils/streak';
-import { scheduleWeeklyReminders } from '../utils/notifications';
+import { scheduleWeeklyReminders, cancelAllReminders } from '../utils/notifications';
 
 const UserContext = createContext(null);
 
@@ -71,6 +71,7 @@ export function UserProvider({ children }) {
 
   const reset = async () => {
     await AsyncStorage.removeItem(STORAGE_KEY);
+    await cancelAllReminders().catch(() => {});
     setState(defaultState);
   };
 

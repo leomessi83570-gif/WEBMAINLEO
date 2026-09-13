@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView, Image } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Image, Alert } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import Animated, { FadeInDown } from 'react-native-reanimated';
 import { useUser } from '../context/UserContext';
@@ -16,7 +16,18 @@ const HERO_MASCOT = require('../../assets/mascot-celebrate.png');
 const STAGGER = 70;
 
 export default function DashboardScreen({ navigation }) {
-  const { program, isPremium, logs, weeklyGoal } = useUser();
+  const { program, isPremium, logs, weeklyGoal, reset } = useUser();
+
+  const confirmReset = () => {
+    Alert.alert(
+      'Réinitialiser le profil ?',
+      "Ça efface le questionnaire, le programme et l'historique pour revoir l'onboarding depuis le début.",
+      [
+        { text: 'Annuler', style: 'cancel' },
+        { text: 'Réinitialiser', style: 'destructive', onPress: reset },
+      ]
+    );
+  };
 
   const todaySession = program?.sessions?.[0]; // V1 : on propose toujours la 1ère séance du cycle
   const sessionsDone = logs.filter((l) => l.type === 'session').length;
@@ -128,6 +139,10 @@ export default function DashboardScreen({ navigation }) {
               </Text>
             </Tap>
           )}
+
+          <Tap haptic={false} style={styles.resetLink} onPress={confirmReset}>
+            <Text style={styles.resetLinkText}>Réinitialiser le profil (dev)</Text>
+          </Tap>
         </Animated.View>
       </View>
     </ScrollView>
@@ -231,4 +246,6 @@ const styles = StyleSheet.create({
   },
   premiumTitle: { color: '#F0954B', fontSize: 16, fontWeight: '700' },
   premiumSub: { color: '#B39D85', fontSize: 13, marginTop: 4 },
+  resetLink: { marginTop: 24, alignItems: 'center' },
+  resetLinkText: { color: '#5A4A38', fontSize: 12, textDecorationLine: 'underline' },
 });
