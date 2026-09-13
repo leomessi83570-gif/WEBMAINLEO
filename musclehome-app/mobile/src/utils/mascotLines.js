@@ -109,6 +109,24 @@ export function getMascotLine(key, vars = {}) {
  * Détermine quelle réplique afficher sur le dashboard selon l'état de streak actuel.
  * streakInfo vient de computeStreak() (src/utils/streak.js).
  */
+const ONBOARDING_LINES = {
+  age: ["Pour commencer, tu as quel âge ?"],
+  height_cm: ['Ta taille, en cm ?'],
+  weight_kg: ['Ton poids actuel, en kg. Ça reste entre nous, promis.'],
+  goal: ["C'est quoi l'objectif principal ?"],
+  level: ['Tu te situes où en muscu ?'],
+  equipment: ["Qu'est-ce que t'as sous la main pour t'entraîner ? Tu peux cocher plusieurs cases."],
+  sessions_per_week: ['Combien de séances par semaine tu vises ? Sois honnête, pas ambitieux.'],
+  limitations: ['Une douleur ou une blessure à surveiller ? Optionnel, mais ça m\'aide à adapter le programme.'],
+  intro: ["Salut, moi c'est Buffalo. Je vais te poser quelques questions pour te construire un programme sur mesure."],
+  outro: ["Parfait, j'ai ce qu'il me faut. On passe à l'analyse photo ?"],
+};
+
+export function getOnboardingLine(stepKey) {
+  const pool = ONBOARDING_LINES[stepKey];
+  return pool ? pick(pool) : '';
+}
+
 export function getDashboardState(streakInfo, now = new Date()) {
   const { streakWeeks, currentWeekCount, weeklyGoal, currentWeekDone, remainingForGoal } = streakInfo;
 

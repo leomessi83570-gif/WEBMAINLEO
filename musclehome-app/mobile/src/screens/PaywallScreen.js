@@ -1,6 +1,8 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Alert } from 'react-native';
+import { View, Text, StyleSheet, Alert } from 'react-native';
+import Animated, { FadeInDown } from 'react-native-reanimated';
 import { useUser } from '../context/UserContext';
+import Tap from '../components/Tap';
 
 const FEATURES = [
   'Analyse photo morphologique & posturale avancée',
@@ -25,22 +27,24 @@ export default function PaywallScreen({ navigation }) {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>MuscleHome Premium</Text>
-      <Text style={styles.subtitle}>Débloque tout le potentiel de ton coach personnel.</Text>
+      <Animated.View entering={FadeInDown.duration(400).springify()}>
+        <Text style={styles.title}>Buffalo Premium</Text>
+        <Text style={styles.subtitle}>Débloque tout le potentiel de ton coach personnel.</Text>
+      </Animated.View>
 
       {FEATURES.map((f, i) => (
-        <View key={i} style={styles.featureRow}>
+        <Animated.View key={i} entering={FadeInDown.duration(350).delay(60 * i)} style={styles.featureRow}>
           <Text style={styles.checkmark}>✓</Text>
           <Text style={styles.featureText}>{f}</Text>
-        </View>
+        </Animated.View>
       ))}
 
-      <TouchableOpacity style={styles.button} onPress={handleFakeSubscribe}>
+      <Tap style={styles.button} onPress={handleFakeSubscribe}>
         <Text style={styles.buttonText}>S'abonner — 9,99 €/mois</Text>
-      </TouchableOpacity>
-      <TouchableOpacity onPress={() => navigation.goBack()}>
+      </Tap>
+      <Tap haptic={false} onPress={() => navigation.goBack()}>
         <Text style={styles.later}>Plus tard</Text>
-      </TouchableOpacity>
+      </Tap>
     </View>
   );
 }

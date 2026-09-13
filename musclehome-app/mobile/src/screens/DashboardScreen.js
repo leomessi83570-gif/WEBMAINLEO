@@ -5,6 +5,7 @@ import Animated, { FadeInDown } from 'react-native-reanimated';
 import { useUser } from '../context/UserContext';
 import Mascot from '../components/Mascot';
 import Tap from '../components/Tap';
+import ShareStreakCard from '../components/ShareStreakCard';
 import { computeStreak, getWeekDayStatus } from '../utils/streak';
 import { getDashboardState } from '../utils/mascotLines';
 
@@ -95,6 +96,8 @@ export default function DashboardScreen({ navigation }) {
               {streakInfo.currentWeekCount} / {weeklyGoal} séances
             </Text>
           </View>
+
+          <ShareStreakCard streakWeeks={streakInfo.streakWeeks} weeklyGoal={weeklyGoal} />
         </Animated.View>
 
         <Animated.View entering={FadeInDown.duration(400).delay(STAGGER * 3).springify()} style={styles.statsRow}>

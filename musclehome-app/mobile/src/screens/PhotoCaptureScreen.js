@@ -1,10 +1,11 @@
 import React, { useRef, useState, useMemo } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image, ActivityIndicator, Alert } from 'react-native';
+import { View, Text, StyleSheet, Image, ActivityIndicator, Alert } from 'react-native';
 import { CameraView, useCameraPermissions } from 'expo-camera';
 import * as ImagePicker from 'expo-image-picker';
 import { useUser } from '../context/UserContext';
 import { analyzeBody } from '../services/api';
 import Mascot from '../components/Mascot';
+import Tap from '../components/Tap';
 import { getMascotLine } from '../utils/mascotLines';
 
 const SHOTS = [
@@ -96,12 +97,12 @@ export default function PhotoCaptureScreen({ navigation }) {
     return (
       <View style={[styles.container, styles.center]}>
         <Text style={styles.text}>On a besoin de la caméra pour l'analyse morphologique.</Text>
-        <TouchableOpacity style={styles.button} onPress={requestPermission}>
+        <Tap style={styles.button} onPress={requestPermission}>
           <Text style={styles.buttonText}>Autoriser la caméra</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={skip}>
+        </Tap>
+        <Tap onPress={skip}>
           <Text style={styles.skipText}>Passer cette étape</Text>
-        </TouchableOpacity>
+        </Tap>
       </View>
     );
   }
@@ -131,30 +132,30 @@ export default function PhotoCaptureScreen({ navigation }) {
         <ActivityIndicator size="large" color="#CE6A2E" style={{ marginTop: 24 }} />
       ) : hasCurrentPhoto ? (
         <View style={styles.rowButtons}>
-          <TouchableOpacity style={[styles.button, styles.buttonSecondary]} onPress={retake}>
+          <Tap style={[styles.button, styles.buttonSecondary]} onPress={retake}>
             <Text style={styles.buttonText}>Reprendre</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.button} onPress={next}>
+          </Tap>
+          <Tap style={styles.button} onPress={next}>
             <Text style={styles.buttonText}>
               {step < SHOTS.length - 1 ? 'Photo suivante' : "Lancer l'analyse"}
             </Text>
-          </TouchableOpacity>
+          </Tap>
         </View>
       ) : (
         <View style={styles.rowButtons}>
-          <TouchableOpacity style={[styles.button, styles.buttonSecondary]} onPress={pickFromGallery}>
+          <Tap style={[styles.button, styles.buttonSecondary]} onPress={pickFromGallery}>
             <Text style={styles.buttonText}>Galerie</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.button} onPress={takePicture}>
+          </Tap>
+          <Tap style={styles.button} onPress={takePicture}>
             <Text style={styles.buttonText}>Prendre la photo</Text>
-          </TouchableOpacity>
+          </Tap>
         </View>
       )}
 
       {!loading && (
-        <TouchableOpacity onPress={skip} style={{ marginTop: 16 }}>
+        <Tap onPress={skip} style={{ marginTop: 16 }}>
           <Text style={styles.skipText}>Passer cette étape</Text>
-        </TouchableOpacity>
+        </Tap>
       )}
     </View>
   );

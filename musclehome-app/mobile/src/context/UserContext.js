@@ -16,6 +16,7 @@ const defaultState = {
   nutrition: null,      // plan nutrition généré
   logs: [],             // historique des séances / poids
   weeklyGoal: 4,         // objectif de séances par semaine (streak hebdo, pas 7/7)
+  badges: [],            // badges permanents débloqués via la récompense variable post-séance
 };
 
 export function UserProvider({ children }) {
@@ -69,6 +70,15 @@ export function UserProvider({ children }) {
     }, 0);
   };
 
+  const addBadge = async (badgeKey) => {
+    setState((prev) => {
+      if (prev.badges.includes(badgeKey)) return prev;
+      const next = { ...prev, badges: [...prev.badges, badgeKey] };
+      AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(next)).catch(() => {});
+      return next;
+    });
+  };
+
   const reset = async () => {
     await AsyncStorage.removeItem(STORAGE_KEY);
     await cancelAllReminders().catch(() => {});
@@ -76,7 +86,7 @@ export function UserProvider({ children }) {
   };
 
   return (
-    <UserContext.Provider value={{ ...state, loaded, update, addLog, reset }}>
+    <UserContext.Provider value={{ ...state, loaded, update, addLog, addBadge, reset }}>
       {children}
     </UserContext.Provider>
   );

@@ -34,6 +34,9 @@
         "backgroundColor": "#130D09"
       },
       "permissions": ["CAMERA", "READ_EXTERNAL_STORAGE"]
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
     }
   }
 }

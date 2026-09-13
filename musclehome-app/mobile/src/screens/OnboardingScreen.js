@@ -1,9 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import {
-  View, Text, TextInput, StyleSheet, ScrollView,
-  TouchableOpacity, KeyboardAvoidingView, Platform,
+  View, Text, TextInput, StyleSheet,
+  KeyboardAvoidingView, Platform,
 } from 'react-native';
+import Animated, { FadeInRight, FadeOutLeft } from 'react-native-reanimated';
 import { useUser } from '../context/UserContext';
+import Mascot from '../components/Mascot';
+import Tap from '../components/Tap';
+import { getOnboardingLine } from '../utils/mascotLines';
 
 const GOALS = [
   { key: 'perte_de_gras', label: 'Perte de gras' },
@@ -27,16 +31,19 @@ const EQUIPMENT = [
   { key: 'complet', label: 'Salle complète' },
 ];
 
+const SESSIONS_OPTIONS = ['2', '3', '4', '5', '6'];
+
 function Chip({ label, selected, onPress }) {
   return (
-    <TouchableOpacity onPress={onPress} style={[styles.chip, selected && styles.chipSelected]}>
+    <Tap onPress={onPress} style={[styles.chip, selected && styles.chipSelected]}>
       <Text style={[styles.chipText, selected && styles.chipTextSelected]}>{label}</Text>
-    </TouchableOpacity>
+    </Tap>
   );
 }
 
 export default function OnboardingScreen({ navigation }) {
   const { update } = useUser();
+  const [step, setStep] = useState(0);
   const [age, setAge] = useState('');
   const [height, setHeight] = useState('');
   const [weight, setWeight] = useState('');
@@ -52,9 +59,32 @@ export default function OnboardingScreen({ navigation }) {
     );
   };
 
-  const canContinue = age && height && weight && goal && level && equipment.length > 0;
+  // Une étape par question : c'est ce qui permet à la mascotte de commenter chacune
+  // individuellement, plutôt qu'un long formulaire d'un bloc.
+  const steps = useMemo(
+    () => [
+      { key: 'age', valid: !!age },
+      { key: 'height_cm', valid: !!height },
+      { key: 'weight_kg', valid: !!weight },
+      { key: 'goal', valid: !!goal },
+      { key: 'level', valid: !!level },
+      { key: 'equipment', valid: equipment.length > 0 },
+      { key: 'sessions_per_week', valid: !!sessionsPerWeek },
+      { key: 'limitations', valid: true }, // optionnel
+    ],
+    [age, height, weight, goal, level, equipment, sessionsPerWeek]
+  );
 
-  const handleContinue = async () => {
+  const current = steps[step];
+  const isLast = step === steps.length - 1;
+  const mascotLine = getOnboardingLine(current.key);
+
+  const goNext = async () => {
+    if (!current.valid) return;
+    if (!isLast) {
+      setStep((s) => s + 1);
+      return;
+    }
     const profile = {
       age: Number(age),
       height_cm: Number(height),
@@ -69,149 +99,183 @@ export default function OnboardingScreen({ navigation }) {
     navigation.navigate('PhotoCapture');
   };
 
+  const goBack = () => {
+    if (step > 0) setStep((s) => s - 1);
+  };
+
   return (
     <KeyboardAvoidingView
       style={styles.flex}
       behavior={Platform.OS === 'ios' ? 'padding' : undefined}
     >
-      <ScrollView contentContainerStyle={styles.container}>
-        <Text style={styles.title}>Ton profil</Text>
-        <Text style={styles.subtitle}>
-          Ces infos servent à construire un programme et un plan alimentaire adaptés à toi.
-        </Text>
+      <View style={styles.container}>
+        <View style={styles.progressRow}>
+          {steps.map((s, i) => (
+            <View key={s.key} style={[styles.progressDot, i <= step && styles.progressDotDone]} />
+          ))}
+        </View>
 
-        <View style={styles.row}>
-          <View style={styles.flex1}>
-            <Text style={styles.label}>Âge</Text>
+        <View style={{ marginBottom: 24 }}>
+          <Mascot line={mascotLine} tag="Buffalo demande" />
+        </View>
+
+        <Animated.View key={current.key} entering={FadeInRight.duration(250)} exiting={FadeOutLeft.duration(150)} style={styles.stepBody}>
+          {current.key === 'age' && (
             <TextInput
-              style={styles.input}
+              style={styles.bigInput}
               keyboardType="numeric"
               value={age}
               onChangeText={setAge}
               placeholder="25"
               placeholderTextColor="#7C6A57"
+              autoFocus
             />
-          </View>
-          <View style={styles.flex1}>
-            <Text style={styles.label}>Taille (cm)</Text>
+          )}
+
+          {current.key === 'height_cm' && (
             <TextInput
-              style={styles.input}
+              style={styles.bigInput}
               keyboardType="numeric"
               value={height}
               onChangeText={setHeight}
               placeholder="178"
               placeholderTextColor="#7C6A57"
+              autoFocus
             />
-          </View>
-          <View style={styles.flex1}>
-            <Text style={styles.label}>Poids (kg)</Text>
+          )}
+
+          {current.key === 'weight_kg' && (
             <TextInput
-              style={styles.input}
+              style={styles.bigInput}
               keyboardType="numeric"
               value={weight}
               onChangeText={setWeight}
               placeholder="75"
               placeholderTextColor="#7C6A57"
+              autoFocus
             />
-          </View>
-        </View>
+          )}
 
-        <Text style={styles.label}>Objectif principal</Text>
-        <View style={styles.chipRow}>
-          {GOALS.map((g) => (
-            <Chip key={g.key} label={g.label} selected={goal === g.key} onPress={() => setGoal(g.key)} />
-          ))}
-        </View>
+          {current.key === 'goal' && (
+            <View style={styles.chipCol}>
+              {GOALS.map((g) => (
+                <Chip key={g.key} label={g.label} selected={goal === g.key} onPress={() => setGoal(g.key)} />
+              ))}
+            </View>
+          )}
 
-        <Text style={styles.label}>Niveau</Text>
-        <View style={styles.chipRow}>
-          {LEVELS.map((l) => (
-            <Chip key={l.key} label={l.label} selected={level === l.key} onPress={() => setLevel(l.key)} />
-          ))}
-        </View>
+          {current.key === 'level' && (
+            <View style={styles.chipCol}>
+              {LEVELS.map((l) => (
+                <Chip key={l.key} label={l.label} selected={level === l.key} onPress={() => setLevel(l.key)} />
+              ))}
+            </View>
+          )}
 
-        <Text style={styles.label}>Matériel disponible (plusieurs choix possibles)</Text>
-        <View style={styles.chipRow}>
-          {EQUIPMENT.map((e) => (
-            <Chip
-              key={e.key}
-              label={e.label}
-              selected={equipment.includes(e.key)}
-              onPress={() => toggleEquipment(e.key)}
+          {current.key === 'equipment' && (
+            <View style={styles.chipRow}>
+              {EQUIPMENT.map((e) => (
+                <Chip
+                  key={e.key}
+                  label={e.label}
+                  selected={equipment.includes(e.key)}
+                  onPress={() => toggleEquipment(e.key)}
+                />
+              ))}
+            </View>
+          )}
+
+          {current.key === 'sessions_per_week' && (
+            <View style={styles.chipRow}>
+              {SESSIONS_OPTIONS.map((n) => (
+                <Chip key={n} label={n} selected={sessionsPerWeek === n} onPress={() => setSessionsPerWeek(n)} />
+              ))}
+            </View>
+          )}
+
+          {current.key === 'limitations' && (
+            <TextInput
+              style={[styles.bigInput, styles.textArea]}
+              value={limitations}
+              onChangeText={setLimitations}
+              placeholder="Ex : gêne à l'épaule droite, lombalgie occasionnelle..."
+              placeholderTextColor="#7C6A57"
+              multiline
+              autoFocus
             />
-          ))}
+          )}
+        </Animated.View>
+
+        <View style={styles.footer}>
+          {step > 0 && (
+            <Tap haptic={false} style={styles.backButton} onPress={goBack}>
+              <Text style={styles.backButtonText}>←</Text>
+            </Tap>
+          )}
+          <Tap
+            style={[styles.button, !current.valid && styles.buttonDisabled]}
+            disabled={!current.valid}
+            onPress={goNext}
+          >
+            <Text style={styles.buttonText}>
+              {isLast ? "Continuer vers l'analyse photo" : current.key === 'limitations' ? 'Passer' : 'Suivant'}
+            </Text>
+          </Tap>
         </View>
-
-        <Text style={styles.label}>Séances par semaine visées</Text>
-        <View style={styles.chipRow}>
-          {['2', '3', '4', '5', '6'].map((n) => (
-            <Chip
-              key={n}
-              label={n}
-              selected={sessionsPerWeek === n}
-              onPress={() => setSessionsPerWeek(n)}
-            />
-          ))}
-        </View>
-
-        <Text style={styles.label}>Douleurs / blessures / limitations (optionnel)</Text>
-        <TextInput
-          style={[styles.input, styles.textArea]}
-          value={limitations}
-          onChangeText={setLimitations}
-          placeholder="Ex : gêne à l'épaule droite, lombalgie occasionnelle..."
-          placeholderTextColor="#7C6A57"
-          multiline
-        />
-
-        <TouchableOpacity
-          style={[styles.button, !canContinue && styles.buttonDisabled]}
-          disabled={!canContinue}
-          onPress={handleContinue}
-        >
-          <Text style={styles.buttonText}>Continuer vers l'analyse photo</Text>
-        </TouchableOpacity>
-      </ScrollView>
+      </View>
     </KeyboardAvoidingView>
   );
 }
 
 const styles = StyleSheet.create({
   flex: { flex: 1, backgroundColor: '#130D09' },
-  flex1: { flex: 1, marginHorizontal: 4 },
-  container: { padding: 20, paddingBottom: 60 },
-  title: { color: '#F3E7D6', fontSize: 28, fontWeight: '700', marginBottom: 6 },
-  subtitle: { color: '#A6927E', fontSize: 14, marginBottom: 24 },
-  label: { color: '#D8C9B8', fontSize: 14, fontWeight: '600', marginTop: 18, marginBottom: 8 },
-  row: { flexDirection: 'row', marginHorizontal: -4 },
-  input: {
+  container: { flex: 1, padding: 20, paddingTop: 60 },
+
+  progressRow: { flexDirection: 'row', gap: 6, marginBottom: 28 },
+  progressDot: { flex: 1, height: 4, borderRadius: 2, backgroundColor: '#2E2019' },
+  progressDotDone: { backgroundColor: '#CE6A2E' },
+
+  stepBody: { flex: 1 },
+
+  bigInput: {
     backgroundColor: '#201409',
+    borderWidth: 1,
+    borderColor: '#3A2A1A',
     color: '#F3E7D6',
-    borderRadius: 10,
-    paddingHorizontal: 14,
-    paddingVertical: 12,
-    fontSize: 15,
+    borderRadius: 14,
+    paddingHorizontal: 18,
+    paddingVertical: 18,
+    fontSize: 22,
+    fontWeight: '700',
   },
-  textArea: { height: 80, textAlignVertical: 'top' },
-  chipRow: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
+  textArea: { height: 120, textAlignVertical: 'top', fontSize: 15, fontWeight: '400' },
+
+  chipCol: { gap: 10 },
+  chipRow: { flexDirection: 'row', flexWrap: 'wrap', gap: 10 },
   chip: {
     borderWidth: 1,
-    borderColor: '#2E2019',
-    borderRadius: 20,
-    paddingHorizontal: 14,
-    paddingVertical: 8,
-    marginRight: 8,
-    marginBottom: 8,
+    borderColor: '#3A2A1A',
+    backgroundColor: '#201409',
+    borderRadius: 14,
+    paddingHorizontal: 16,
+    paddingVertical: 14,
   },
   chipSelected: { backgroundColor: '#CE6A2E', borderColor: '#CE6A2E' },
-  chipText: { color: '#D8C9B8', fontSize: 13 },
-  chipTextSelected: { color: '#F3E7D6', fontWeight: '600' },
+  chipText: { color: '#D8C9B8', fontSize: 14 },
+  chipTextSelected: { color: '#F3E7D6', fontWeight: '700' },
+
+  footer: { flexDirection: 'row', gap: 12, marginTop: 20 },
+  backButton: {
+    width: 56, height: 56, borderRadius: 14, borderWidth: 1, borderColor: '#3A2A1A',
+    alignItems: 'center', justifyContent: 'center',
+  },
+  backButtonText: { color: '#D8C9B8', fontSize: 20 },
   button: {
+    flex: 1,
     backgroundColor: '#CE6A2E',
     borderRadius: 14,
-    paddingVertical: 16,
+    paddingVertical: 18,
     alignItems: 'center',
-    marginTop: 32,
   },
   buttonDisabled: { backgroundColor: '#3A2320' },
   buttonText: { color: '#F3E7D6', fontSize: 16, fontWeight: '700' },
