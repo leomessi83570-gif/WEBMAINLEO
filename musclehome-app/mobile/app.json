@@ -1,0 +1,25 @@
+{
+  "expo": {
+    "name": "MuscleHome",
+    "slug": "musclehome",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "automatic",
+    "splash": {
+      "backgroundColor": "#0F0F0F"
+    },
+    "assetBundlePatterns": ["**/*"],
+    "ios": {
+      "supportsTablet": false,
+      "infoPlist": {
+        "NSCameraUsageDescription": "MuscleHome utilise la caméra pour analyser ta morphologie et ta posture.",
+        "NSPhotoLibraryUsageDescription": "MuscleHome peut utiliser une photo de ta galerie pour l'analyse."
+      }
+    },
+    "android": {
+      "package": "com.musclehome.app",
+      "permissions": ["CAMERA", "READ_EXTERNAL_STORAGE"]
+    }
+  }
+}
