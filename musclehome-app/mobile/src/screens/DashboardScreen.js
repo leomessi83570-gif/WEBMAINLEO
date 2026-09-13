@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-nati
 import { useUser } from '../context/UserContext';
 import Mascot from '../components/Mascot';
 import { computeStreak, getWeekDayStatus } from '../utils/streak';
-import { getDashboardLine } from '../utils/mascotLines';
+import { getDashboardState } from '../utils/mascotLines';
 
 const DAY_LABELS = ['L', 'M', 'M', 'J', 'V', 'S', 'D'];
 
@@ -15,7 +15,7 @@ export default function DashboardScreen({ navigation }) {
 
   const streakInfo = computeStreak(logs, weeklyGoal);
   const weekDays = getWeekDayStatus(logs);
-  const mascotLine = getDashboardLine(streakInfo);
+  const mascotState = getDashboardState(streakInfo);
 
   return (
     <ScrollView style={styles.container} contentContainerStyle={{ padding: 20, paddingTop: 60 }}>
@@ -23,7 +23,7 @@ export default function DashboardScreen({ navigation }) {
       <Text style={styles.title}>Prêt pour aujourd'hui ?</Text>
 
       <View style={{ marginBottom: 20 }}>
-        <Mascot line={mascotLine} />
+        <Mascot line={mascotState.line} mood={mascotState.mood} />
       </View>
 
       <View style={styles.streakCard}>

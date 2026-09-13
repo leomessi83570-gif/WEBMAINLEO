@@ -128,7 +128,7 @@ export default function PhotoCaptureScreen({ navigation }) {
       </View>
 
       {loading ? (
-        <ActivityIndicator size="large" color="#FF3B30" style={{ marginTop: 24 }} />
+        <ActivityIndicator size="large" color="#CE6A2E" style={{ marginTop: 24 }} />
       ) : hasCurrentPhoto ? (
         <View style={styles.rowButtons}>
           <TouchableOpacity style={[styles.button, styles.buttonSecondary]} onPress={retake}>
@@ -161,11 +161,11 @@ export default function PhotoCaptureScreen({ navigation }) {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#0F0F0F', padding: 20, paddingTop: 60 },
+  container: { flex: 1, backgroundColor: '#130D09', padding: 20, paddingTop: 60 },
   center: { justifyContent: 'center', alignItems: 'center' },
-  title: { color: '#fff', fontSize: 22, fontWeight: '700' },
-  instruction: { color: '#fff', fontSize: 16, marginTop: 8 },
-  hint: { color: '#888', fontSize: 13, marginTop: 4, marginBottom: 16 },
+  title: { color: '#F3E7D6', fontSize: 22, fontWeight: '700' },
+  instruction: { color: '#F3E7D6', fontSize: 16, marginTop: 8 },
+  hint: { color: '#B39D85', fontSize: 13, marginTop: 4, marginBottom: 16 },
   cameraBox: {
     flex: 1,
     borderRadius: 16,
@@ -176,13 +176,13 @@ const styles = StyleSheet.create({
   rowButtons: { flexDirection: 'row', marginTop: 16, gap: 12 },
   button: {
     flex: 1,
-    backgroundColor: '#FF3B30',
+    backgroundColor: '#CE6A2E',
     borderRadius: 14,
     paddingVertical: 16,
     alignItems: 'center',
   },
-  buttonSecondary: { backgroundColor: '#2C2C2E' },
-  buttonText: { color: '#fff', fontSize: 15, fontWeight: '700' },
-  skipText: { color: '#888', textAlign: 'center', textDecorationLine: 'underline' },
-  text: { color: '#fff', fontSize: 15, textAlign: 'center', marginBottom: 16 },
+  buttonSecondary: { backgroundColor: '#2E2019' },
+  buttonText: { color: '#F3E7D6', fontSize: 15, fontWeight: '700' },
+  skipText: { color: '#B39D85', textAlign: 'center', textDecorationLine: 'underline' },
+  text: { color: '#F3E7D6', fontSize: 15, textAlign: 'center', marginBottom: 16 },
 });

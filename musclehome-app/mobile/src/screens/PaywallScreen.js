@@ -46,16 +46,16 @@ export default function PaywallScreen({ navigation }) {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#0F0F0F', padding: 20, paddingTop: 60 },
-  title: { color: '#fff', fontSize: 26, fontWeight: '700' },
-  subtitle: { color: '#999', fontSize: 14, marginTop: 6, marginBottom: 24 },
+  container: { flex: 1, backgroundColor: '#130D09', padding: 20, paddingTop: 60 },
+  title: { color: '#F3E7D6', fontSize: 26, fontWeight: '700' },
+  subtitle: { color: '#A6927E', fontSize: 14, marginTop: 6, marginBottom: 24 },
   featureRow: { flexDirection: 'row', alignItems: 'flex-start', marginBottom: 14 },
-  checkmark: { color: '#FF3B30', fontSize: 16, fontWeight: '700', marginRight: 10 },
-  featureText: { color: '#ddd', fontSize: 15, flex: 1 },
+  checkmark: { color: '#CE6A2E', fontSize: 16, fontWeight: '700', marginRight: 10 },
+  featureText: { color: '#D8C9B8', fontSize: 15, flex: 1 },
   button: {
-    backgroundColor: '#FF3B30', borderRadius: 14, paddingVertical: 16,
+    backgroundColor: '#CE6A2E', borderRadius: 14, paddingVertical: 16,
     alignItems: 'center', marginTop: 24,
   },
-  buttonText: { color: '#fff', fontSize: 16, fontWeight: '700' },
-  later: { color: '#888', textAlign: 'center', marginTop: 16 },
+  buttonText: { color: '#F3E7D6', fontSize: 16, fontWeight: '700' },
+  later: { color: '#B39D85', textAlign: 'center', marginTop: 16 },
 });

@@ -76,6 +76,25 @@ const LINES = {
   ],
 };
 
+// Pose de la mascotte associée à chaque catégorie de réplique (voir components/Mascot.js).
+const MOOD_BY_KEY = {
+  welcome: 'idle',
+  cold_start: 'idle',
+  week_in_progress: 'idle',
+  week_done: 'celebrate',
+  streak_risk: 'worried',
+  shield_used: 'worried',
+  streak_broken: 'worried',
+  session_done: 'celebrate',
+  milestone: 'celebrate',
+  photo_tip_face: 'idle',
+  photo_tip_profil: 'idle',
+};
+
+export function getMascotMood(key) {
+  return MOOD_BY_KEY[key] || 'idle';
+}
+
 export function getMascotLine(key, vars = {}) {
   const pool = LINES[key] || LINES.welcome;
   let line = pick(pool);
@@ -90,18 +109,30 @@ export function getMascotLine(key, vars = {}) {
  * Détermine quelle réplique afficher sur le dashboard selon l'état de streak actuel.
  * streakInfo vient de computeStreak() (src/utils/streak.js).
  */
-export function getDashboardLine(streakInfo, now = new Date()) {
+export function getDashboardState(streakInfo, now = new Date()) {
   const { streakWeeks, currentWeekCount, weeklyGoal, currentWeekDone, remainingForGoal } = streakInfo;
 
+  let key;
+  let vars = {};
   if (streakWeeks === 0 && currentWeekCount === 0) {
-    return getMascotLine('cold_start');
+    key = 'cold_start';
+  } else if (currentWeekDone) {
+    key = 'week_done';
+  } else {
+    const isWeekend = [0, 6].includes(now.getDay()); // dimanche=0, samedi=6
+    if (isWeekend && remainingForGoal > 0) {
+      key = 'streak_risk';
+      vars = { streak: streakWeeks };
+    } else {
+      key = 'week_in_progress';
+      vars = { remaining: remainingForGoal };
+    }
   }
-  if (currentWeekDone) {
-    return getMascotLine('week_done');
-  }
-  const isWeekend = [0, 6].includes(now.getDay()); // dimanche=0, samedi=6
-  if (isWeekend && remainingForGoal > 0) {
-    return getMascotLine('streak_risk', { streak: streakWeeks });
-  }
-  return getMascotLine('week_in_progress', { remaining: remainingForGoal });
+
+  return { key, line: getMascotLine(key, vars), mood: getMascotMood(key) };
+}
+
+// Conservé pour compatibilité : ne renvoie que le texte.
+export function getDashboardLine(streakInfo, now = new Date()) {
+  return getDashboardState(streakInfo, now).line;
 }

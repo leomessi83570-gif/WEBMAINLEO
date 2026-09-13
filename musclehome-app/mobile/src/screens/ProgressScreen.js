@@ -27,11 +27,11 @@ export default function ProgressScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#0F0F0F', paddingTop: 60 },
-  title: { color: '#fff', fontSize: 24, fontWeight: '700', marginBottom: 16, paddingHorizontal: 20 },
-  paragraph: { color: '#888', fontSize: 14 },
-  logCard: { backgroundColor: '#1C1C1E', borderRadius: 12, padding: 14, marginBottom: 10 },
-  logDate: { color: '#888', fontSize: 12 },
-  logTitle: { color: '#fff', fontSize: 15, fontWeight: '700', marginTop: 2 },
-  logNotes: { color: '#ccc', fontSize: 13, marginTop: 4, fontStyle: 'italic' },
+  container: { flex: 1, backgroundColor: '#130D09', paddingTop: 60 },
+  title: { color: '#F3E7D6', fontSize: 24, fontWeight: '700', marginBottom: 16, paddingHorizontal: 20 },
+  paragraph: { color: '#B39D85', fontSize: 14 },
+  logCard: { backgroundColor: '#201409', borderRadius: 12, padding: 14, marginBottom: 10 },
+  logDate: { color: '#B39D85', fontSize: 12 },
+  logTitle: { color: '#F3E7D6', fontSize: 15, fontWeight: '700', marginTop: 2 },
+  logNotes: { color: '#D8C9B8', fontSize: 13, marginTop: 4, fontStyle: 'italic' },
 });

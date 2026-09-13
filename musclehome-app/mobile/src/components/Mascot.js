@@ -1,20 +1,65 @@
-import React from 'react';
-import { View, Text, Image, StyleSheet } from 'react-native';
+import React, { useEffect, useRef } from 'react';
+import { View, Text, Image, StyleSheet, Animated, Easing } from 'react-native';
 
-const MASCOT_IMAGE = require('../../assets/mascot.png');
+const POSES = {
+  idle: require('../../assets/mascot-idle.png'),
+  celebrate: require('../../assets/mascot-celebrate.png'),
+  worried: require('../../assets/mascot-worried.png'),
+};
 
 /**
- * Avatar mascotte + bulle de dialogue, façon Duolingo. `line` est le texte à afficher,
- * généralement produit par getDashboardLine()/getMascotLine() (src/utils/mascotLines.js).
+ * Avatar mascotte animé + bulle de dialogue, façon Duolingo.
+ * `mood` choisit la pose ('idle' | 'celebrate' | 'worried'), `line` le texte affiché.
  */
-export default function Mascot({ line, tag = 'Buffalo dit' }) {
+export default function Mascot({ line, tag = 'Buffalo dit', mood = 'idle', size = 76 }) {
+  const bob = useRef(new Animated.Value(0)).current;
+  const pop = useRef(new Animated.Value(mood === 'idle' ? 1 : 0.85)).current;
+
+  useEffect(() => {
+    const loop = Animated.loop(
+      Animated.sequence([
+        Animated.timing(bob, {
+          toValue: 1,
+          duration: 1400,
+          easing: Easing.inOut(Easing.sin),
+          useNativeDriver: true,
+        }),
+        Animated.timing(bob, {
+          toValue: 0,
+          duration: 1400,
+          easing: Easing.inOut(Easing.sin),
+          useNativeDriver: true,
+        }),
+      ])
+    );
+    loop.start();
+    return () => loop.stop();
+  }, [bob]);
+
+  useEffect(() => {
+    // petit "pop" quand la pose change (célébration / inquiétude)
+    pop.setValue(0.85);
+    Animated.spring(pop, { toValue: 1, friction: 4, useNativeDriver: true }).start();
+  }, [mood, pop]);
+
   if (!line) return null;
+
+  const translateY = bob.interpolate({ inputRange: [0, 1], outputRange: [0, -4] });
+  const rotate =
+    mood === 'celebrate'
+      ? bob.interpolate({ inputRange: [0, 1], outputRange: ['-4deg', '4deg'] })
+      : '0deg';
 
   return (
     <View style={styles.row}>
-      <View style={styles.avatarBox}>
-        <Image source={MASCOT_IMAGE} style={styles.avatar} resizeMode="cover" />
-      </View>
+      <Animated.View
+        style={[
+          styles.avatarBox,
+          { width: size, height: size, transform: [{ translateY }, { scale: pop }, { rotate }] },
+        ]}
+      >
+        <Image source={POSES[mood] || POSES.idle} style={styles.avatar} resizeMode="contain" />
+      </Animated.View>
       <View style={styles.bubble}>
         <Text style={styles.tag}>{tag}</Text>
         <Text style={styles.line}>{line}</Text>
@@ -24,16 +69,8 @@ export default function Mascot({ line, tag = 'Buffalo dit' }) {
 }
 
 const styles = StyleSheet.create({
-  row: { flexDirection: 'row', alignItems: 'flex-end', gap: 12 },
-  avatarBox: {
-    width: 64,
-    height: 64,
-    borderRadius: 18,
-    overflow: 'hidden',
-    backgroundColor: '#2B1D10',
-    borderWidth: 1,
-    borderColor: '#3A2A1A',
-  },
+  row: { flexDirection: 'row', alignItems: 'flex-end', gap: 10 },
+  avatarBox: { flexShrink: 0 },
   avatar: { width: '100%', height: '100%' },
   bubble: {
     flex: 1,
@@ -43,6 +80,7 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     borderBottomLeftRadius: 4,
     padding: 12,
+    marginBottom: 6,
   },
   tag: {
     color: '#F0954B',

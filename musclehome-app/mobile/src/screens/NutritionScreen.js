@@ -47,15 +47,15 @@ function Macro({ label, value }) {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#0F0F0F' },
+  container: { flex: 1, backgroundColor: '#130D09' },
   center: { justifyContent: 'center', alignItems: 'center' },
-  title: { color: '#fff', fontSize: 24, fontWeight: '700', marginBottom: 20 },
+  title: { color: '#F3E7D6', fontSize: 24, fontWeight: '700', marginBottom: 20 },
   macroRow: { flexDirection: 'row', flexWrap: 'wrap', gap: 10, marginBottom: 20 },
-  macro: { backgroundColor: '#1C1C1E', borderRadius: 12, padding: 14, minWidth: '45%' },
-  macroValue: { color: '#fff', fontSize: 18, fontWeight: '700' },
-  macroLabel: { color: '#888', fontSize: 12, marginTop: 2 },
-  sectionTitle: { color: '#FF3B30', fontSize: 14, fontWeight: '700', marginBottom: 6, textTransform: 'uppercase' },
-  paragraph: { color: '#ddd', fontSize: 14, lineHeight: 21, marginBottom: 16 },
-  mealCard: { backgroundColor: '#1C1C1E', borderRadius: 12, padding: 14, marginBottom: 10 },
-  mealTitle: { color: '#fff', fontSize: 15, fontWeight: '700', marginBottom: 4 },
+  macro: { backgroundColor: '#201409', borderRadius: 12, padding: 14, minWidth: '45%' },
+  macroValue: { color: '#F3E7D6', fontSize: 18, fontWeight: '700' },
+  macroLabel: { color: '#B39D85', fontSize: 12, marginTop: 2 },
+  sectionTitle: { color: '#CE6A2E', fontSize: 14, fontWeight: '700', marginBottom: 6, textTransform: 'uppercase' },
+  paragraph: { color: '#D8C9B8', fontSize: 14, lineHeight: 21, marginBottom: 16 },
+  mealCard: { backgroundColor: '#201409', borderRadius: 12, padding: 14, marginBottom: 10 },
+  mealTitle: { color: '#F3E7D6', fontSize: 15, fontWeight: '700', marginBottom: 4 },
 });

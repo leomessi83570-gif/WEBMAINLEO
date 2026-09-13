@@ -89,7 +89,7 @@ export default function OnboardingScreen({ navigation }) {
               value={age}
               onChangeText={setAge}
               placeholder="25"
-              placeholderTextColor="#666"
+              placeholderTextColor="#7C6A57"
             />
           </View>
           <View style={styles.flex1}>
@@ -100,7 +100,7 @@ export default function OnboardingScreen({ navigation }) {
               value={height}
               onChangeText={setHeight}
               placeholder="178"
-              placeholderTextColor="#666"
+              placeholderTextColor="#7C6A57"
             />
           </View>
           <View style={styles.flex1}>
@@ -111,7 +111,7 @@ export default function OnboardingScreen({ navigation }) {
               value={weight}
               onChangeText={setWeight}
               placeholder="75"
-              placeholderTextColor="#666"
+              placeholderTextColor="#7C6A57"
             />
           </View>
         </View>
@@ -160,7 +160,7 @@ export default function OnboardingScreen({ navigation }) {
           value={limitations}
           onChangeText={setLimitations}
           placeholder="Ex : gêne à l'épaule droite, lombalgie occasionnelle..."
-          placeholderTextColor="#666"
+          placeholderTextColor="#7C6A57"
           multiline
         />
 
@@ -177,16 +177,16 @@ export default function OnboardingScreen({ navigation }) {
 }
 
 const styles = StyleSheet.create({
-  flex: { flex: 1, backgroundColor: '#0F0F0F' },
+  flex: { flex: 1, backgroundColor: '#130D09' },
   flex1: { flex: 1, marginHorizontal: 4 },
   container: { padding: 20, paddingBottom: 60 },
-  title: { color: '#fff', fontSize: 28, fontWeight: '700', marginBottom: 6 },
-  subtitle: { color: '#999', fontSize: 14, marginBottom: 24 },
-  label: { color: '#ccc', fontSize: 14, fontWeight: '600', marginTop: 18, marginBottom: 8 },
+  title: { color: '#F3E7D6', fontSize: 28, fontWeight: '700', marginBottom: 6 },
+  subtitle: { color: '#A6927E', fontSize: 14, marginBottom: 24 },
+  label: { color: '#D8C9B8', fontSize: 14, fontWeight: '600', marginTop: 18, marginBottom: 8 },
   row: { flexDirection: 'row', marginHorizontal: -4 },
   input: {
-    backgroundColor: '#1C1C1E',
-    color: '#fff',
+    backgroundColor: '#201409',
+    color: '#F3E7D6',
     borderRadius: 10,
     paddingHorizontal: 14,
     paddingVertical: 12,
@@ -196,23 +196,23 @@ const styles = StyleSheet.create({
   chipRow: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
   chip: {
     borderWidth: 1,
-    borderColor: '#333',
+    borderColor: '#2E2019',
     borderRadius: 20,
     paddingHorizontal: 14,
     paddingVertical: 8,
     marginRight: 8,
     marginBottom: 8,
   },
-  chipSelected: { backgroundColor: '#FF3B30', borderColor: '#FF3B30' },
-  chipText: { color: '#ccc', fontSize: 13 },
-  chipTextSelected: { color: '#fff', fontWeight: '600' },
+  chipSelected: { backgroundColor: '#CE6A2E', borderColor: '#CE6A2E' },
+  chipText: { color: '#D8C9B8', fontSize: 13 },
+  chipTextSelected: { color: '#F3E7D6', fontWeight: '600' },
   button: {
-    backgroundColor: '#FF3B30',
+    backgroundColor: '#CE6A2E',
     borderRadius: 14,
     paddingVertical: 16,
     alignItems: 'center',
     marginTop: 32,
   },
   buttonDisabled: { backgroundColor: '#3A2320' },
-  buttonText: { color: '#fff', fontSize: 16, fontWeight: '700' },
+  buttonText: { color: '#F3E7D6', fontSize: 16, fontWeight: '700' },
 });
