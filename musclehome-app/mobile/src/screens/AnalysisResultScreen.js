@@ -17,7 +17,6 @@ export default function AnalysisResultScreen({ navigation, route }) {
         nutrition: result.nutrition,
         onboarded: true,
       });
-      navigation.replace('Dashboard');
     } catch (e) {
       console.warn(e);
       Alert.alert('Erreur', "Impossible de générer le programme pour l'instant.");
