@@ -1,5 +1,7 @@
 import React, { createContext, useState, useEffect, useContext } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { computeStreak } from '../utils/streak';
+import { scheduleWeeklyReminders } from '../utils/notifications';
 
 const UserContext = createContext(null);
 
@@ -13,6 +15,7 @@ const defaultState = {
   program: null,        // programme muscu généré
   nutrition: null,      // plan nutrition généré
   logs: [],             // historique des séances / poids
+  weeklyGoal: 4,         // objectif de séances par semaine (streak hebdo, pas 7/7)
 };
 
 export function UserProvider({ children }) {
@@ -23,7 +26,7 @@ export function UserProvider({ children }) {
     (async () => {
       try {
         const raw = await AsyncStorage.getItem(STORAGE_KEY);
-        if (raw) setState(JSON.parse(raw));
+        if (raw) setState({ ...defaultState, ...JSON.parse(raw) });
       } catch (e) {
         console.warn('Erreur chargement profil', e);
       } finally {
@@ -31,6 +34,15 @@ export function UserProvider({ children }) {
       }
     })();
   }, []);
+
+  // Reprogramme les rappels au lancement de l'app (l'utilisateur peut rouvrir l'app
+  // plusieurs jours après sa dernière séance, sans qu'addLog n'ait été rappelé entre-temps).
+  useEffect(() => {
+    if (loaded && state.onboarded) {
+      const streakInfo = computeStreak(state.logs, state.weeklyGoal);
+      scheduleWeeklyReminders(streakInfo).catch(() => {});
+    }
+  }, [loaded, state.onboarded]);
 
   const update = async (partial) => {
     setState((prev) => {
@@ -41,11 +53,20 @@ export function UserProvider({ children }) {
   };
 
   const addLog = async (entry) => {
+    let nextState;
     setState((prev) => {
-      const next = { ...prev, logs: [...prev.logs, { ...entry, date: new Date().toISOString() }] };
-      AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(next)).catch(() => {});
-      return next;
+      nextState = { ...prev, logs: [...prev.logs, { ...entry, date: new Date().toISOString() }] };
+      AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(nextState)).catch(() => {});
+      return nextState;
     });
+    // Reprogramme les rappels sur le nouvel état de streak (hors du setState pour éviter
+    // un appel async dans l'updater fonctionnel).
+    setTimeout(() => {
+      if (nextState) {
+        const streakInfo = computeStreak(nextState.logs, nextState.weeklyGoal);
+        scheduleWeeklyReminders(streakInfo).catch(() => {});
+      }
+    }, 0);
   };
 
   const reset = async () => {

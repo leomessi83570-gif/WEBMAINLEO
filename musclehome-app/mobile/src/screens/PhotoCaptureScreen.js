@@ -1,13 +1,15 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useMemo } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image, ActivityIndicator, Alert } from 'react-native';
 import { CameraView, useCameraPermissions } from 'expo-camera';
 import * as ImagePicker from 'expo-image-picker';
 import { useUser } from '../context/UserContext';
 import { analyzeBody } from '../services/api';
+import Mascot from '../components/Mascot';
+import { getMascotLine } from '../utils/mascotLines';
 
 const SHOTS = [
-  { key: 'face', label: 'De face, bras le long du corps' },
-  { key: 'profil', label: 'De profil (côté droit)' },
+  { key: 'face', label: 'De face, bras le long du corps', tipKey: 'photo_tip_face' },
+  { key: 'profil', label: 'De profil (côté droit)', tipKey: 'photo_tip_profil' },
 ];
 
 export default function PhotoCaptureScreen({ navigation }) {
@@ -19,6 +21,8 @@ export default function PhotoCaptureScreen({ navigation }) {
   const cameraRef = useRef(null);
 
   const currentShot = SHOTS[step];
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const tipLine = useMemo(() => getMascotLine(currentShot.tipKey), [currentShot.key]);
 
   const takePicture = async () => {
     if (!cameraRef.current) return;
@@ -108,7 +112,12 @@ export default function PhotoCaptureScreen({ navigation }) {
     <View style={styles.container}>
       <Text style={styles.title}>Photo {step + 1}/{SHOTS.length}</Text>
       <Text style={styles.instruction}>{currentShot.label}</Text>
-      <Text style={styles.hint}>Tenue près du corps, bonne lumière, fond neutre si possible.</Text>
+
+      {!hasCurrentPhoto && (
+        <View style={{ marginTop: 10, marginBottom: 4 }}>
+          <Mascot line={tipLine} tag="Conseil de Buffalo" />
+        </View>
+      )}
 
       <View style={styles.cameraBox}>
         {hasCurrentPhoto ? (

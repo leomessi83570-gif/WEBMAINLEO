@@ -1,24 +1,36 @@
 {
   "expo": {
-    "name": "MuscleHome",
-    "slug": "musclehome",
+    "name": "Buffalo",
+    "slug": "buffalo-fitness",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "automatic",
     "splash": {
-      "backgroundColor": "#0F0F0F"
+      "backgroundColor": "#130D09"
     },
     "assetBundlePatterns": ["**/*"],
+    "plugins": [
+      [
+        "expo-notifications",
+        {
+          "color": "#CE6A2E"
+        }
+      ]
+    ],
     "ios": {
       "supportsTablet": false,
       "infoPlist": {
-        "NSCameraUsageDescription": "MuscleHome utilise la caméra pour analyser ta morphologie et ta posture.",
-        "NSPhotoLibraryUsageDescription": "MuscleHome peut utiliser une photo de ta galerie pour l'analyse."
+        "NSCameraUsageDescription": "Buffalo utilise la caméra pour analyser ta morphologie et ta posture.",
+        "NSPhotoLibraryUsageDescription": "Buffalo peut utiliser une photo de ta galerie pour l'analyse."
       }
     },
     "android": {
-      "package": "com.musclehome.app",
+      "package": "com.buffalo.app",
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#130D09"
+      },
       "permissions": ["CAMERA", "READ_EXTERNAL_STORAGE"]
     }
   }

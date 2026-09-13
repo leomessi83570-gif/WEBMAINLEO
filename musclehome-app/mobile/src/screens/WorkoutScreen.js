@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, TextInput, Alert } from 'react-native';
 import { useUser } from '../context/UserContext';
+import { getMascotLine } from '../utils/mascotLines';
 
 export default function WorkoutScreen({ route, navigation }) {
   const { session } = route.params;
@@ -19,7 +20,7 @@ export default function WorkoutScreen({ route, navigation }) {
 
   const finishSession = async () => {
     await addLog({ type: 'session', session_name: session.name, notes });
-    Alert.alert('Bravo 💪', 'Séance enregistrée.', [
+    Alert.alert('Buffalo', getMascotLine('session_done'), [
       { text: 'OK', onPress: () => navigation.navigate('Dashboard') },
     ]);
   };
