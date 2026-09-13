@@ -45,7 +45,7 @@ export default function ProfileScreen({ navigation }) {
       <View style={styles.headerRow}>
         <Image source={AVATAR} style={styles.avatar} resizeMode="contain" />
         <View>
-          <Text style={styles.title}>Ton profil</Text>
+          <Text style={styles.title}>{profile?.pseudo || 'Ton profil'}</Text>
           <Text style={styles.subtitle}>
             {profile?.age ? `${profile.age} ans · ` : ''}
             {profile?.goal ? goalLabel(profile.goal) : 'Objectif non défini'}

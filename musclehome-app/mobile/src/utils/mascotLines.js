@@ -157,6 +157,7 @@ export function getMascotLine(key, vars = {}) {
  * streakInfo vient de computeStreak() (src/utils/streak.js).
  */
 const ONBOARDING_LINES = {
+  pseudo: ["Salut, moi c'est Buffalo. Et toi, comment tu veux que je t'appelle ?"],
   age: ["Pour commencer, tu as quel âge ?"],
   height_cm: ['Ta taille, en cm ?'],
   weight_kg: ['Ton poids actuel, en kg. Ça reste entre nous, promis.'],

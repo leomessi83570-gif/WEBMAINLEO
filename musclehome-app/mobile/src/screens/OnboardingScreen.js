@@ -56,6 +56,7 @@ function Chip({ label, icon, selected, onPress }) {
 export default function OnboardingScreen({ navigation }) {
   const { update } = useUser();
   const [step, setStep] = useState(0);
+  const [pseudo, setPseudo] = useState('');
   const [age, setAge] = useState('');
   const [height, setHeight] = useState('');
   const [weight, setWeight] = useState('');
@@ -86,6 +87,7 @@ export default function OnboardingScreen({ navigation }) {
   // individuellement, plutôt qu'un long formulaire d'un bloc.
   const steps = useMemo(
     () => [
+      { key: 'pseudo', valid: pseudo.trim().length > 0 },
       { key: 'age', valid: !!age },
       { key: 'height_cm', valid: !!height },
       { key: 'weight_kg', valid: !!weight },
@@ -96,7 +98,7 @@ export default function OnboardingScreen({ navigation }) {
       { key: 'focus_zones', valid: true }, // optionnel
       { key: 'limitations', valid: true }, // optionnel
     ],
-    [age, height, weight, goal, level, equipment, sessionsPerWeek]
+    [pseudo, age, height, weight, goal, level, equipment, sessionsPerWeek]
   );
 
   const current = steps[step];
@@ -110,6 +112,7 @@ export default function OnboardingScreen({ navigation }) {
       return;
     }
     const profile = {
+      pseudo: pseudo.trim(),
       age: Number(age),
       height_cm: Number(height),
       weight_kg: Number(weight),
@@ -150,6 +153,20 @@ export default function OnboardingScreen({ navigation }) {
         </View>
 
         <Animated.View key={current.key} entering={FadeInRight.duration(250)} exiting={FadeOutLeft.duration(150)}>
+          {current.key === 'pseudo' && (
+            <TextInput
+              style={styles.bigInput}
+              value={pseudo}
+              onChangeText={setPseudo}
+              placeholder="Ex : LeoBuffalo"
+              placeholderTextColor="#7C6A57"
+              autoCapitalize="none"
+              autoCorrect={false}
+              maxLength={24}
+              autoFocus
+            />
+          )}
+
           {current.key === 'age' && (
             <View style={styles.numberWrap}>
               <TextInput

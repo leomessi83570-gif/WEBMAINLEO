@@ -18,7 +18,7 @@ const HERO_MASCOT = require('../../assets/mascot-celebrate.png');
 const STAGGER = 70;
 
 export default function DashboardScreen({ navigation }) {
-  const { program, isPremium, logs, weeklyGoal, pendingPaywallOpen, update } = useUser();
+  const { profile, program, isPremium, logs, weeklyGoal, pendingPaywallOpen, update } = useUser();
 
   // Si l'utilisateur a choisi "Débloquer Premium" dans le popup juste après l'onboarding,
   // on ouvre directement la page Paywall complète dès l'arrivée sur le dashboard.
@@ -50,7 +50,7 @@ export default function DashboardScreen({ navigation }) {
         >
           <View style={styles.heroTop}>
             <View>
-              <Text style={styles.hello}>Salut 👋</Text>
+              <Text style={styles.hello}>Salut {profile?.pseudo || ''} 👋</Text>
               <Text style={styles.title}>Prêt pour aujourd'hui ?</Text>
             </View>
           </View>

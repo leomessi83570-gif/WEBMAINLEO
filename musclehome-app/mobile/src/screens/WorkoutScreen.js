@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { View, Text, StyleSheet, TextInput, Modal, Image, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, TextInput, Modal, Image, ScrollView, Linking } from 'react-native';
 import Animated, { FadeIn, FadeInRight, FadeOutLeft } from 'react-native-reanimated';
 import * as Haptics from 'expo-haptics';
 import { useUser } from '../context/UserContext';
@@ -14,6 +14,7 @@ import CircularTimer from '../components/CircularTimer';
 import Confetti from '../components/Confetti';
 
 const CELEBRATE_IMAGE = require('../../assets/mascot-celebrate.png');
+const WORRIED_IMAGE = require('../../assets/mascot-worried.png');
 
 export default function WorkoutScreen({ route, navigation }) {
   const { session } = route.params;
@@ -29,6 +30,7 @@ export default function WorkoutScreen({ route, navigation }) {
   const [notes, setNotes] = useState('');
   const [celebration, setCelebration] = useState(null);
   const [reward, setReward] = useState(null);
+  const [showHelp, setShowHelp] = useState(false);
   const intervalRef = useRef(null);
 
   const isRecap = step >= exercises.length;
@@ -94,6 +96,16 @@ export default function WorkoutScreen({ route, navigation }) {
     navigation.navigate('MainTabs', { screen: 'Accueil' });
   };
 
+  const watchDemo = () => {
+    const query = encodeURIComponent(`${exercise.name} exercice technique musculation`);
+    Linking.openURL(`https://www.youtube.com/results?search_query=${query}`).catch(() => {});
+  };
+
+  const skipUnknownExercise = () => {
+    setShowHelp(false);
+    goNextExercise();
+  };
+
   const progressSteps = exercises.length + 1;
 
   return (
@@ -136,6 +148,9 @@ export default function WorkoutScreen({ route, navigation }) {
             </View>
             <Text style={styles.exerciseName}>{exercise.name}</Text>
             {exercise.notes ? <Text style={styles.exerciseNotes}>{exercise.notes}</Text> : null}
+            <Tap haptic={false} style={styles.unknownLink} onPress={() => setShowHelp(true)}>
+              <Text style={styles.unknownLinkText}>Je ne connais pas cet exercice ?</Text>
+            </Tap>
           </View>
 
           <View style={styles.center}>
@@ -203,6 +218,33 @@ export default function WorkoutScreen({ route, navigation }) {
           </View>
         </View>
       </Modal>
+
+      <Modal visible={showHelp} transparent animationType="fade">
+        <View style={styles.modalBackdrop}>
+          <View style={styles.modalCard}>
+            <Image source={WORRIED_IMAGE} style={styles.helpMascot} resizeMode="contain" />
+            <Text style={styles.modalTitle}>Pas de souci !</Text>
+            <Text style={styles.modalLine}>
+              {exercise ? `${exercise.name} — ` : ''}personne ne connaît tous les exercices par cœur. Regarde une démo vidéo, ou passe cet exercice pour cette fois.
+            </Text>
+            {exercise?.notes ? (
+              <View style={styles.helpNotesBox}>
+                <Text style={styles.helpNotesText}>{exercise.notes}</Text>
+              </View>
+            ) : null}
+
+            <Tap style={styles.modalButton} onPress={watchDemo}>
+              <Text style={styles.buttonText}>Voir une démo vidéo</Text>
+            </Tap>
+            <Tap haptic={false} style={styles.buttonGhost} onPress={skipUnknownExercise}>
+              <Text style={styles.buttonGhostText}>Passer cet exercice</Text>
+            </Tap>
+            <Tap haptic={false} style={styles.buttonGhost} onPress={() => setShowHelp(false)}>
+              <Text style={styles.buttonGhostText}>Retour</Text>
+            </Tap>
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 }
@@ -225,6 +267,8 @@ const styles = StyleSheet.create({
   exerciseIconBig: { fontSize: 34 },
   exerciseName: { color: '#F3E7D6', fontSize: 24, fontFamily: 'ArchivoBlack_400Regular', textAlign: 'center' },
   exerciseNotes: { color: '#F5885E', fontSize: 13, marginTop: 8, textAlign: 'center', fontStyle: 'italic' },
+  unknownLink: { marginTop: 10, paddingVertical: 4 },
+  unknownLinkText: { color: '#7C6A57', fontSize: 12.5, textDecorationLine: 'underline' },
 
   center: { flex: 1, alignItems: 'center', justifyContent: 'center' },
   setLabel: { color: '#B39D85', fontSize: 15, fontWeight: '700', marginBottom: 12 },
@@ -255,6 +299,12 @@ const styles = StyleSheet.create({
     borderRadius: 24, padding: 24, alignItems: 'center',
   },
   modalMascot: { width: 160, height: 200, marginBottom: 8 },
+  helpMascot: { width: 120, height: 150, marginBottom: 4 },
+  helpNotesBox: {
+    width: '100%', backgroundColor: '#2E2019', borderRadius: 12, padding: 12,
+    marginBottom: 16, borderWidth: 1, borderColor: '#3A2A1A',
+  },
+  helpNotesText: { color: '#D8C9B8', fontSize: 12.5, lineHeight: 18, fontStyle: 'italic' },
   modalTitle: { color: '#F3E7D6', fontSize: 20, fontWeight: '800', marginBottom: 8, textAlign: 'center' },
   modalLine: { color: '#D8C9B8', fontSize: 14, textAlign: 'center', lineHeight: 20, marginBottom: 16 },
   rewardBox: {
