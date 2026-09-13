@@ -18,11 +18,13 @@
         }
       ]
     ],
+    "newArchEnabled": true,
     "ios": {
       "supportsTablet": false,
       "infoPlist": {
         "NSCameraUsageDescription": "Buffalo utilise la caméra pour analyser ta morphologie et ta posture.",
-        "NSPhotoLibraryUsageDescription": "Buffalo peut utiliser une photo de ta galerie pour l'analyse."
+        "NSPhotoLibraryUsageDescription": "Buffalo peut utiliser une photo de ta galerie pour l'analyse.",
+        "CADisableMinimumFrameDurationOnPhone": true
       }
     },
     "android": {
