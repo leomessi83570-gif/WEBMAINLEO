@@ -3,12 +3,12 @@ import { View, ActivityIndicator } from 'react-native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useUser } from '../context/UserContext';
 
+import WelcomeScreen from '../screens/WelcomeScreen';
 import OnboardingScreen from '../screens/OnboardingScreen';
 import PhotoCaptureScreen from '../screens/PhotoCaptureScreen';
 import AnalysisResultScreen from '../screens/AnalysisResultScreen';
-import DashboardScreen from '../screens/DashboardScreen';
+import MainTabs from './MainTabs';
 import WorkoutScreen from '../screens/WorkoutScreen';
-import NutritionScreen from '../screens/NutritionScreen';
 import ProgressScreen from '../screens/ProgressScreen';
 import PaywallScreen from '../screens/PaywallScreen';
 
@@ -39,15 +39,15 @@ export default function AppNavigator() {
     <Stack.Navigator screenOptions={screenOptions}>
       {!onboarded ? (
         <>
+          <Stack.Screen name="Welcome" component={WelcomeScreen} options={{ title: '', headerShown: false }} />
           <Stack.Screen name="Onboarding" component={OnboardingScreen} options={{ title: '' }} />
           <Stack.Screen name="PhotoCapture" component={PhotoCaptureScreen} options={{ title: '' }} />
           <Stack.Screen name="AnalysisResult" component={AnalysisResultScreen} options={{ title: '' }} />
         </>
       ) : (
         <>
-          <Stack.Screen name="Dashboard" component={DashboardScreen} options={{ title: '' }} />
+          <Stack.Screen name="MainTabs" component={MainTabs} options={{ headerShown: false }} />
           <Stack.Screen name="Workout" component={WorkoutScreen} options={{ title: '' }} />
-          <Stack.Screen name="Nutrition" component={NutritionScreen} options={{ title: 'Nutrition' }} />
           <Stack.Screen name="Progress" component={ProgressScreen} options={{ title: '' }} />
           <Stack.Screen
             name="Paywall"

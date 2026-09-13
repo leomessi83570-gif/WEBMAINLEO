@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView, Image, Alert } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Image } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import Animated, { FadeInDown } from 'react-native-reanimated';
 import { useUser } from '../context/UserContext';
@@ -17,18 +17,7 @@ const HERO_MASCOT = require('../../assets/mascot-celebrate.png');
 const STAGGER = 70;
 
 export default function DashboardScreen({ navigation }) {
-  const { program, isPremium, logs, weeklyGoal, reset } = useUser();
-
-  const confirmReset = () => {
-    Alert.alert(
-      'Réinitialiser le profil ?',
-      "Ça efface le questionnaire, le programme et l'historique pour revoir l'onboarding depuis le début.",
-      [
-        { text: 'Annuler', style: 'cancel' },
-        { text: 'Réinitialiser', style: 'destructive', onPress: reset },
-      ]
-    );
-  };
+  const { program, isPremium, logs, weeklyGoal } = useUser();
 
   const todaySession = program?.sessions?.[0]; // V1 : on propose toujours la 1ère séance du cycle
   const sessionsDone = logs.filter((l) => l.type === 'session').length;
@@ -125,28 +114,16 @@ export default function DashboardScreen({ navigation }) {
           )}
         </Animated.View>
 
-        <Animated.View entering={FadeInDown.duration(400).delay(STAGGER * 5).springify()}>
-          <Tap style={styles.linkCard} onPress={() => navigation.navigate('Progress')}>
-            <Text style={styles.linkCardText}>📈 Voir ma progression</Text>
-          </Tap>
-
-          <Tap style={styles.linkCard} onPress={() => navigation.navigate('Nutrition')}>
-            <Text style={styles.linkCardText}>🍽️ Mon plan nutrition</Text>
-          </Tap>
-
-          {!isPremium && (
+        {!isPremium && (
+          <Animated.View entering={FadeInDown.duration(400).delay(STAGGER * 5).springify()}>
             <Tap style={styles.premiumCard} onPress={() => navigation.navigate('Paywall')}>
               <Text style={styles.premiumTitle}>Passe Premium</Text>
               <Text style={styles.premiumSub}>
                 Analyse photo avancée, programme adaptatif, coach IA illimité.
               </Text>
             </Tap>
-          )}
-
-          <Tap haptic={false} style={styles.resetLink} onPress={confirmReset}>
-            <Text style={styles.resetLinkText}>Réinitialiser le profil (dev)</Text>
-          </Tap>
-        </Animated.View>
+          </Animated.View>
+        )}
       </View>
     </ScrollView>
   );

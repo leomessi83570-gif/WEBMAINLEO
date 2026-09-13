@@ -5,6 +5,9 @@ import { getMascotLine, getMascotMood } from '../utils/mascotLines';
 import { rollReward } from '../utils/rewards';
 import Tap from '../components/Tap';
 import Mascot from '../components/Mascot';
+import RestTimer from '../components/RestTimer';
+import { parseRestSeconds } from '../utils/time';
+import { guessExerciseIcon } from '../utils/exerciseIcons';
 
 const CELEBRATE_IMAGE = require('../../assets/mascot-celebrate.png');
 
@@ -15,6 +18,7 @@ export default function WorkoutScreen({ route, navigation }) {
   const [notes, setNotes] = useState('');
   const [celebration, setCelebration] = useState(null); // texte de la mascotte, ou null si masqué
   const [reward, setReward] = useState(null);
+  const [restTimer, setRestTimer] = useState(null); // { exIndex, seconds } ou null
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const startLine = useMemo(() => getMascotLine('workout_start'), []);
 
@@ -25,6 +29,14 @@ export default function WorkoutScreen({ route, navigation }) {
       const next = exists ? current.filter((s) => s !== setIndex) : [...current, setIndex];
       return { ...prev, [exIndex]: next };
     });
+
+    const alreadyDone = (doneSets[exIndex] || []).includes(setIndex);
+    if (!alreadyDone) {
+      // On vient de valider une série (pas de la décocher) : lance le repos si l'IA
+      // a donné une durée exploitable pour cet exercice.
+      const seconds = parseRestSeconds(session.exercises[exIndex].rest);
+      if (seconds) setRestTimer({ exIndex, seconds });
+    }
   };
 
   const finishSession = async () => {
@@ -45,10 +57,17 @@ export default function WorkoutScreen({ route, navigation }) {
 
       {session.exercises?.map((ex, exIndex) => (
         <View key={exIndex} style={styles.exerciseCard}>
-          <Text style={styles.exerciseName}>{ex.name}</Text>
-          <Text style={styles.exerciseMeta}>
-            {ex.sets} séries × {ex.reps} {ex.rest ? `· repos ${ex.rest}` : ''}
-          </Text>
+          <View style={styles.exerciseHeader}>
+            <View style={styles.exerciseIconBox}>
+              <Text style={styles.exerciseIcon}>{guessExerciseIcon(ex.name)}</Text>
+            </View>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.exerciseName}>{ex.name}</Text>
+              <Text style={styles.exerciseMeta}>
+                {ex.sets} séries × {ex.reps} {ex.rest ? `· repos ${ex.rest}` : ''}
+              </Text>
+            </View>
+          </View>
           {ex.notes ? <Text style={styles.exerciseNotes}>{ex.notes}</Text> : null}
 
           <View style={styles.setsRow}>
@@ -65,6 +84,13 @@ export default function WorkoutScreen({ route, navigation }) {
               );
             })}
           </View>
+
+          {restTimer?.exIndex === exIndex && (
+            <RestTimer
+              totalSeconds={restTimer.seconds}
+              onDone={() => setRestTimer(null)}
+            />
+          )}
         </View>
       ))}
 
@@ -104,7 +130,7 @@ export default function WorkoutScreen({ route, navigation }) {
               onPress={() => {
                 setCelebration(null);
                 setReward(null);
-                navigation.navigate('Dashboard');
+                navigation.navigate('MainTabs', { screen: 'Accueil' });
               }}
             >
               <Text style={styles.buttonText}>Retour à l'accueil</Text>
@@ -120,6 +146,12 @@ const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#130D09' },
   title: { color: '#F3E7D6', fontSize: 24, fontWeight: '700', marginBottom: 20 },
   exerciseCard: { backgroundColor: '#201409', borderRadius: 14, padding: 16, marginBottom: 12 },
+  exerciseHeader: { flexDirection: 'row', alignItems: 'center', gap: 12 },
+  exerciseIconBox: {
+    width: 44, height: 44, borderRadius: 13, backgroundColor: 'rgba(232,98,63,0.14)',
+    alignItems: 'center', justifyContent: 'center',
+  },
+  exerciseIcon: { fontSize: 20 },
   exerciseName: { color: '#F3E7D6', fontSize: 17, fontWeight: '700' },
   exerciseMeta: { color: '#A6927E', fontSize: 13, marginTop: 4 },
   exerciseNotes: { color: '#F5885E', fontSize: 12, marginTop: 6, fontStyle: 'italic' },
