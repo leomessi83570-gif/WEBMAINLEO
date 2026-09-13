@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, TextInput, Modal, Image } from 'react-native';
 import { useUser } from '../context/UserContext';
-import { getMascotLine } from '../utils/mascotLines';
+import { getMascotLine, getMascotMood } from '../utils/mascotLines';
 import { rollReward } from '../utils/rewards';
 import Tap from '../components/Tap';
+import Mascot from '../components/Mascot';
 
 const CELEBRATE_IMAGE = require('../../assets/mascot-celebrate.png');
 
@@ -14,6 +15,8 @@ export default function WorkoutScreen({ route, navigation }) {
   const [notes, setNotes] = useState('');
   const [celebration, setCelebration] = useState(null); // texte de la mascotte, ou null si masqué
   const [reward, setReward] = useState(null);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const startLine = useMemo(() => getMascotLine('workout_start'), []);
 
   const toggleSet = (exIndex, setIndex) => {
     setDoneSets((prev) => {
@@ -34,6 +37,10 @@ export default function WorkoutScreen({ route, navigation }) {
 
   return (
     <ScrollView style={styles.container} contentContainerStyle={{ padding: 20, paddingTop: 60 }}>
+      <View style={{ marginBottom: 20 }}>
+        <Mascot line={startLine} mood={getMascotMood('workout_start')} variant="hero" size={140} />
+      </View>
+
       <Text style={styles.title}>{session.name}</Text>
 
       {session.exercises?.map((ex, exIndex) => (

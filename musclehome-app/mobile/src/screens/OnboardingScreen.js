@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import {
-  View, Text, TextInput, StyleSheet,
+  View, Text, TextInput, StyleSheet, ScrollView,
   KeyboardAvoidingView, Platform,
 } from 'react-native';
 import Animated, { FadeInRight, FadeOutLeft } from 'react-native-reanimated';
@@ -107,8 +107,13 @@ export default function OnboardingScreen({ navigation }) {
     <KeyboardAvoidingView
       style={styles.flex}
       behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+      keyboardVerticalOffset={Platform.OS === 'ios' ? 60 : 0}
     >
-      <View style={styles.container}>
+      <ScrollView
+        style={styles.flex}
+        contentContainerStyle={styles.container}
+        keyboardShouldPersistTaps="handled"
+      >
         <View style={styles.progressRow}>
           {steps.map((s, i) => (
             <View key={s.key} style={[styles.progressDot, i <= step && styles.progressDotDone]} />
@@ -116,10 +121,10 @@ export default function OnboardingScreen({ navigation }) {
         </View>
 
         <View style={{ marginBottom: 24 }}>
-          <Mascot line={mascotLine} tag="Buffalo demande" />
+          <Mascot line={mascotLine} tag="Buffalo demande" variant="hero" size={180} />
         </View>
 
-        <Animated.View key={current.key} entering={FadeInRight.duration(250)} exiting={FadeOutLeft.duration(150)} style={styles.stepBody}>
+        <Animated.View key={current.key} entering={FadeInRight.duration(250)} exiting={FadeOutLeft.duration(150)}>
           {current.key === 'age' && (
             <TextInput
               style={styles.bigInput}
@@ -222,20 +227,18 @@ export default function OnboardingScreen({ navigation }) {
             </Text>
           </Tap>
         </View>
-      </View>
+      </ScrollView>
     </KeyboardAvoidingView>
   );
 }
 
 const styles = StyleSheet.create({
   flex: { flex: 1, backgroundColor: '#130D09' },
-  container: { flex: 1, padding: 20, paddingTop: 60 },
+  container: { padding: 20, paddingTop: 60, paddingBottom: 40, flexGrow: 1 },
 
   progressRow: { flexDirection: 'row', gap: 6, marginBottom: 28 },
   progressDot: { flex: 1, height: 4, borderRadius: 2, backgroundColor: '#2E2019' },
   progressDotDone: { backgroundColor: '#CE6A2E' },
-
-  stepBody: { flex: 1 },
 
   bigInput: {
     backgroundColor: '#201409',

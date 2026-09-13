@@ -15,15 +15,19 @@ const POSES = {
   idle: require('../../assets/mascot-idle.png'),
   celebrate: require('../../assets/mascot-celebrate.png'),
   worried: require('../../assets/mascot-worried.png'),
+  headphones: require('../../assets/mascot-headphones.png'),
+  dumbbells: require('../../assets/mascot-dumbbells.png'),
 };
 
 const EASE_IN_OUT = Easing.bezier(0.77, 0, 0.175, 1);
 
 /**
  * Avatar mascotte animé (thread UI via Reanimated) + bulle de dialogue, façon Duolingo.
- * `mood` choisit la pose ('idle' | 'celebrate' | 'worried'), `line` le texte affiché.
+ * `mood` choisit la pose ('idle' | 'celebrate' | 'worried' | 'headphones' | 'dumbbells').
+ * `variant="hero"` l'affiche en grand, centrée au-dessus de sa bulle, plutôt qu'en petit
+ * avatar aligné à côté (`variant="inline"`, par défaut).
  */
-export default function Mascot({ line, tag = 'Buffalo dit', mood = 'idle', size = 76 }) {
+export default function Mascot({ line, tag = 'Buffalo dit', mood = 'idle', size = 76, variant = 'inline' }) {
   const bob = useSharedValue(0);
   const pop = useSharedValue(1);
 
@@ -53,10 +57,24 @@ export default function Mascot({ line, tag = 'Buffalo dit', mood = 'idle', size 
 
   if (!line) return null;
 
+  const image = <Image source={POSES[mood] || POSES.idle} style={styles.avatar} resizeMode="contain" />;
+
+  if (variant === 'hero') {
+    return (
+      <View style={styles.heroCol}>
+        <Animated.View style={[{ width: size, height: size }, avatarStyle]}>{image}</Animated.View>
+        <Animated.View key={line} entering={FadeIn.duration(200)} style={styles.heroBubble}>
+          <Text style={[styles.tag, { textAlign: 'center' }]}>{tag}</Text>
+          <Text style={[styles.line, styles.heroLine]}>{line}</Text>
+        </Animated.View>
+      </View>
+    );
+  }
+
   return (
     <View style={styles.row}>
       <Animated.View style={[styles.avatarBox, { width: size, height: size }, avatarStyle]}>
-        <Image source={POSES[mood] || POSES.idle} style={styles.avatar} resizeMode="contain" />
+        {image}
       </Animated.View>
       <Animated.View key={line} entering={FadeIn.duration(200)} style={styles.bubble}>
         <Text style={styles.tag}>{tag}</Text>
@@ -80,6 +98,17 @@ const styles = StyleSheet.create({
     padding: 12,
     marginBottom: 6,
   },
+  heroCol: { alignItems: 'center' },
+  heroBubble: {
+    backgroundColor: '#201409',
+    borderWidth: 1,
+    borderColor: '#3A2A1A',
+    borderRadius: 16,
+    padding: 14,
+    marginTop: -8,
+    width: '100%',
+  },
+  heroLine: { textAlign: 'center', fontSize: 15 },
   tag: {
     color: '#F0954B',
     fontSize: 10.5,

@@ -52,6 +52,13 @@ const LINES = {
     "Streak cassée, mais pas toi. On repart sur une nouvelle série dès cette semaine.",
   ],
 
+  // Début de séance
+  workout_start: [
+    "Allez, on attaque. Chaque série compte.",
+    "C'est parti. Concentre-toi sur l'exécution, pas la vitesse.",
+    'Échauffe-toi bien, puis on donne tout.',
+  ],
+
   // Séance terminée à l'instant
   session_done: [
     "Séance dans la poche. À la suivante.",
@@ -89,6 +96,7 @@ const MOOD_BY_KEY = {
   milestone: 'celebrate',
   photo_tip_face: 'idle',
   photo_tip_profil: 'idle',
+  workout_start: 'dumbbells',
 };
 
 export function getMascotMood(key) {
