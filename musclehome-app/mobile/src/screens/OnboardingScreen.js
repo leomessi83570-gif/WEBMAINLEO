@@ -10,32 +10,33 @@ import Tap from '../components/Tap';
 import { getOnboardingLine } from '../utils/mascotLines';
 
 const GOALS = [
-  { key: 'perte_de_gras', label: 'Perte de gras' },
-  { key: 'prise_de_masse', label: 'Prise de masse' },
-  { key: 'recomposition', label: 'Recomposition (les deux)' },
-  { key: 'performance', label: 'Performance / force' },
+  { key: 'perte_de_gras', label: 'Perte de gras', icon: '🔥' },
+  { key: 'prise_de_masse', label: 'Prise de masse', icon: '💪' },
+  { key: 'recomposition', label: 'Recomposition (les deux)', icon: '⚖️' },
+  { key: 'performance', label: 'Performance / force', icon: '🏆' },
 ];
 
 const LEVELS = [
-  { key: 'debutant', label: 'Débutant' },
-  { key: 'intermediaire', label: 'Intermédiaire' },
-  { key: 'avance', label: 'Avancé' },
+  { key: 'debutant', label: 'Débutant', icon: '🌱' },
+  { key: 'intermediaire', label: 'Intermédiaire', icon: '⚡' },
+  { key: 'avance', label: 'Avancé', icon: '👑' },
 ];
 
 const EQUIPMENT = [
-  { key: 'aucun', label: 'Rien (poids du corps)' },
-  { key: 'halteres', label: 'Haltères' },
-  { key: 'elastiques', label: 'Élastiques' },
-  { key: 'barre_traction', label: 'Barre de traction' },
-  { key: 'banc', label: 'Banc' },
-  { key: 'complet', label: 'Salle complète' },
+  { key: 'aucun', label: 'Rien (poids du corps)', icon: '🤸' },
+  { key: 'halteres', label: 'Haltères', icon: '🏋️' },
+  { key: 'elastiques', label: 'Élastiques', icon: '🎗️' },
+  { key: 'barre_traction', label: 'Barre de traction', icon: '🦾' },
+  { key: 'banc', label: 'Banc', icon: '🛋️' },
+  { key: 'complet', label: 'Salle complète', icon: '🏟️' },
 ];
 
 const SESSIONS_OPTIONS = ['2', '3', '4', '5', '6'];
 
-function Chip({ label, selected, onPress }) {
+function Chip({ label, icon, selected, onPress }) {
   return (
     <Tap onPress={onPress} style={[styles.chip, selected && styles.chipSelected]}>
+      {icon && <Text style={styles.chipIcon}>{icon}</Text>}
       <Text style={[styles.chipText, selected && styles.chipTextSelected]}>{label}</Text>
     </Tap>
   );
@@ -173,7 +174,7 @@ export default function OnboardingScreen({ navigation }) {
           {current.key === 'goal' && (
             <View style={styles.chipCol}>
               {GOALS.map((g) => (
-                <Chip key={g.key} label={g.label} selected={goal === g.key} onPress={() => setGoal(g.key)} />
+                <Chip key={g.key} label={g.label} icon={g.icon} selected={goal === g.key} onPress={() => setGoal(g.key)} />
               ))}
             </View>
           )}
@@ -181,7 +182,7 @@ export default function OnboardingScreen({ navigation }) {
           {current.key === 'level' && (
             <View style={styles.chipCol}>
               {LEVELS.map((l) => (
-                <Chip key={l.key} label={l.label} selected={level === l.key} onPress={() => setLevel(l.key)} />
+                <Chip key={l.key} label={l.label} icon={l.icon} selected={level === l.key} onPress={() => setLevel(l.key)} />
               ))}
             </View>
           )}
@@ -192,6 +193,7 @@ export default function OnboardingScreen({ navigation }) {
                 <Chip
                   key={e.key}
                   label={e.label}
+                  icon={e.icon}
                   selected={equipment.includes(e.key)}
                   onPress={() => toggleEquipment(e.key)}
                 />
@@ -275,6 +277,9 @@ const styles = StyleSheet.create({
   chipCol: { gap: 10 },
   chipRow: { flexDirection: 'row', flexWrap: 'wrap', gap: 10 },
   chip: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
     borderWidth: 1,
     borderColor: '#3A2A1A',
     backgroundColor: '#201409',
@@ -282,6 +287,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: 14,
   },
+  chipIcon: { fontSize: 16 },
   chipSelected: { backgroundColor: '#E8623F', borderColor: '#E8623F' },
   chipText: { color: '#D8C9B8', fontSize: 14 },
   chipTextSelected: { color: '#F3E7D6', fontWeight: '700' },

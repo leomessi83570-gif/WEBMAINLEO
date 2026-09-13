@@ -17,6 +17,8 @@ const defaultState = {
   logs: [],             // historique des séances / poids
   weeklyGoal: 4,         // objectif de séances par semaine (streak hebdo, pas 7/7)
   badges: [],            // badges permanents débloqués via la récompense variable post-séance
+  soundEnabled: true,    // petits sons sur les moments clés (série, séance, badge)
+  softPaywallShown: [],  // clés des popups premium contextuels déjà montrés (pour ne pas les répéter)
 };
 
 export function UserProvider({ children }) {
@@ -79,6 +81,15 @@ export function UserProvider({ children }) {
     });
   };
 
+  const markSoftPaywallShown = async (key) => {
+    setState((prev) => {
+      if (prev.softPaywallShown.includes(key)) return prev;
+      const next = { ...prev, softPaywallShown: [...prev.softPaywallShown, key] };
+      AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(next)).catch(() => {});
+      return next;
+    });
+  };
+
   const reset = async () => {
     await AsyncStorage.removeItem(STORAGE_KEY);
     await cancelAllReminders().catch(() => {});
@@ -86,7 +97,7 @@ export function UserProvider({ children }) {
   };
 
   return (
-    <UserContext.Provider value={{ ...state, loaded, update, addLog, addBadge, reset }}>
+    <UserContext.Provider value={{ ...state, loaded, update, addLog, addBadge, markSoftPaywallShown, reset }}>
       {children}
     </UserContext.Provider>
   );

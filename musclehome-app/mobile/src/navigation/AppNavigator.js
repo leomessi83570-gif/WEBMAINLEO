@@ -1,7 +1,7 @@
 import React from 'react';
-import { View, ActivityIndicator } from 'react-native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useUser } from '../context/UserContext';
+import SplashLoader from '../components/SplashLoader';
 
 import WelcomeScreen from '../screens/WelcomeScreen';
 import OnboardingScreen from '../screens/OnboardingScreen';
@@ -28,11 +28,7 @@ export default function AppNavigator() {
   const { loaded, onboarded } = useUser();
 
   if (!loaded) {
-    return (
-      <View style={{ flex: 1, backgroundColor: '#130D09', justifyContent: 'center' }}>
-        <ActivityIndicator size="large" color="#E8623F" />
-      </View>
-    );
+    return <SplashLoader />;
   }
 
   return (

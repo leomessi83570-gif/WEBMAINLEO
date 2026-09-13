@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, Alert, Image, TextInput } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Alert, Image, TextInput, Switch } from 'react-native';
 import { useUser } from '../context/UserContext';
 import { computeStreak } from '../utils/streak';
 import { BADGES } from '../utils/rewards';
@@ -10,7 +10,7 @@ import WeightChart from '../components/WeightChart';
 const AVATAR = require('../../assets/mascot-idle.png');
 
 export default function ProfileScreen({ navigation }) {
-  const { profile, logs, weeklyGoal, badges, isPremium, reset, addLog } = useUser();
+  const { profile, logs, weeklyGoal, badges, isPremium, reset, addLog, soundEnabled, update } = useUser();
   const streakInfo = computeStreak(logs, weeklyGoal);
   const sessionsDone = logs.filter((l) => l.type === 'session').length;
   const league = getLeagueInfo(sessionsDone);
@@ -129,6 +129,16 @@ export default function ProfileScreen({ navigation }) {
         <Text style={styles.linkCardText}>🕘 Historique complet des séances</Text>
       </Tap>
 
+      <View style={styles.soundRow}>
+        <Text style={styles.soundLabel}>🔊 Sons de l'app</Text>
+        <Switch
+          value={soundEnabled}
+          onValueChange={(v) => update({ soundEnabled: v })}
+          trackColor={{ false: '#3A2A1A', true: '#E8623F' }}
+          thumbColor="#F3E7D6"
+        />
+      </View>
+
       <Tap haptic={false} style={styles.resetLink} onPress={confirmReset}>
         <Text style={styles.resetLinkText}>Réinitialiser le profil (dev)</Text>
       </Tap>
@@ -205,6 +215,12 @@ const styles = StyleSheet.create({
   premiumSub: { color: '#B39D85', fontSize: 13, marginTop: 4 },
   linkCard: { backgroundColor: '#201409', borderWidth: 1, borderColor: '#3A2A1A', borderRadius: 14, padding: 16, marginBottom: 12 },
   linkCardText: { color: '#F3E7D6', fontSize: 15, fontWeight: '600' },
+  soundRow: {
+    flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between',
+    backgroundColor: '#201409', borderWidth: 1, borderColor: '#3A2A1A',
+    borderRadius: 14, padding: 16, marginBottom: 12,
+  },
+  soundLabel: { color: '#F3E7D6', fontSize: 15, fontWeight: '600' },
   resetLink: { marginTop: 16, alignItems: 'center' },
   resetLinkText: { color: '#5A4A38', fontSize: 12, textDecorationLine: 'underline' },
 });

@@ -1,9 +1,11 @@
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Image } from 'react-native';
 import Animated, { FadeInDown } from 'react-native-reanimated';
 import { useUser } from '../context/UserContext';
 import Tap from '../components/Tap';
 import { guessExerciseIcon } from '../utils/exerciseIcons';
+
+const WORRIED_MASCOT = require('../../assets/mascot-worried.png');
 
 export default function TrainingScreen({ navigation }) {
   const { program, logs } = useUser();
@@ -15,7 +17,13 @@ export default function TrainingScreen({ navigation }) {
       <Text style={styles.subtitle}>{program?.goal_label || 'Ton programme'}</Text>
 
       {sessions.length === 0 ? (
-        <Text style={styles.paragraph}>Aucun programme généré pour l'instant.</Text>
+        <View style={styles.emptyState}>
+          <Image source={WORRIED_MASCOT} style={styles.emptyMascot} resizeMode="contain" />
+          <Text style={styles.emptyTitle}>Pas encore de programme</Text>
+          <Text style={styles.emptyText}>
+            Termine le questionnaire et l'analyse pour que Buffalo te construise un programme sur mesure.
+          </Text>
+        </View>
       ) : (
         sessions.map((session, i) => {
           const doneCount = logs.filter((l) => l.type === 'session' && l.session_name === session.name).length;
@@ -60,6 +68,10 @@ const styles = StyleSheet.create({
   title: { color: '#F3E7D6', fontSize: 26, fontFamily: 'ArchivoBlack_400Regular' },
   subtitle: { color: '#B39D85', fontSize: 14, marginTop: 4, marginBottom: 24 },
   paragraph: { color: '#B39D85', fontSize: 14 },
+  emptyState: { alignItems: 'center', paddingTop: 40 },
+  emptyMascot: { width: 160, height: 190, marginBottom: 12 },
+  emptyTitle: { color: '#F3E7D6', fontSize: 18, fontFamily: 'ArchivoBlack_400Regular', marginBottom: 8 },
+  emptyText: { color: '#B39D85', fontSize: 13.5, textAlign: 'center', lineHeight: 19, paddingHorizontal: 20 },
 
   sessionCard: {
     flexDirection: 'row', alignItems: 'center', gap: 14,

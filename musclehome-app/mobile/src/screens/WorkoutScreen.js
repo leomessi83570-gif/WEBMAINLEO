@@ -7,15 +7,19 @@ import { getMascotLine } from '../utils/mascotLines';
 import { rollReward } from '../utils/rewards';
 import { parseRestSeconds } from '../utils/time';
 import { guessExerciseIcon } from '../utils/exerciseIcons';
+import { playSound } from '../utils/sounds';
 import Tap from '../components/Tap';
 import Mascot from '../components/Mascot';
 import CircularTimer from '../components/CircularTimer';
+import Confetti from '../components/Confetti';
+import SoftPaywallModal from '../components/SoftPaywallModal';
 
 const CELEBRATE_IMAGE = require('../../assets/mascot-celebrate.png');
+const SOFT_PAYWALL_SESSION_COUNT = 3;
 
 export default function WorkoutScreen({ route, navigation }) {
   const { session } = route.params;
-  const { addLog, addBadge } = useUser();
+  const { addLog, addBadge, logs, isPremium, soundEnabled, softPaywallShown, markSoftPaywallShown } = useUser();
   const exercises = session.exercises || [];
 
   // step = index de l'exercice en cours (0..N-1), ou N pour l'étape récap/notes finale
@@ -27,6 +31,7 @@ export default function WorkoutScreen({ route, navigation }) {
   const [notes, setNotes] = useState('');
   const [celebration, setCelebration] = useState(null);
   const [reward, setReward] = useState(null);
+  const [showSoftPaywall, setShowSoftPaywall] = useState(false);
   const intervalRef = useRef(null);
 
   const isRecap = step >= exercises.length;
@@ -55,6 +60,7 @@ export default function WorkoutScreen({ route, navigation }) {
 
   const finishSet = () => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light).catch(() => {});
+    if (soundEnabled) playSound('setDone');
     const isLastSet = setIndex >= exercise.sets - 1;
 
     if (isLastSet) {
@@ -80,8 +86,22 @@ export default function WorkoutScreen({ route, navigation }) {
     await addLog({ type: 'session', session_name: session.name, notes });
     const r = rollReward();
     if (r.badge) await addBadge(r.badge);
+    if (soundEnabled) playSound(r.tier === 'epique' || r.tier === 'legendaire' ? 'badge' : 'success');
     setReward(r);
     setCelebration(getMascotLine('session_done'));
+  };
+
+  const closeCelebration = () => {
+    setCelebration(null);
+    setReward(null);
+
+    const sessionsDoneNow = logs.filter((l) => l.type === 'session').length; // inclut la séance qu'on vient d'ajouter
+    if (!isPremium && sessionsDoneNow >= SOFT_PAYWALL_SESSION_COUNT && !softPaywallShown.includes('after_3_sessions')) {
+      markSoftPaywallShown('after_3_sessions');
+      setShowSoftPaywall(true);
+      return;
+    }
+    navigation.navigate('MainTabs', { screen: 'Accueil' });
   };
 
   const progressSteps = exercises.length + 1;
@@ -169,6 +189,9 @@ export default function WorkoutScreen({ route, navigation }) {
 
       <Modal visible={!!celebration} transparent animationType="fade">
         <View style={styles.modalBackdrop}>
+          {reward && (reward.tier === 'epique' || reward.tier === 'legendaire') && (
+            <Confetti triggerKey={celebration} />
+          )}
           <View style={styles.modalCard}>
             <Image source={CELEBRATE_IMAGE} style={styles.modalMascot} resizeMode="contain" />
             <Text style={styles.modalTitle}>Séance dans la poche 💪</Text>
@@ -184,19 +207,24 @@ export default function WorkoutScreen({ route, navigation }) {
               </View>
             )}
 
-            <Tap
-              style={styles.modalButton}
-              onPress={() => {
-                setCelebration(null);
-                setReward(null);
-                navigation.navigate('MainTabs', { screen: 'Accueil' });
-              }}
-            >
+            <Tap style={styles.modalButton} onPress={closeCelebration}>
               <Text style={styles.buttonText}>Retour à l'accueil</Text>
             </Tap>
           </View>
         </View>
       </Modal>
+
+      <SoftPaywallModal
+        visible={showSoftPaywall}
+        onClose={() => {
+          setShowSoftPaywall(false);
+          navigation.navigate('MainTabs', { screen: 'Accueil' });
+        }}
+        onUpgrade={() => {
+          setShowSoftPaywall(false);
+          navigation.navigate('Paywall');
+        }}
+      />
     </View>
   );
 }
