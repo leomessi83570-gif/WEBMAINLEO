@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { View, Text, StyleSheet, ScrollView, Image } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import Animated, { FadeInDown } from 'react-native-reanimated';
@@ -18,7 +18,17 @@ const HERO_MASCOT = require('../../assets/mascot-celebrate.png');
 const STAGGER = 70;
 
 export default function DashboardScreen({ navigation }) {
-  const { program, isPremium, logs, weeklyGoal } = useUser();
+  const { program, isPremium, logs, weeklyGoal, pendingPaywallOpen, update } = useUser();
+
+  // Si l'utilisateur a choisi "Débloquer Premium" dans le popup juste après l'onboarding,
+  // on ouvre directement la page Paywall complète dès l'arrivée sur le dashboard.
+  useEffect(() => {
+    if (pendingPaywallOpen) {
+      update({ pendingPaywallOpen: false });
+      navigation.navigate('Paywall');
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pendingPaywallOpen]);
 
   const todaySession = program?.sessions?.[0]; // V1 : on propose toujours la 1ère séance du cycle
   const sessionsDone = logs.filter((l) => l.type === 'session').length;

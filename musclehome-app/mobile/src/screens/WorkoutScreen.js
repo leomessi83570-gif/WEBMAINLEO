@@ -12,14 +12,12 @@ import Tap from '../components/Tap';
 import Mascot from '../components/Mascot';
 import CircularTimer from '../components/CircularTimer';
 import Confetti from '../components/Confetti';
-import SoftPaywallModal from '../components/SoftPaywallModal';
 
 const CELEBRATE_IMAGE = require('../../assets/mascot-celebrate.png');
-const SOFT_PAYWALL_SESSION_COUNT = 3;
 
 export default function WorkoutScreen({ route, navigation }) {
   const { session } = route.params;
-  const { addLog, addBadge, logs, isPremium, soundEnabled, softPaywallShown, markSoftPaywallShown } = useUser();
+  const { addLog, addBadge, soundEnabled } = useUser();
   const exercises = session.exercises || [];
 
   // step = index de l'exercice en cours (0..N-1), ou N pour l'étape récap/notes finale
@@ -31,7 +29,6 @@ export default function WorkoutScreen({ route, navigation }) {
   const [notes, setNotes] = useState('');
   const [celebration, setCelebration] = useState(null);
   const [reward, setReward] = useState(null);
-  const [showSoftPaywall, setShowSoftPaywall] = useState(false);
   const intervalRef = useRef(null);
 
   const isRecap = step >= exercises.length;
@@ -94,13 +91,6 @@ export default function WorkoutScreen({ route, navigation }) {
   const closeCelebration = () => {
     setCelebration(null);
     setReward(null);
-
-    const sessionsDoneNow = logs.filter((l) => l.type === 'session').length; // inclut la séance qu'on vient d'ajouter
-    if (!isPremium && sessionsDoneNow >= SOFT_PAYWALL_SESSION_COUNT && !softPaywallShown.includes('after_3_sessions')) {
-      markSoftPaywallShown('after_3_sessions');
-      setShowSoftPaywall(true);
-      return;
-    }
     navigation.navigate('MainTabs', { screen: 'Accueil' });
   };
 
@@ -213,18 +203,6 @@ export default function WorkoutScreen({ route, navigation }) {
           </View>
         </View>
       </Modal>
-
-      <SoftPaywallModal
-        visible={showSoftPaywall}
-        onClose={() => {
-          setShowSoftPaywall(false);
-          navigation.navigate('MainTabs', { screen: 'Accueil' });
-        }}
-        onUpgrade={() => {
-          setShowSoftPaywall(false);
-          navigation.navigate('Paywall');
-        }}
-      />
     </View>
   );
 }

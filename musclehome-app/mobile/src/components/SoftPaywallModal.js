@@ -6,10 +6,10 @@ import Tap from './Tap';
 const MASCOT = require('../../assets/mascot-celebrate.png');
 
 /**
- * Popup premium contextuel (pas la page Paywall complète) : surgit à un moment où
- * l'utilisateur vient de montrer de l'engagement (ex: 3e séance), pour capitaliser
- * sur la motivation du moment plutôt que d'attendre qu'il aille chercher Premium
- * lui-même.
+ * Popup premium contextuel (pas la page Paywall complète) : surgit juste après que
+ * l'utilisateur ait terminé son questionnaire + son programme personnalisé, pour
+ * capitaliser sur la motivation du moment plutôt que d'attendre qu'il aille chercher
+ * Premium lui-même.
  */
 export default function SoftPaywallModal({ visible, onClose, onUpgrade }) {
   return (
@@ -17,9 +17,9 @@ export default function SoftPaywallModal({ visible, onClose, onUpgrade }) {
       <View style={styles.backdrop}>
         <Animated.View entering={ZoomIn.duration(350).springify().damping(14)} style={styles.card}>
           <Image source={MASCOT} style={styles.mascot} resizeMode="contain" />
-          <Text style={styles.title}>Tu tiens le rythme 🔥</Text>
+          <Text style={styles.title}>Ton programme est prêt 🔥</Text>
           <Text style={styles.subtitle}>
-            3 séances déjà faites. C'est le bon moment pour débloquer tout ce que Buffalo peut faire pour toi.
+            C'est le bon moment pour débloquer tout ce que Buffalo peut faire pour toi, avant même ta première séance.
           </Text>
 
           <View style={styles.perks}>
