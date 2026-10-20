@@ -1,0 +1,17 @@
+{
+  "name": "ANGRAMM",
+  "url": "https://angramm.com",
+  "lang": "fr",
+  "locale": "fr_FR",
+  "tagline": "Films & campagnes",
+  "description": "ANGRAMM® réalise des films et des campagnes pour les marques : sport, mode et culture. Kappa, Lacoste, Olympique de Marseille, Mizuno.",
+  "about": [
+    "ANGRAMM® imagine et réalise des films pour les marques, entre documentaire de rue et images de synthèse.",
+    "De Marseille à Rio, chaque projet part d'un territoire et des gens qui l'habitent."
+  ],
+  "city": "Marseille",
+  "country": "FR",
+  "email": "",
+  "instagram": "https://www.instagram.com/angramm/",
+  "_todo": "À valider avec ANGRAMM : url (nom de domaine), description, about, city, email."
+}
