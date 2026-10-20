@@ -1,60 +1,50 @@
 (() => {
   const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  // ---------- Accueil : une vidéo plein écran par projet ----------
+  const load = (v) => {
+    if (v.dataset.src) {
+      v.src = v.dataset.src;
+      v.removeAttribute('data-src');
+      v.preload = 'auto';
+    }
+  };
+  const play = (v) => !reduced && v.play().catch(() => {});
+
+  // ---------- Accueil : chaque film se lance quand il arrive à l'écran ----------
   const reels = [...document.querySelectorAll('.reel')];
-  const items = [...document.querySelectorAll('.item')];
   if (reels.length) {
-    const counter = document.querySelector('[data-current]');
-    const CYCLE = 7000;
-    let current = 0;
-    let timer = null;
-
-    const load = (v) => {
-      if (v.dataset.src) {
-        v.src = v.dataset.src;
-        v.removeAttribute('data-src');
-        v.preload = 'auto';
-      }
-    };
-
-    const setActive = (i) => {
-      if (i === current) return;
-      const prev = reels[current];
-      current = i;
-      const v = reels[i];
-      load(v);
-      if (!reduced) {
-        v.currentTime = 0;
-        v.play().catch(() => {});
-      }
-      reels.forEach((r) => r.classList.toggle('is-active', r === v));
-      items.forEach((a, j) => a.classList.toggle('is-active', j === i));
-      if (counter) counter.textContent = String(i + 1).padStart(2, '0');
-      setTimeout(() => current !== reels.indexOf(prev) && prev.pause(), 900);
-      load(reels[(i + 1) % reels.length]); // la suivante est prête avant son tour
-    };
-
-    const start = () => {
-      if (reduced) return;
-      clearInterval(timer);
-      timer = setInterval(() => setActive((current + 1) % reels.length), CYCLE);
-    };
-    const stop = () => clearInterval(timer);
-
-    if (reduced) reels[0].pause();
-    items.forEach((a, i) => {
-      a.addEventListener('mouseenter', () => { stop(); setActive(i); });
-      a.addEventListener('focus', () => { stop(); setActive(i); });
-    });
-    document.querySelector('.list').addEventListener('mouseleave', start);
+    // Charge le film visible et le suivant, pas les autres.
+    const near = new IntersectionObserver(
+      (entries) => entries.forEach((e) => e.isIntersecting && load(e.target.querySelector('video'))),
+      { rootMargin: '100% 0px' }
+    );
+    const seen = new IntersectionObserver(
+      (entries) =>
+        entries.forEach((e) => {
+          const v = e.target.querySelector('video');
+          e.target.classList.toggle('in-view', e.isIntersecting);
+          if (e.isIntersecting) { load(v); play(v); } else v.pause();
+        }),
+      { threshold: 0.6 }
+    );
+    reels.forEach((r) => { near.observe(r); seen.observe(r); });
     document.addEventListener('visibilitychange', () => {
-      if (document.hidden) { stop(); reels[current].pause(); }
-      else { if (!reduced) reels[current].play().catch(() => {}); start(); }
+      const v = document.querySelector('.reel.in-view video');
+      if (v) document.hidden ? v.pause() : play(v);
     });
-    addEventListener('load', () => load(reels[1 % reels.length]));
-    start();
   }
+
+  // ---------- Projets : l'aperçu s'anime au survol ----------
+  document.querySelectorAll('.thumb').forEach((a) => {
+    const v = a.querySelector('video');
+    a.addEventListener('mouseenter', () => {
+      if (reduced) return;
+      load(v);
+      v.currentTime = 0;
+      v.play().then(() => a.classList.add('is-playing')).catch(() => {});
+    });
+    a.addEventListener('mouseleave', () => { a.classList.remove('is-playing'); v.pause(); });
+  });
 
   // ---------- Page projet : son + lecture ----------
   const film = document.querySelector('.film');
@@ -76,5 +66,24 @@
       label.textContent = film.muted ? 'off' : 'on';
     });
     film.addEventListener('click', () => (film.paused ? film.play() : film.pause()));
+  }
+
+  // ---------- Curseur ----------
+  const cursor = document.querySelector('.cursor');
+  if (cursor && matchMedia('(hover: hover) and (pointer: fine)').matches) {
+    document.documentElement.classList.add('has-cursor');
+    let x = -100, y = -100, raf = 0;
+    const move = () => {
+      raf = 0;
+      cursor.style.transform = `translate3d(${x}px, ${y}px, 0)`;
+    };
+    addEventListener('pointermove', (e) => {
+      x = e.clientX;
+      y = e.clientY;
+      cursor.classList.remove('is-off');
+      cursor.classList.toggle('is-link', !!e.target.closest('a, button'));
+      if (!raf) raf = requestAnimationFrame(move);
+    }, { passive: true });
+    document.documentElement.addEventListener('pointerleave', () => cursor.classList.add('is-off'));
   }
 })();

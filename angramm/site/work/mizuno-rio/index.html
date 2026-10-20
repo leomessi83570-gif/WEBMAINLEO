@@ -20,43 +20,40 @@
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="preload" href="/fonts/archivo-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/assets/style.css">
-<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://angramm.com/#org","name":"ANGRAMM","url":"https://angramm.com/","logo":"https://angramm.com/favicon.svg","description":"ANGRAMM® réalise des films et des campagnes pour les marques : sport, mode et culture. Kappa, Lacoste, Olympique de Marseille, Mizuno.","sameAs":["https://www.instagram.com/angramm/"],"address":{"@type":"PostalAddress","addressLocality":"Marseille","addressCountry":"FR"}},{"@type":"VideoObject","name":"Mizuno · Rio de Janeiro","description":"Une favela de Rio de Janeiro qui s'illumine : un film Mizuno sur la débrouille, l'énergie et la lumière.","thumbnailUrl":["https://angramm.com/media/mizuno-rio/poster.jpg"],"contentUrl":"https://angramm.com/media/mizuno-rio/full.mp4","uploadDate":"2026-10-20","duration":"PT0M46S","width":1276,"height":720,"inLanguage":"fr","creator":{"@id":"https://angramm.com/#org"},"contentLocation":{"@type":"Place","name":"Rio de Janeiro"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"ANGRAMM","item":"https://angramm.com/"},{"@type":"ListItem","position":2,"name":"Projets","item":"https://angramm.com/#projets"},{"@type":"ListItem","position":3,"name":"Mizuno · Rio de Janeiro","item":"https://angramm.com/work/mizuno-rio/"}]}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://angramm.com/#org","name":"ANGRAMM","url":"https://angramm.com/","logo":"https://angramm.com/favicon.svg","description":"ANGRAMM® réalise des films et des campagnes pour les marques : sport, mode et culture. Kappa, Lacoste, Olympique de Marseille, Mizuno.","sameAs":["https://www.instagram.com/angramm/"],"address":{"@type":"PostalAddress","addressLocality":"Marseille","addressCountry":"FR"}},{"@type":"VideoObject","name":"Mizuno · Rio de Janeiro","description":"Une favela de Rio de Janeiro qui s'illumine : un film Mizuno sur la débrouille, l'énergie et la lumière.","thumbnailUrl":["https://angramm.com/media/mizuno-rio/poster.jpg"],"contentUrl":"https://angramm.com/media/mizuno-rio/full.mp4","uploadDate":"2026-10-20","duration":"PT0M46S","width":1276,"height":720,"inLanguage":"fr","creator":{"@id":"https://angramm.com/#org"},"contentLocation":{"@type":"Place","name":"Rio de Janeiro"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"ANGRAMM","item":"https://angramm.com/"},{"@type":"ListItem","position":2,"name":"Projets","item":"https://angramm.com/projets/"},{"@type":"ListItem","position":3,"name":"Mizuno · Rio de Janeiro","item":"https://angramm.com/work/mizuno-rio/"}]}]}</script>
 </head>
 <body class="work">
 <header class="top">
-  <a class="wordmark" href="/" aria-label="ANGRAMM, accueil">ANGRAMM<sup>®</sup></a>
   <nav class="nav" aria-label="Navigation principale">
-    <a href="/#projets" aria-current="page">Projets</a>
-    <a href="/#studio">Studio</a>
-    <a href="/#contact">Contact</a>
+    <a href="/projets/" aria-current="page">Projets</a>
+    <a href="/studio/">Studio</a>
+    <a class="wordmark" href="/" aria-label="ANGRAMM, accueil">ANGRAMM<sup>®</sup></a>
+    <a href="/studio/#contact">Contact</a>
+    <a href="https://www.instagram.com/angramm/" rel="me noopener" target="_blank">Instagram</a>
   </nav>
 </header>
 <main>
   <section class="player" aria-label="Film">
-    <video class="film" src="/media/mizuno-rio/full.mp4" poster="/media/mizuno-rio/poster.jpg" playsinline autoplay muted loop preload="metadata" width="1276" height="720"></video>
+    <video class="film" src="/media/mizuno-rio/full.mp4" poster="/media/mizuno-rio/poster.jpg" playsinline autoplay muted loop preload="auto" width="1276" height="720"></video>
+    <h1 class="cap">Mizuno <span>Rio de Janeiro</span></h1>
     <button class="sound" type="button" aria-pressed="false">Son <span>off</span></button>
   </section>
 
   <article class="sheet">
-    <h1 class="sheet-title"><span class="client">Mizuno</span> <span class="title">Rio de Janeiro</span></h1>
-    <p class="sheet-summary">Une favela de Rio de Janeiro qui s&#39;illumine : un film Mizuno sur la débrouille, l&#39;énergie et la lumière.</p>
-    <dl class="meta">
+    <p class="summary">Une favela de Rio de Janeiro qui s&#39;illumine : un film Mizuno sur la débrouille, l&#39;énergie et la lumière.</p>
+    <dl class="facts">
       <div><dt>Client</dt><dd>Mizuno</dd></div>
       <div><dt>Lieu</dt><dd>Rio de Janeiro</dd></div>
       <div><dt>Durée</dt><dd>0′46″</dd></div>
       
     </dl>
-    <a class="next" href="/work/endoume-kappa/"><span class="label">Projet suivant</span> <span class="client">Kappa × US Endoume</span> <span class="title">Marseille</span></a>
+    <nav class="pager" aria-label="Projets">
+      <a href="/projets/">Tous les projets</a>
+      <a href="/work/endoume-kappa/">Suivant : Kappa × US Endoume</a>
+    </nav>
   </article>
 </main>
-<footer class="foot" id="contact">
-  <div class="foot-col">
-    <p class="label">Contact</p>
-    
-    <p><a href="https://www.instagram.com/angramm/" rel="me noopener" target="_blank">Instagram ↗</a></p>
-  </div>
-  <p class="foot-legal">© 2026 ANGRAMM® · Marseille</p>
-</footer>
+<div class="cursor is-off" aria-hidden="true"><svg viewBox="0 0 40 48" width="26" height="31"><path d="M5 45 12 4 38 42" fill="none" stroke="currentColor" stroke-width="6" stroke-linejoin="miter" stroke-miterlimit="10"/></svg></div>
 <script src="/assets/main.js" defer></script>
 </body>
 </html>

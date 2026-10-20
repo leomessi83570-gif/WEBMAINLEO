@@ -7,7 +7,8 @@
     "location": "Marseille",
     "duration": 63,
     "width": 720,
-    "height": 1280
+    "height": 1280,
+    "start": 22
   },
   {
     "slug": "volcan",
@@ -17,7 +18,8 @@
     "location": "",
     "duration": 81,
     "width": 1276,
-    "height": 720
+    "height": 720,
+    "start": 27
   },
   {
     "slug": "lacoste",
@@ -27,7 +29,8 @@
     "location": "",
     "duration": 48,
     "width": 960,
-    "height": 720
+    "height": 720,
+    "start": 26
   },
   {
     "slug": "om-cma-cgm",
@@ -38,7 +41,8 @@
     "location": "Marseille",
     "duration": 70,
     "width": 1278,
-    "height": 720
+    "height": 720,
+    "start": 60
   },
   {
     "slug": "mizuno-rio",
@@ -48,6 +52,7 @@
     "location": "Rio de Janeiro",
     "duration": 46,
     "width": 1276,
-    "height": 720
+    "height": 720,
+    "start": 12
   }
 ]

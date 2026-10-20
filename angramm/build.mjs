@@ -15,6 +15,8 @@ const esc = (s = '') =>
   String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
 const jsonLd = (data) => `<script type="application/ld+json">${JSON.stringify(data).replace(/</g, '\\u003c')}</script>`;
 const iso = (sec) => `PT${Math.floor(sec / 60)}M${Math.round(sec % 60)}S`;
+const num = (i) => String(i + 1).padStart(2, '0');
+const name = (p) => `${p.client} · ${p.title}`;
 const write = (path, html) => {
   mkdirSync(dirname(join(out, path)), { recursive: true });
   writeFileSync(join(out, path), html);
@@ -57,51 +59,41 @@ ${video ? `<meta property="og:video" content="${base}${video}">\n<meta property=
 ${extra}</head>`;
 }
 
-const header = (current = '') => `<header class="top">
-  <a class="wordmark" href="/" aria-label="${esc(site.name)}, accueil">${esc(site.name)}<sup>®</sup></a>
+// En-tête façon 530° : liens fins répartis sur la largeur, logo ANGRAMM au centre.
+const header = (current = '') => {
+  const link = (href, label, key) => `<a href="${href}"${current === key ? ' aria-current="page"' : ''}>${label}</a>`;
+  return `<header class="top">
   <nav class="nav" aria-label="Navigation principale">
-    <a href="/#projets"${current === 'work' ? ' aria-current="page"' : ''}>Projets</a>
-    <a href="/#studio">Studio</a>
-    <a href="/#contact">Contact</a>
+    ${link('/projets/', 'Projets', 'projets')}
+    ${link('/studio/', 'Studio', 'studio')}
+    <a class="wordmark" href="/" aria-label="${esc(site.name)}, accueil">${esc(site.name)}<sup>®</sup></a>
+    ${link('/studio/#contact', 'Contact', 'contact')}
+    <a href="${esc(site.instagram)}" rel="me noopener" target="_blank">Instagram</a>
   </nav>
 </header>`;
+};
 
-const footer = () => `<footer class="foot" id="contact">
-  <div class="foot-col">
-    <p class="label">Contact</p>
-    ${site.email ? `<p><a href="mailto:${esc(site.email)}">${esc(site.email)}</a></p>` : ''}
-    <p><a href="${esc(site.instagram)}" rel="me noopener" target="_blank">Instagram ↗</a></p>
-  </div>
-  <p class="foot-legal">© ${new Date().getFullYear()} ${esc(site.name)}®${site.city ? ` · ${esc(site.city)}` : ''}</p>
-</footer>`;
+const tail = `<div class="cursor is-off" aria-hidden="true"><svg viewBox="0 0 40 48" width="26" height="31"><path d="M5 45 12 4 38 42" fill="none" stroke="currentColor" stroke-width="6" stroke-linejoin="miter" stroke-miterlimit="10"/></svg></div>
+<script src="/assets/main.js" defer></script>
+</body>
+</html>
+`;
 
-// ---------- Accueil ----------
+// ---------- Accueil : les films défilent au scroll, plein écran ----------
 function home() {
-  const first = projects[0];
-  const videos = projects
+  const reels = projects
     .map(
-      (p, i) => `<video class="reel${i === 0 ? ' is-active' : ''}" data-i="${i}" muted loop playsinline preload="${i === 0 ? 'auto' : 'none'}" poster="/media/${p.slug}/poster.jpg"${
-        i === 0 ? ` src="/media/${p.slug}/loop.mp4" autoplay` : ` data-src="/media/${p.slug}/loop.mp4"`
-      } aria-hidden="true"></video>`
+      (p, i) => `<a class="reel${p.height > p.width ? ' is-portrait' : ''}" href="/work/${p.slug}/" aria-label="${esc(name(p))}">
+    <video muted loop playsinline preload="${i === 0 ? 'auto' : 'none'}" poster="/media/${p.slug}/poster.jpg" data-src="/media/${p.slug}/full.mp4#t=${p.start || 0}"></video>
+    <span class="cap">${esc(p.short || p.client)}</span>
+    <span class="num">${num(i)} / ${num(projects.length - 1)}</span>
+  </a>`
     )
-    .join('\n    ');
-  const items = projects
-    .map(
-      (p, i) => `<li><a class="item${i === 0 ? ' is-active' : ''}" data-i="${i}" href="/work/${p.slug}/"><span class="client">${esc(p.short || p.client)}</span> <span class="title">${esc(p.title)}</span></a></li>`
-    )
-    .join('\n      ');
+    .join('\n  ');
 
   const ld = {
     '@context': 'https://schema.org',
-    '@graph': [
-      org,
-      { '@type': 'WebSite', '@id': `${base}/#site`, url: `${base}/`, name: site.name, inLanguage: site.lang, publisher: { '@id': `${base}/#org` } },
-      {
-        '@type': 'ItemList',
-        name: `Projets ${site.name}`,
-        itemListElement: projects.map((p, i) => ({ '@type': 'ListItem', position: i + 1, url: `${base}/work/${p.slug}/`, name: `${p.client} · ${p.title}` })),
-      },
-    ],
+    '@graph': [org, { '@type': 'WebSite', '@id': `${base}/#site`, url: `${base}/`, name: site.name, inLanguage: site.lang, publisher: { '@id': `${base}/#org` } }],
   };
 
   write(
@@ -110,38 +102,98 @@ function home() {
       title: `${site.name}® · ${site.tagline}`,
       description: site.description,
       path: '/',
-      image: `/media/${first.slug}/poster.jpg`,
-      extra: `<link rel="preload" href="/media/${first.slug}/poster.jpg" as="image" fetchpriority="high">\n${jsonLd(ld)}\n`,
+      image: `/media/${projects[0].slug}/poster.jpg`,
+      extra: `<link rel="preload" href="/media/${projects[0].slug}/poster.jpg" as="image" fetchpriority="high">\n${jsonLd(ld)}\n`,
     })}
 <body class="home">
 ${header()}
-<main>
-  <section class="stage" aria-label="Bande démo">
-    ${videos}
-    <div class="veil" aria-hidden="true"></div>
-  </section>
-
-  <section class="index" id="projets" aria-labelledby="h-projets">
-    <h1 class="sr-only">${esc(site.name)}® · ${esc(site.tagline)}</h1>
-    <h2 id="h-projets" class="label">Projets <span class="count"><span data-current>01</span> / ${String(projects.length).padStart(2, '0')}</span></h2>
-    <ol class="list">
-      ${items}
-    </ol>
-  </section>
+<main class="reels">
+  <h1 class="sr-only">${esc(site.name)}® · ${esc(site.tagline)}</h1>
+  ${reels}
 </main>
+${tail}`
+  );
+}
 
-<section class="studio" id="studio" aria-labelledby="h-studio">
-  <h2 id="h-studio" class="label">Studio</h2>
+// ---------- Projets : grille aérée, la vignette s'anime au survol ----------
+function projectsPage() {
+  const cells = projects
+    .map(
+      (p, i) => `<li class="cell">
+      <a class="thumb" href="/work/${p.slug}/">
+        <span class="frame">
+          <img src="/media/${p.slug}/poster.jpg" alt="${esc(name(p))}" width="${p.width}" height="${p.height}" loading="${i < 4 ? 'eager' : 'lazy'}" decoding="async">
+          <video muted loop playsinline preload="none" data-src="/media/${p.slug}/preview.mp4" aria-hidden="true"></video>
+        </span>
+        <span class="meta"><span class="n">${num(i)}</span> <span class="c">${esc(p.short || p.client)}</span> <span class="t">${esc(p.title)}</span></span>
+      </a>
+    </li>`
+    )
+    .join('\n    ');
+
+  const ld = {
+    '@context': 'https://schema.org',
+    '@graph': [
+      org,
+      {
+        '@type': 'CollectionPage',
+        name: `Projets · ${site.name}`,
+        url: `${base}/projets/`,
+        mainEntity: {
+          '@type': 'ItemList',
+          itemListElement: projects.map((p, i) => ({ '@type': 'ListItem', position: i + 1, url: `${base}/work/${p.slug}/`, name: name(p) })),
+        },
+      },
+    ],
+  };
+
+  write(
+    'projets/index.html',
+    `${head({
+      title: `Projets | ${site.name}®`,
+      description: `Tous les films ${site.name} : ${projects.map((p) => p.short || p.client).join(', ')}.`,
+      path: '/projets/',
+      image: `/media/${projects[0].slug}/poster.jpg`,
+      extra: `${jsonLd(ld)}\n`,
+    })}
+<body class="page-projets">
+${header('projets')}
+<main class="grid-wrap">
+  <h1 class="sr-only">Projets</h1>
+  <ol class="grid">
+    ${cells}
+  </ol>
+</main>
+${tail}`
+  );
+}
+
+// ---------- Studio + contact ----------
+function studioPage() {
+  const clients = [...new Set(projects.flatMap((p) => p.client.split(' × ')))];
+  write(
+    'studio/index.html',
+    `${head({
+      title: `Studio | ${site.name}®`,
+      description: site.description,
+      path: '/studio/',
+      image: `/media/${projects[0].slug}/poster.jpg`,
+      extra: `${jsonLd({ '@context': 'https://schema.org', '@graph': [org, { '@type': 'AboutPage', url: `${base}/studio/`, about: { '@id': `${base}/#org` } }] })}\n`,
+    })}
+<body class="page-studio">
+${header('studio')}
+<main class="studio">
+  <h1 class="sr-only">Studio</h1>
   <div class="studio-text">
     ${site.about.map((p) => `<p>${esc(p)}</p>`).join('\n    ')}
   </div>
-  <p class="clients"><span class="label">Clients</span> ${[...new Set(projects.flatMap((p) => p.client.split(' × ')))].map(esc).join(', ')}</p>
-</section>
-${footer()}
-<script src="/assets/main.js" defer></script>
-</body>
-</html>
-`
+  <dl class="facts">
+    <div><dt>Clients</dt><dd>${clients.map(esc).join('<br>')}</dd></div>
+    <div id="contact"><dt>Contact</dt><dd>${site.email ? `<a href="mailto:${esc(site.email)}">${esc(site.email)}</a><br>` : ''}<a href="${esc(site.instagram)}" rel="me noopener" target="_blank">Instagram</a></dd></div>
+    ${site.city ? `<div><dt>Basé à</dt><dd>${esc(site.city)}</dd></div>` : ''}
+  </dl>
+</main>
+${tail}`
   );
 }
 
@@ -149,14 +201,13 @@ ${footer()}
 function project(p, i) {
   const next = projects[(i + 1) % projects.length];
   const path = `/work/${p.slug}/`;
-  const title = `${p.client} · ${p.title} | ${site.name}®`;
   const ld = {
     '@context': 'https://schema.org',
     '@graph': [
       org,
       {
         '@type': 'VideoObject',
-        name: `${p.client} · ${p.title}`,
+        name: name(p),
         description: p.summary,
         thumbnailUrl: [`${base}/media/${p.slug}/poster.jpg`],
         contentUrl: `${base}/media/${p.slug}/full.mp4`,
@@ -172,18 +223,18 @@ function project(p, i) {
         '@type': 'BreadcrumbList',
         itemListElement: [
           { '@type': 'ListItem', position: 1, name: site.name, item: `${base}/` },
-          { '@type': 'ListItem', position: 2, name: 'Projets', item: `${base}/#projets` },
-          { '@type': 'ListItem', position: 3, name: `${p.client} · ${p.title}`, item: `${base}${path}` },
+          { '@type': 'ListItem', position: 2, name: 'Projets', item: `${base}/projets/` },
+          { '@type': 'ListItem', position: 3, name: name(p), item: `${base}${path}` },
         ],
       },
     ],
   };
-  const portrait = p.height > p.width;
+  const dur = `${Math.floor(p.duration / 60)}′${String(Math.round(p.duration % 60)).padStart(2, '0')}″`;
 
   write(
     `work/${p.slug}/index.html`,
     `${head({
-      title,
+      title: `${name(p)} | ${site.name}®`,
       description: p.summary,
       path,
       image: `/media/${p.slug}/poster.jpg`,
@@ -191,44 +242,46 @@ function project(p, i) {
       extra: `${jsonLd(ld)}\n`,
     })}
 <body class="work">
-${header('work')}
+${header('projets')}
 <main>
-  <section class="player${portrait ? ' is-portrait' : ''}" aria-label="Film">
-    <video class="film" src="/media/${p.slug}/full.mp4" poster="/media/${p.slug}/poster.jpg" playsinline autoplay muted loop preload="metadata" width="${p.width}" height="${p.height}"></video>
+  <section class="player" aria-label="Film">
+    <video class="film" src="/media/${p.slug}/full.mp4" poster="/media/${p.slug}/poster.jpg" playsinline autoplay muted loop preload="auto" width="${p.width}" height="${p.height}"></video>
+    <h1 class="cap">${esc(p.client)} <span>${esc(p.title)}</span></h1>
     <button class="sound" type="button" aria-pressed="false">Son <span>off</span></button>
   </section>
 
   <article class="sheet">
-    <h1 class="sheet-title"><span class="client">${esc(p.client)}</span> <span class="title">${esc(p.title)}</span></h1>
-    <p class="sheet-summary">${esc(p.summary)}</p>
-    <dl class="meta">
+    <p class="summary">${esc(p.summary)}</p>
+    <dl class="facts">
       <div><dt>Client</dt><dd>${esc(p.client)}</dd></div>
       ${p.location ? `<div><dt>Lieu</dt><dd>${esc(p.location)}</dd></div>` : ''}
-      <div><dt>Durée</dt><dd>${Math.floor(p.duration / 60)}′${String(Math.round(p.duration % 60)).padStart(2, '0')}″</dd></div>
+      <div><dt>Durée</dt><dd>${dur}</dd></div>
       ${(p.credits || []).map((c) => `<div><dt>${esc(c.role)}</dt><dd>${esc(c.name)}</dd></div>`).join('')}
     </dl>
-    <a class="next" href="/work/${next.slug}/"><span class="label">Projet suivant</span> <span class="client">${esc(next.client)}</span> <span class="title">${esc(next.title)}</span></a>
+    <nav class="pager" aria-label="Projets">
+      <a href="/projets/">Tous les projets</a>
+      <a href="/work/${next.slug}/">Suivant : ${esc(next.short || next.client)}</a>
+    </nav>
   </article>
 </main>
-${footer()}
-<script src="/assets/main.js" defer></script>
-</body>
-</html>
-`
+${tail}`
   );
 }
 
 // ---------- SEO : sitemap, robots, llms.txt ----------
 function seoFiles() {
+  const page = (path) => `  <url><loc>${base}${path}</loc><lastmod>${today}</lastmod></url>`;
   const urls = [
-    `  <url><loc>${base}/</loc><lastmod>${today}</lastmod></url>`,
+    page('/'),
+    page('/projets/'),
+    page('/studio/'),
     ...projects.map(
       (p) => `  <url>
     <loc>${base}/work/${p.slug}/</loc>
     <lastmod>${today}</lastmod>
     <video:video>
       <video:thumbnail_loc>${base}/media/${p.slug}/poster.jpg</video:thumbnail_loc>
-      <video:title>${esc(`${p.client} · ${p.title}`)}</video:title>
+      <video:title>${esc(name(p))}</video:title>
       <video:description>${esc(p.summary)}</video:description>
       <video:content_loc>${base}/media/${p.slug}/full.mp4</video:content_loc>
       <video:duration>${Math.round(p.duration)}</video:duration>
@@ -248,12 +301,14 @@ ${urls.join('\n')}
   write(
     'llms.txt',
     `# ${site.name}®\n\n> ${site.description}\n\n${site.about.join(' ')}\n\n## Projets\n\n${projects
-      .map((p) => `- [${p.client} · ${p.title}](${base}/work/${p.slug}/): ${p.summary}`)
+      .map((p) => `- [${name(p)}](${base}/work/${p.slug}/): ${p.summary}`)
       .join('\n')}\n\n## Contact\n\n- Instagram : ${site.instagram}\n${site.email ? `- E-mail : ${site.email}\n` : ''}`
   );
 }
 
 home();
+projectsPage();
+studioPage();
 projects.forEach(project);
 seoFiles();
-console.log(`OK : ${projects.length + 1} pages générées dans site/`);
+console.log(`OK : ${projects.length + 3} pages générées dans site/`);

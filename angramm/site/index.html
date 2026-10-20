@@ -19,56 +19,47 @@
 <link rel="preload" href="/fonts/archivo-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/assets/style.css">
 <link rel="preload" href="/media/endoume-kappa/poster.jpg" as="image" fetchpriority="high">
-<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://angramm.com/#org","name":"ANGRAMM","url":"https://angramm.com/","logo":"https://angramm.com/favicon.svg","description":"ANGRAMM® réalise des films et des campagnes pour les marques : sport, mode et culture. Kappa, Lacoste, Olympique de Marseille, Mizuno.","sameAs":["https://www.instagram.com/angramm/"],"address":{"@type":"PostalAddress","addressLocality":"Marseille","addressCountry":"FR"}},{"@type":"WebSite","@id":"https://angramm.com/#site","url":"https://angramm.com/","name":"ANGRAMM","inLanguage":"fr","publisher":{"@id":"https://angramm.com/#org"}},{"@type":"ItemList","name":"Projets ANGRAMM","itemListElement":[{"@type":"ListItem","position":1,"url":"https://angramm.com/work/endoume-kappa/","name":"Kappa × US Endoume · Marseille"},{"@type":"ListItem","position":2,"url":"https://angramm.com/work/volcan/","name":"Volcan · Film"},{"@type":"ListItem","position":3,"url":"https://angramm.com/work/lacoste/","name":"Lacoste · Vinyle"},{"@type":"ListItem","position":4,"url":"https://angramm.com/work/om-cma-cgm/","name":"Olympique de Marseille × CMA CGM · Marseille"},{"@type":"ListItem","position":5,"url":"https://angramm.com/work/mizuno-rio/","name":"Mizuno · Rio de Janeiro"}]}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://angramm.com/#org","name":"ANGRAMM","url":"https://angramm.com/","logo":"https://angramm.com/favicon.svg","description":"ANGRAMM® réalise des films et des campagnes pour les marques : sport, mode et culture. Kappa, Lacoste, Olympique de Marseille, Mizuno.","sameAs":["https://www.instagram.com/angramm/"],"address":{"@type":"PostalAddress","addressLocality":"Marseille","addressCountry":"FR"}},{"@type":"WebSite","@id":"https://angramm.com/#site","url":"https://angramm.com/","name":"ANGRAMM","inLanguage":"fr","publisher":{"@id":"https://angramm.com/#org"}}]}</script>
 </head>
 <body class="home">
 <header class="top">
-  <a class="wordmark" href="/" aria-label="ANGRAMM, accueil">ANGRAMM<sup>®</sup></a>
   <nav class="nav" aria-label="Navigation principale">
-    <a href="/#projets">Projets</a>
-    <a href="/#studio">Studio</a>
-    <a href="/#contact">Contact</a>
+    <a href="/projets/">Projets</a>
+    <a href="/studio/">Studio</a>
+    <a class="wordmark" href="/" aria-label="ANGRAMM, accueil">ANGRAMM<sup>®</sup></a>
+    <a href="/studio/#contact">Contact</a>
+    <a href="https://www.instagram.com/angramm/" rel="me noopener" target="_blank">Instagram</a>
   </nav>
 </header>
-<main>
-  <section class="stage" aria-label="Bande démo">
-    <video class="reel is-active" data-i="0" muted loop playsinline preload="auto" poster="/media/endoume-kappa/poster.jpg" src="/media/endoume-kappa/loop.mp4" autoplay aria-hidden="true"></video>
-    <video class="reel" data-i="1" muted loop playsinline preload="none" poster="/media/volcan/poster.jpg" data-src="/media/volcan/loop.mp4" aria-hidden="true"></video>
-    <video class="reel" data-i="2" muted loop playsinline preload="none" poster="/media/lacoste/poster.jpg" data-src="/media/lacoste/loop.mp4" aria-hidden="true"></video>
-    <video class="reel" data-i="3" muted loop playsinline preload="none" poster="/media/om-cma-cgm/poster.jpg" data-src="/media/om-cma-cgm/loop.mp4" aria-hidden="true"></video>
-    <video class="reel" data-i="4" muted loop playsinline preload="none" poster="/media/mizuno-rio/poster.jpg" data-src="/media/mizuno-rio/loop.mp4" aria-hidden="true"></video>
-    <div class="veil" aria-hidden="true"></div>
-  </section>
-
-  <section class="index" id="projets" aria-labelledby="h-projets">
-    <h1 class="sr-only">ANGRAMM® · Films &amp; campagnes</h1>
-    <h2 id="h-projets" class="label">Projets <span class="count"><span data-current>01</span> / 05</span></h2>
-    <ol class="list">
-      <li><a class="item is-active" data-i="0" href="/work/endoume-kappa/"><span class="client">Kappa × US Endoume</span> <span class="title">Marseille</span></a></li>
-      <li><a class="item" data-i="1" href="/work/volcan/"><span class="client">Volcan</span> <span class="title">Film</span></a></li>
-      <li><a class="item" data-i="2" href="/work/lacoste/"><span class="client">Lacoste</span> <span class="title">Vinyle</span></a></li>
-      <li><a class="item" data-i="3" href="/work/om-cma-cgm/"><span class="client">OM × CMA CGM</span> <span class="title">Marseille</span></a></li>
-      <li><a class="item" data-i="4" href="/work/mizuno-rio/"><span class="client">Mizuno</span> <span class="title">Rio de Janeiro</span></a></li>
-    </ol>
-  </section>
+<main class="reels">
+  <h1 class="sr-only">ANGRAMM® · Films &amp; campagnes</h1>
+  <a class="reel is-portrait" href="/work/endoume-kappa/" aria-label="Kappa × US Endoume · Marseille">
+    <video muted loop playsinline preload="auto" poster="/media/endoume-kappa/poster.jpg" data-src="/media/endoume-kappa/full.mp4#t=22"></video>
+    <span class="cap">Kappa × US Endoume</span>
+    <span class="num">01 / 05</span>
+  </a>
+  <a class="reel" href="/work/volcan/" aria-label="Volcan · Film">
+    <video muted loop playsinline preload="none" poster="/media/volcan/poster.jpg" data-src="/media/volcan/full.mp4#t=27"></video>
+    <span class="cap">Volcan</span>
+    <span class="num">02 / 05</span>
+  </a>
+  <a class="reel" href="/work/lacoste/" aria-label="Lacoste · Vinyle">
+    <video muted loop playsinline preload="none" poster="/media/lacoste/poster.jpg" data-src="/media/lacoste/full.mp4#t=26"></video>
+    <span class="cap">Lacoste</span>
+    <span class="num">03 / 05</span>
+  </a>
+  <a class="reel" href="/work/om-cma-cgm/" aria-label="Olympique de Marseille × CMA CGM · Marseille">
+    <video muted loop playsinline preload="none" poster="/media/om-cma-cgm/poster.jpg" data-src="/media/om-cma-cgm/full.mp4#t=60"></video>
+    <span class="cap">OM × CMA CGM</span>
+    <span class="num">04 / 05</span>
+  </a>
+  <a class="reel" href="/work/mizuno-rio/" aria-label="Mizuno · Rio de Janeiro">
+    <video muted loop playsinline preload="none" poster="/media/mizuno-rio/poster.jpg" data-src="/media/mizuno-rio/full.mp4#t=12"></video>
+    <span class="cap">Mizuno</span>
+    <span class="num">05 / 05</span>
+  </a>
 </main>
-
-<section class="studio" id="studio" aria-labelledby="h-studio">
-  <h2 id="h-studio" class="label">Studio</h2>
-  <div class="studio-text">
-    <p>ANGRAMM® imagine et réalise des films pour les marques, entre documentaire de rue et images de synthèse.</p>
-    <p>De Marseille à Rio, chaque projet part d&#39;un territoire et des gens qui l&#39;habitent.</p>
-  </div>
-  <p class="clients"><span class="label">Clients</span> Kappa, US Endoume, Volcan, Lacoste, Olympique de Marseille, CMA CGM, Mizuno</p>
-</section>
-<footer class="foot" id="contact">
-  <div class="foot-col">
-    <p class="label">Contact</p>
-    
-    <p><a href="https://www.instagram.com/angramm/" rel="me noopener" target="_blank">Instagram ↗</a></p>
-  </div>
-  <p class="foot-legal">© 2026 ANGRAMM® · Marseille</p>
-</footer>
+<div class="cursor is-off" aria-hidden="true"><svg viewBox="0 0 40 48" width="26" height="31"><path d="M5 45 12 4 38 42" fill="none" stroke="currentColor" stroke-width="6" stroke-linejoin="miter" stroke-miterlimit="10"/></svg></div>
 <script src="/assets/main.js" defer></script>
 </body>
 </html>

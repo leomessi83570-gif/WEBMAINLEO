@@ -1,7 +1,10 @@
 # ANGRAMM® — site vitrine
 
-Site statique (HTML/CSS/JS, aucune dépendance), inspiré de division.global (index de projets
-dont la vidéo passe en fond au survol) et de 530degres.agency (vidéos plein écran, nav minimale).
+Site statique (HTML/CSS/JS, aucune dépendance), dans l'esprit de 530degres.agency :
+nav fine répartie sur la largeur avec le logo au centre, films plein écran qui défilent au scroll,
+page Projets en grille aérée (l'aperçu s'anime au survol), curseur flèche sur mesure.
+
+Pages : `/` (films), `/projets/`, `/studio/` (texte, clients, contact), `/work/<slug>/` (un film).
 
 ## Structure
 
@@ -12,7 +15,7 @@ build.mjs               génère les pages HTML + sitemap.xml + robots.txt + llm
 site/                   dossier à mettre en ligne
   assets/               style.css, main.js
   fonts/                Archivo variable (OFL), la typo de marque
-  media/<slug>/         loop.mp4 (10 s muet, accueil), full.mp4 (film avec son), poster.jpg
+  media/<slug>/         full.mp4 (film d'origine, sans réencodage), preview.mp4 (8 s, survol de la grille), poster.jpg
 ```
 
 ## Typo
@@ -27,10 +30,10 @@ graisse **600**, en capitales. Si ANGRAMM a la licence de la typo d'origine
 1. Créer `site/media/<slug>/` avec :
    ```bash
    ffmpeg -i source.mp4 -c copy -movflags +faststart full.mp4
-   ffmpeg -ss 20 -t 10 -i source.mp4 -an -c:v libx264 -preset slow -crf 25 -pix_fmt yuv420p -movflags +faststart loop.mp4
-   ffmpeg -ss 20 -i source.mp4 -frames:v 1 -q:v 3 poster.jpg
+   ffmpeg -ss 20 -t 8 -i source.mp4 -an -vf "scale=-2:'min(720,ih)'" -c:v libx264 -preset slow -crf 20 -pix_fmt yuv420p -movflags +faststart preview.mp4
+   ffmpeg -ss 20 -i source.mp4 -frames:v 1 -q:v 2 poster.jpg
    ```
-2. Ajouter l'entrée dans `content/projects.json` (`short` = nom court optionnel pour l'accueil,
+2. Ajouter l'entrée dans `content/projects.json` (`start` = seconde où démarre le film sur l'accueil, `short` = nom court optionnel pour l'accueil,
    `credits` = liste optionnelle `{ "role": "Réalisation", "name": "…" }`, `date` = AAAA-MM-JJ).
 3. `node build.mjs`
 
