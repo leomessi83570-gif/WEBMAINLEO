@@ -23,7 +23,9 @@
 *::after { box-sizing: border-box; }
 
 html { -webkit-text-size-adjust: 100%; }
-html:has(body.home) { scroll-snap-type: y mandatory; }
+html:has(body.home),
+html:has(body.page-projets) { scroll-snap-type: y mandatory; }
+.grid-wrap { scroll-snap-align: start; }
 
 body {
   margin: 0;
@@ -324,7 +326,7 @@ ol { list-style: none; margin: 0; padding: 0; }
   /* Le A du logo ANGRAMM, pointe du A = point cliqué */
   .cursor span {
     display: block;
-    font-size: 30px;
+    font-size: 22px;
     font-weight: 600;
     font-stretch: 112%;
     line-height: 1;
@@ -361,7 +363,8 @@ ol { list-style: none; margin: 0; padding: 0; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  html:has(body.home) { scroll-snap-type: none; }
+  html:has(body.home),
+  html:has(body.page-projets) { scroll-snap-type: none; }
   *,
   *::before,
   *::after,

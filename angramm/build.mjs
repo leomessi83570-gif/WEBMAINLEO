@@ -80,17 +80,21 @@ const tail = `<div class="cursor is-off" aria-hidden="true"><span>A</span></div>
 </html>
 `;
 
-// ---------- Accueil : les films défilent au scroll, plein écran ----------
-function home() {
-  const reels = projects
+// Films plein écran qui défilent au scroll (accueil et bas de la page Projets).
+const reelsMarkup = (eager) =>
+  projects
     .map(
       (p, i) => `<a class="reel${p.height > p.width ? ' is-portrait' : ''}" href="/work/${p.slug}/" aria-label="${esc(name(p))}">
-    <video muted loop playsinline preload="${i === 0 ? 'auto' : 'none'}" poster="/media/${p.slug}/poster.jpg" data-src="/media/${p.slug}/full.mp4#t=${p.start || 0}"></video>
+    <video muted loop playsinline preload="${eager && i === 0 ? 'auto' : 'none'}" poster="/media/${p.slug}/poster.jpg" data-src="/media/${p.slug}/full.mp4#t=${p.start || 0}"></video>
     <span class="cap">${esc(p.short || p.client)}</span>
     <span class="num">${num(i)} / ${num(projects.length - 1)}</span>
   </a>`
     )
     .join('\n  ');
+
+// ---------- Accueil : les films défilent au scroll, plein écran ----------
+function home() {
+  const reels = reelsMarkup(true);
 
   const ld = {
     '@context': 'https://schema.org',
@@ -167,6 +171,9 @@ ${header('projets')}
     ${cells}
   </ol>
 </main>
+<section class="reels" aria-label="Films">
+  ${reelsMarkup(false)}
+</section>
 ${tail}`
   );
 }
