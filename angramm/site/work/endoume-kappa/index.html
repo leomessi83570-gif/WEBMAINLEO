@@ -30,11 +30,12 @@
     <a href="/studio/">Studio</a>
     <a class="wordmark" href="/" aria-label="ANGRAMM, accueil">ANGRAMM<sup>®</sup></a>
     <a href="/contact/">Contact</a>
-    <span class="fmt" aria-label="Format"><a href="/horizontal/projets/" data-fmt="horizontal" title="Horizontal">H</a><span>/</span><a href="/vertical/projets/" data-fmt="vertical" title="Vertical" aria-current="true">V</a></span>
+    <span class="fmt" aria-label="Format"><a href="/horizontal/projets/" data-fmt="horizontal" >Horizontal</a><span>/</span><a href="/vertical/projets/" data-fmt="vertical"  aria-current="true">Vertical</a></span>
   </nav>
 </header>
 <main>
-  <section class="player" aria-label="Film">
+  <section class="player is-portrait" aria-label="Film" style="--poster:url(/media/endoume-kappa/poster.jpg)">
+    <canvas class="ambient" width="64" height="36" aria-hidden="true"></canvas>
     <video class="film tap-sound" src="/media/endoume-kappa/full.mp4" poster="/media/endoume-kappa/poster.jpg" playsinline autoplay muted preload="auto" width="720" height="1280"></video>
     <h1 class="cap">Kappa × US Endoume <span>Marseille</span></h1>
     <button class="snd" type="button" aria-pressed="false">Son <span>off</span></button>

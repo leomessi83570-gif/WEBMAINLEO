@@ -99,7 +99,7 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 .nav a:hover,
 .nav a[aria-current] { color: var(--fg); }
 .nav .wordmark { color: var(--fg); }
-.fmt { display: inline-flex; gap: 0.35em; }
+.fmt { display: inline-flex; gap: 0.5em; }
 .fmt span { color: var(--mute); }
 .fmt a { color: var(--mute); }
 .fmt a[aria-current] { color: var(--fg); }
@@ -120,6 +120,34 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
   object-fit: cover;
   cursor: pointer;
 }
+/* Fond flou : quand le film ne remplit pas l'écran (vertical sur écran large, et l'inverse),
+   l'espace autour reprend ses couleurs, floutées. ::before = l'affiche, le canvas suit le film en direct. */
+.reel::before,
+.player::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--poster) center / cover;
+  filter: blur(40px) brightness(0.5) saturate(1.2);
+  transform: scale(1.2);
+}
+.ambient {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  filter: blur(40px) brightness(0.5) saturate(1.2);
+  transform: scale(1.2);
+  opacity: 0;
+  transition: opacity 0.8s var(--ease);
+}
+.ambient.is-live { opacity: 1; }
+.reel,
+.player { isolation: isolate; }
+.reel video,
+.player .film { position: relative; z-index: 0; }
+.reel video { position: absolute; }
+
 /* voile très léger en haut et en bas pour lire le header et les légendes sur les images claires */
 .reel::after {
   content: '';
@@ -415,6 +443,7 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
   height: 100vh;
   height: 100svh;
   background: #000;
+  overflow: hidden;
 }
 .film { width: 100%; height: 100%; object-fit: contain; display: block; cursor: pointer; }
 .player .cap {

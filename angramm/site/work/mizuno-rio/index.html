@@ -30,11 +30,12 @@
     <a href="/studio/">Studio</a>
     <a class="wordmark" href="/" aria-label="ANGRAMM, accueil">ANGRAMM<sup>®</sup></a>
     <a href="/contact/">Contact</a>
-    <span class="fmt" aria-label="Format"><a href="/horizontal/projets/" data-fmt="horizontal" title="Horizontal" aria-current="true">H</a><span>/</span><a href="/vertical/projets/" data-fmt="vertical" title="Vertical">V</a></span>
+    <span class="fmt" aria-label="Format"><a href="/horizontal/projets/" data-fmt="horizontal"  aria-current="true">Horizontal</a><span>/</span><a href="/vertical/projets/" data-fmt="vertical" >Vertical</a></span>
   </nav>
 </header>
 <main>
-  <section class="player" aria-label="Film">
+  <section class="player" aria-label="Film" style="--poster:url(/media/mizuno-rio/poster.jpg)">
+    <canvas class="ambient" width="64" height="36" aria-hidden="true"></canvas>
     <video class="film tap-sound" src="/media/mizuno-rio/full.mp4" poster="/media/mizuno-rio/poster.jpg" playsinline autoplay muted preload="auto" width="1276" height="720"></video>
     <h1 class="cap">Mizuno <span>Rio de Janeiro</span></h1>
     <button class="snd" type="button" aria-pressed="false">Son <span>off</span></button>

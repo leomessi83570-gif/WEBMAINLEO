@@ -14,8 +14,8 @@ const today = new Date().toISOString().slice(0, 10);
 // Deux sites en un : les films verticaux et les films horizontaux.
 const fmtOf = (p) => (p.height > p.width ? 'vertical' : 'horizontal');
 const FORMATS = {
-  horizontal: { label: 'Horizontal', short: 'H', list: projects.filter((p) => fmtOf(p) === 'horizontal') },
-  vertical: { label: 'Vertical', short: 'V', list: projects.filter((p) => fmtOf(p) === 'vertical') },
+  horizontal: { label: 'Horizontal', list: projects.filter((p) => fmtOf(p) === 'horizontal') },
+  vertical: { label: 'Vertical', list: projects.filter((p) => fmtOf(p) === 'vertical') },
 };
 
 const esc = (s = '') =>
@@ -74,7 +74,7 @@ const header = ({ current = '', fmt = null, kind = 'home' } = {}) => {
   const link = (href, label, key, attrs = '') => `<a href="${href}"${attrs}${current === key ? ' aria-current="page"' : ''}>${label}</a>`;
   const target = (f) => (kind === 'projets' ? `/${f}/projets/` : `/${f}/`);
   const toggle = Object.entries(FORMATS)
-    .map(([f, F]) => `<a href="${target(f)}" data-fmt="${f}" title="${F.label}"${fmt === f ? ' aria-current="true"' : ''}>${F.short}</a>`)
+    .map(([f, F]) => `<a href="${target(f)}" data-fmt="${f}" ${fmt === f ? ' aria-current="true"' : ''}>${F.label}</a>`)
     .join('<span>/</span>');
   return `<header class="top">
   <nav class="nav" aria-label="Navigation principale">
@@ -97,7 +97,8 @@ const tail = `<div class="cursor is-off" aria-hidden="true"><span>A</span></div>
 const reelsMarkup = (list, eager) =>
   list
     .map(
-      (p, i) => `<div class="reel${p.height > p.width ? ' is-portrait' : ''}">
+      (p, i) => `<div class="reel${p.height > p.width ? ' is-portrait' : ''}" style="--poster:url(/media/${p.slug}/poster.jpg)">
+    <canvas class="ambient" width="64" height="36" aria-hidden="true"></canvas>
     <video muted loop playsinline preload="${eager && i === 0 ? 'auto' : 'none'}" poster="/media/${p.slug}/poster.jpg" data-src="/media/${p.slug}/full.mp4#t=${p.start || 0}"></video>
     <a class="cap" href="/work/${p.slug}/">${esc(p.short || p.client)} <span>→</span></a>
     <button class="snd" type="button" aria-pressed="false">Son <span>off</span></button>
@@ -349,7 +350,8 @@ function project(p) {
 <body class="work" data-fmt="${f}">
 ${header({ current: 'projets', fmt: f, kind: 'projets' })}
 <main>
-  <section class="player" aria-label="Film">
+  <section class="player${p.height > p.width ? ' is-portrait' : ''}" aria-label="Film" style="--poster:url(/media/${p.slug}/poster.jpg)">
+    <canvas class="ambient" width="64" height="36" aria-hidden="true"></canvas>
     <video class="film tap-sound" src="/media/${p.slug}/full.mp4" poster="/media/${p.slug}/poster.jpg" playsinline autoplay muted preload="auto" width="${p.width}" height="${p.height}"></video>
     <h1 class="cap">${esc(p.client)} <span>${esc(p.title)}</span></h1>
     <button class="snd" type="button" aria-pressed="false">Son <span>off</span></button>

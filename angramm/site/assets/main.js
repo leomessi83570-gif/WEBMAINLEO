@@ -70,6 +70,34 @@
     v.addEventListener('click', () => toggleSound(v));
   };
 
+  // ---------- Fond flou : l'espace autour d'un film non plein écran reprend ses couleurs ----------
+  // Le film est recopié ~15 fois/s dans un canvas minuscule, agrandi et flouté en CSS :
+  // bien plus léger qu'une deuxième vidéo.
+  const startAmbient = (box) => {
+    const c = box.querySelector('.ambient');
+    const v = box.querySelector('video');
+    stopAmbient(box);
+    if (!c || reduced || getComputedStyle(v).objectFit !== 'contain') return;
+    c.height = Math.max(1, Math.round((c.width * box.clientHeight) / box.clientWidth));
+    const ctx = c.getContext('2d');
+    let last = 0;
+    const tick = (t) => {
+      box.ambient = requestAnimationFrame(tick);
+      if (t - last < 66 || v.readyState < 2 || !v.videoWidth) return;
+      last = t;
+      const r = c.width / c.height;
+      let sw = v.videoWidth, sh = sw / r;
+      if (sh > v.videoHeight) { sh = v.videoHeight; sw = sh * r; }
+      ctx.drawImage(v, (v.videoWidth - sw) / 2, (v.videoHeight - sh) / 2, sw, sh, 0, 0, c.width, c.height);
+      c.classList.add('is-live');
+    };
+    box.ambient = requestAnimationFrame(tick);
+  };
+  const stopAmbient = (box) => {
+    if (box.ambient) cancelAnimationFrame(box.ambient);
+    box.ambient = 0;
+  };
+
   // ---------- Accueil : chargement ANGRAMM puis choix du format ----------
   if (document.body.classList.contains('intro')) {
     const ready = () => {
@@ -104,7 +132,7 @@
         entries.forEach((e) => {
           const v = e.target.querySelector('video');
           e.target.classList.toggle('in-view', e.isIntersecting);
-          if (e.isIntersecting) { load(v); play(v); } else { v.pause(); if (!v.muted) mute(v); }
+          if (e.isIntersecting) { load(v); play(v); startAmbient(e.target); } else { v.pause(); stopAmbient(e.target); if (!v.muted) mute(v); }
         }),
       { threshold: 0.6 }
     );
@@ -113,6 +141,7 @@
       near.observe(r);
       seen.observe(r);
     });
+    addEventListener('resize', () => { const r = document.querySelector('.reel.in-view'); if (r) startAmbient(r); });
     document.addEventListener('visibilitychange', () => {
       const v = document.querySelector('.reel.in-view video');
       if (v) document.hidden ? v.pause() : play(v);
@@ -135,6 +164,9 @@
   const film = document.querySelector('.film');
   if (film) {
     bindSound(film, document.querySelector('.player .snd'));
+    const player = document.querySelector('.player');
+    startAmbient(player);
+    addEventListener('resize', () => startAmbient(player));
     if (reduced) film.pause();
     else {
       film.muted = false;
