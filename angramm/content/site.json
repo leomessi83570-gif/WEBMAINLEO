@@ -4,7 +4,7 @@
   "lang": "fr",
   "locale": "fr_FR",
   "tagline": "Films & campagnes",
-  "description": "ANGRAMM® réalise des films et des campagnes pour les marques : sport, mode et culture. Lacoste, Olympique de Marseille, CMA CGM, Mizuno.",
+  "description": "ANGRAMM® réalise des films et des campagnes pour les marques, en vertical et en horizontal : Lacoste, Olympique de Marseille, Mizuno, adidas, Kappa, Umbro.",
   "about": [
     "ANGRAMM® imagine et réalise des films pour les marques, entre documentaire de rue et images de synthèse.",
     "De Marseille à Rio, chaque projet part d'un territoire et des gens qui l'habitent."
@@ -13,5 +13,10 @@
   "country": "FR",
   "email": "contact@angramm.com",
   "instagram": "https://www.instagram.com/angramm/",
-  "_todo": "À valider avec ANGRAMM : url (nom de domaine), description, about, city."
+  "studioFilm": {
+    "src": "/media/studio/angramm.mp4",
+    "poster": "/media/studio/poster.jpg",
+    "width": 720,
+    "height": 1280
+  }
 }

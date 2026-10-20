@@ -44,5 +44,49 @@
     "duration": 46,
     "width": 1276,
     "height": 720
+  },
+  {
+    "slug": "endoume-kappa",
+    "client": "Kappa × US Endoume",
+    "title": "Marseille",
+    "summary": "Le nouveau maillot de l'US Endoume Catalans, club de quartier fondé en 1925, porté dans les rues, sur les plages et dans les calanques de Marseille.",
+    "location": "Marseille",
+    "start": 22,
+    "duration": 63,
+    "width": 720,
+    "height": 1280
+  },
+  {
+    "slug": "mizuno-vrunk",
+    "client": "Mizuno × Vrunk",
+    "title": "Collection",
+    "summary": "Motocross, drift et images de synthèse : la collection Mizuno × Vrunk mise en scène entre les tours, sous une pluie de pétales.",
+    "location": "",
+    "start": 32,
+    "duration": 57,
+    "width": 720,
+    "height": 1280
+  },
+  {
+    "slug": "umbro",
+    "client": "Umbro",
+    "title": "Marseille",
+    "summary": "Un terrain de quartier au pied de Notre-Dame-de-la-Garde et l'homme qui en trace les lignes : un film Umbro sur le football amateur à Marseille.",
+    "location": "Marseille",
+    "start": 30,
+    "duration": 59,
+    "width": 360,
+    "height": 640
+  },
+  {
+    "slug": "adidas-adizero",
+    "client": "adidas",
+    "title": "Adizero Evo SL",
+    "summary": "De l'orbite au bitume : la Adizero Evo SL, entre images de synthèse et course au lever du jour.",
+    "location": "",
+    "start": 26,
+    "duration": 40,
+    "width": 720,
+    "height": 1280
   }
 ]

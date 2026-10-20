@@ -21,23 +21,23 @@
 <link rel="preload" href="/fonts/archivo-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/assets/style.css">
 <script>if (!('PageRevealEvent' in window)) document.documentElement.classList.add('no-vt');</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://angramm.com/#org","name":"ANGRAMM","url":"https://angramm.com/","logo":"https://angramm.com/favicon.svg","description":"ANGRAMM® réalise des films et des campagnes pour les marques : sport, mode et culture. Lacoste, Olympique de Marseille, CMA CGM, Mizuno.","sameAs":["https://www.instagram.com/angramm/"],"email":"contact@angramm.com","address":{"@type":"PostalAddress","addressLocality":"Marseille","addressCountry":"FR"}},{"@type":"VideoObject","name":"Olympique de Marseille × CMA CGM · Marseille","description":"Les joueurs de l'OM débarquent sur le port de Marseille pour dévoiler le nouveau maillot floqué CMA CGM, au milieu des conteneurs et des dockers.","thumbnailUrl":["https://angramm.com/media/om-cma-cgm/poster.jpg"],"contentUrl":"https://angramm.com/media/om-cma-cgm/full.mp4","uploadDate":"2026-10-20","duration":"PT1M10S","width":1278,"height":720,"inLanguage":"fr","creator":{"@id":"https://angramm.com/#org"},"contentLocation":{"@type":"Place","name":"Marseille"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"ANGRAMM","item":"https://angramm.com/"},{"@type":"ListItem","position":2,"name":"Projets","item":"https://angramm.com/projets/"},{"@type":"ListItem","position":3,"name":"Olympique de Marseille × CMA CGM · Marseille","item":"https://angramm.com/work/om-cma-cgm/"}]}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://angramm.com/#org","name":"ANGRAMM","url":"https://angramm.com/","logo":"https://angramm.com/favicon.svg","description":"ANGRAMM® réalise des films et des campagnes pour les marques, en vertical et en horizontal : Lacoste, Olympique de Marseille, Mizuno, adidas, Kappa, Umbro.","sameAs":["https://www.instagram.com/angramm/"],"email":"contact@angramm.com","address":{"@type":"PostalAddress","addressLocality":"Marseille","addressCountry":"FR"}},{"@type":"VideoObject","name":"Olympique de Marseille × CMA CGM · Marseille","description":"Les joueurs de l'OM débarquent sur le port de Marseille pour dévoiler le nouveau maillot floqué CMA CGM, au milieu des conteneurs et des dockers.","thumbnailUrl":["https://angramm.com/media/om-cma-cgm/poster.jpg"],"contentUrl":"https://angramm.com/media/om-cma-cgm/full.mp4","uploadDate":"2026-10-20","duration":"PT1M10S","width":1278,"height":720,"inLanguage":"fr","creator":{"@id":"https://angramm.com/#org"},"contentLocation":{"@type":"Place","name":"Marseille"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"ANGRAMM","item":"https://angramm.com/"},{"@type":"ListItem","position":2,"name":"Projets horizontals","item":"https://angramm.com/horizontal/projets/"},{"@type":"ListItem","position":3,"name":"Olympique de Marseille × CMA CGM · Marseille","item":"https://angramm.com/work/om-cma-cgm/"}]}]}</script>
 </head>
-<body class="work">
+<body class="work" data-fmt="horizontal">
 <header class="top">
   <nav class="nav" aria-label="Navigation principale">
-    <a href="/projets/" aria-current="page">Projets</a>
+    <a href="/horizontal/projets/" aria-current="page">Projets</a>
     <a href="/studio/">Studio</a>
     <a class="wordmark" href="/" aria-label="ANGRAMM, accueil">ANGRAMM<sup>®</sup></a>
     <a href="/contact/">Contact</a>
-    <a href="https://www.instagram.com/angramm/" rel="me noopener" target="_blank">Instagram</a>
+    <span class="fmt" aria-label="Format"><a href="/horizontal/projets/" data-fmt="horizontal" title="Horizontal" aria-current="true">H</a><span>/</span><a href="/vertical/projets/" data-fmt="vertical" title="Vertical">V</a></span>
   </nav>
 </header>
 <main>
   <section class="player" aria-label="Film">
-    <video class="film" src="/media/om-cma-cgm/full.mp4" poster="/media/om-cma-cgm/poster.jpg" playsinline autoplay muted loop preload="auto" width="1278" height="720"></video>
+    <video class="film tap-sound" src="/media/om-cma-cgm/full.mp4" poster="/media/om-cma-cgm/poster.jpg" playsinline autoplay muted preload="auto" width="1278" height="720"></video>
     <h1 class="cap">Olympique de Marseille × CMA CGM <span>Marseille</span></h1>
-    <button class="sound" type="button" aria-pressed="false">Son <span>off</span></button>
+    <button class="snd" type="button" aria-pressed="false">Son <span>off</span></button>
   </section>
 
   <article class="sheet">
@@ -45,11 +45,12 @@
     <dl class="facts">
       <div><dt>Client</dt><dd>Olympique de Marseille × CMA CGM</dd></div>
       <div><dt>Lieu</dt><dd>Marseille</dd></div>
+      <div><dt>Format</dt><dd>Horizontal</dd></div>
       <div><dt>Durée</dt><dd>1′10″</dd></div>
       
     </dl>
     <nav class="pager" aria-label="Projets">
-      <a href="/projets/">Tous les projets</a>
+      <a href="/horizontal/projets/">Tous les projets</a>
       <a href="/work/mizuno-rio/">Suivant : Mizuno</a>
     </nav>
   </article>

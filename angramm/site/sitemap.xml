@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
   <url><loc>https://angramm.com/</loc><lastmod>2026-10-20</lastmod></url>
-  <url><loc>https://angramm.com/projets/</loc><lastmod>2026-10-20</lastmod></url>
+  <url><loc>https://angramm.com/horizontal/</loc><lastmod>2026-10-20</lastmod></url>
+  <url><loc>https://angramm.com/horizontal/projets/</loc><lastmod>2026-10-20</lastmod></url>
+  <url><loc>https://angramm.com/vertical/</loc><lastmod>2026-10-20</lastmod></url>
+  <url><loc>https://angramm.com/vertical/projets/</loc><lastmod>2026-10-20</lastmod></url>
   <url><loc>https://angramm.com/studio/</loc><lastmod>2026-10-20</lastmod></url>
   <url><loc>https://angramm.com/contact/</loc><lastmod>2026-10-20</lastmod></url>
   <url>
@@ -46,6 +49,50 @@
       <video:description>Une favela de Rio de Janeiro qui s&#39;illumine : un film Mizuno sur la débrouille, l&#39;énergie et la lumière.</video:description>
       <video:content_loc>https://angramm.com/media/mizuno-rio/full.mp4</video:content_loc>
       <video:duration>46</video:duration>
+    </video:video>
+  </url>
+  <url>
+    <loc>https://angramm.com/work/endoume-kappa/</loc>
+    <lastmod>2026-10-20</lastmod>
+    <video:video>
+      <video:thumbnail_loc>https://angramm.com/media/endoume-kappa/poster.jpg</video:thumbnail_loc>
+      <video:title>Kappa × US Endoume · Marseille</video:title>
+      <video:description>Le nouveau maillot de l&#39;US Endoume Catalans, club de quartier fondé en 1925, porté dans les rues, sur les plages et dans les calanques de Marseille.</video:description>
+      <video:content_loc>https://angramm.com/media/endoume-kappa/full.mp4</video:content_loc>
+      <video:duration>63</video:duration>
+    </video:video>
+  </url>
+  <url>
+    <loc>https://angramm.com/work/mizuno-vrunk/</loc>
+    <lastmod>2026-10-20</lastmod>
+    <video:video>
+      <video:thumbnail_loc>https://angramm.com/media/mizuno-vrunk/poster.jpg</video:thumbnail_loc>
+      <video:title>Mizuno × Vrunk · Collection</video:title>
+      <video:description>Motocross, drift et images de synthèse : la collection Mizuno × Vrunk mise en scène entre les tours, sous une pluie de pétales.</video:description>
+      <video:content_loc>https://angramm.com/media/mizuno-vrunk/full.mp4</video:content_loc>
+      <video:duration>57</video:duration>
+    </video:video>
+  </url>
+  <url>
+    <loc>https://angramm.com/work/umbro/</loc>
+    <lastmod>2026-10-20</lastmod>
+    <video:video>
+      <video:thumbnail_loc>https://angramm.com/media/umbro/poster.jpg</video:thumbnail_loc>
+      <video:title>Umbro · Marseille</video:title>
+      <video:description>Un terrain de quartier au pied de Notre-Dame-de-la-Garde et l&#39;homme qui en trace les lignes : un film Umbro sur le football amateur à Marseille.</video:description>
+      <video:content_loc>https://angramm.com/media/umbro/full.mp4</video:content_loc>
+      <video:duration>59</video:duration>
+    </video:video>
+  </url>
+  <url>
+    <loc>https://angramm.com/work/adidas-adizero/</loc>
+    <lastmod>2026-10-20</lastmod>
+    <video:video>
+      <video:thumbnail_loc>https://angramm.com/media/adidas-adizero/poster.jpg</video:thumbnail_loc>
+      <video:title>adidas · Adizero Evo SL</video:title>
+      <video:description>De l&#39;orbite au bitume : la Adizero Evo SL, entre images de synthèse et course au lever du jour.</video:description>
+      <video:content_loc>https://angramm.com/media/adidas-adizero/full.mp4</video:content_loc>
+      <video:duration>40</video:duration>
     </video:video>
   </url>
 </urlset>
