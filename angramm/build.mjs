@@ -56,6 +56,7 @@ ${video ? `<meta property="og:video" content="${base}${video}">\n<meta property=
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="preload" href="/fonts/archivo-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/assets/style.css">
+<script>if (!('PageRevealEvent' in window)) document.documentElement.classList.add('no-vt');</script>
 ${extra}</head>`;
 }
 
@@ -115,11 +116,13 @@ ${tail}`
   );
 }
 
-// ---------- Projets : grille aérée, la vignette s'anime au survol ----------
+// ---------- Projets : grille alignée qui tient dans l'écran, la vignette s'anime au survol ----------
 function projectsPage() {
+  const cols = Math.ceil(Math.sqrt(projects.length));
+  const rows = Math.ceil(projects.length / cols);
   const cells = projects
     .map(
-      (p, i) => `<li class="cell">
+      (p, i) => `<li class="cell" style="--i:${i}">
       <a class="thumb" href="/work/${p.slug}/">
         <span class="frame">
           <img src="/media/${p.slug}/poster.jpg" alt="${esc(name(p))}" width="${p.width}" height="${p.height}" loading="${i < 4 ? 'eager' : 'lazy'}" decoding="async">
@@ -160,7 +163,7 @@ function projectsPage() {
 ${header('projets')}
 <main class="grid-wrap">
   <h1 class="sr-only">Projets</h1>
-  <ol class="grid">
+  <ol class="grid" style="--cols:${cols};--rows:${rows};--n:${projects.length}">
     ${cells}
   </ol>
 </main>

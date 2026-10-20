@@ -1,6 +1,21 @@
 (() => {
   const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+  // ---------- Transition de page sans View Transitions (Firefox…) ----------
+  if (!('PageRevealEvent' in window)) {
+    document.documentElement.classList.add('no-vt');
+    document.addEventListener('click', (e) => {
+      const a = e.target.closest('a');
+      if (!a || reduced || e.defaultPrevented || e.button || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+      const url = new URL(a.href, location);
+      if (a.target || url.origin !== location.origin || (url.pathname === location.pathname && url.hash)) return;
+      e.preventDefault();
+      document.body.classList.add('is-leaving');
+      setTimeout(() => (location.href = url.href), 280);
+    });
+    addEventListener('pageshow', (e) => e.persisted && document.body.classList.remove('is-leaving'));
+  }
+
   const load = (v) => {
     if (v.dataset.src) {
       v.src = v.dataset.src;
