@@ -1,0 +1,6 @@
+# Runtime Claude SEO (recréé par /seo setup)
+.venv/
+.venv.*/
+ms-playwright/
+runtime-state.json
+__pycache__/
