@@ -6,6 +6,11 @@ page Projets en grille aérée (l'aperçu s'anime au survol), curseur flèche su
 
 Pages : `/` (films), `/projets/`, `/studio/` (texte, clients), `/contact/`, `/work/<slug>/` (un film).
 
+## Version
+
+Ceci est **Horizon**, la version horizontale seule. La version « Duo » (choix vertical / horizontal) est dans `../angramm/`.
+`site/media` est un lien vers `../angramm/site/media` : les vidéos sont partagées.
+
 ## Structure
 
 ```
