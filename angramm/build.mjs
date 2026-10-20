@@ -68,7 +68,7 @@ const header = (current = '') => {
     ${link('/projets/', 'Projets', 'projets')}
     ${link('/studio/', 'Studio', 'studio')}
     <a class="wordmark" href="/" aria-label="${esc(site.name)}, accueil">${esc(site.name)}<sup>®</sup></a>
-    ${link('/studio/#contact', 'Contact', 'contact')}
+    ${link('/contact/', 'Contact', 'contact')}
     <a href="${esc(site.instagram)}" rel="me noopener" target="_blank">Instagram</a>
   </nav>
 </header>`;
@@ -199,9 +199,37 @@ ${header('studio')}
   </div>
   <dl class="facts">
     <div><dt>Clients</dt><dd>${clients.map(esc).join('<br>')}</dd></div>
-    <div id="contact"><dt>Contact</dt><dd>${site.email ? `<a href="mailto:${esc(site.email)}">${esc(site.email)}</a><br>` : ''}<a href="${esc(site.instagram)}" rel="me noopener" target="_blank">Instagram</a></dd></div>
     ${site.city ? `<div><dt>Basé à</dt><dd>${esc(site.city)}</dd></div>` : ''}
   </dl>
+</main>
+${tail}`
+  );
+}
+
+// ---------- Contact : une seule chose à faire, écrire ----------
+function contactPage() {
+  const handle = '@' + site.instagram.replace(/\/$/, '').split('/').pop();
+  const lines = [
+    site.email && `<li><span class="label-k">E-mail</span><a href="mailto:${esc(site.email)}">${esc(site.email)}</a></li>`,
+    `<li><span class="label-k">Instagram</span><a href="${esc(site.instagram)}" rel="me noopener" target="_blank">${esc(handle)} ↗</a></li>`,
+    site.city && `<li><span class="label-k">Basé à</span><span>${esc(site.city)}</span></li>`,
+  ].filter(Boolean);
+  write(
+    'contact/index.html',
+    `${head({
+      title: `Contact | ${site.name}®`,
+      description: `Contacter ${site.name}® pour un film ou une campagne.`,
+      path: '/contact/',
+      image: `/media/${projects[0].slug}/poster.jpg`,
+      extra: `${jsonLd({ '@context': 'https://schema.org', '@graph': [org, { '@type': 'ContactPage', url: `${base}/contact/`, about: { '@id': `${base}/#org` } }] })}\n`,
+    })}
+<body class="page-contact">
+${header('contact')}
+<main class="contact">
+  <h1 class="contact-title">Un film,<br>une campagne&nbsp;?</h1>
+  <ul class="contact-list">
+    ${lines.join('\n    ')}
+  </ul>
 </main>
 ${tail}`
   );
@@ -285,6 +313,7 @@ function seoFiles() {
     page('/'),
     page('/projets/'),
     page('/studio/'),
+    page('/contact/'),
     ...projects.map(
       (p) => `  <url>
     <loc>${base}/work/${p.slug}/</loc>
@@ -319,6 +348,7 @@ ${urls.join('\n')}
 home();
 projectsPage();
 studioPage();
+contactPage();
 projects.forEach(project);
 seoFiles();
-console.log(`OK : ${projects.length + 3} pages générées dans site/`);
+console.log(`OK : ${projects.length + 4} pages générées dans site/`);

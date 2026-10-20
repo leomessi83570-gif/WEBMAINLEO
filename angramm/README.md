@@ -4,7 +4,7 @@ Site statique (HTML/CSS/JS, aucune dépendance), dans l'esprit de 530degres.agen
 nav fine répartie sur la largeur avec le logo au centre, films plein écran qui défilent au scroll,
 page Projets en grille aérée (l'aperçu s'anime au survol), curseur flèche sur mesure.
 
-Pages : `/` (films), `/projets/`, `/studio/` (texte, clients, contact), `/work/<slug>/` (un film).
+Pages : `/` (films), `/projets/`, `/studio/` (texte, clients), `/contact/`, `/work/<slug>/` (un film).
 
 ## Structure
 

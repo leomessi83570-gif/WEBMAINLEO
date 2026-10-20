@@ -216,6 +216,48 @@ ol { list-style: none; margin: 0; padding: 0; }
 .facts a { border-bottom: 1px solid var(--line); transition: border-color 0.3s; }
 .facts a:hover { border-color: var(--fg); }
 
+/* ---------- Contact ---------- */
+.contact {
+  min-height: 100vh;
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: clamp(40px, 8vh, 88px);
+  padding: 120px var(--gutter) 64px;
+}
+.contact-title {
+  margin: 0;
+  font-size: clamp(36px, 6.4vw, 104px);
+  font-weight: 600;
+  font-stretch: 112%;
+  line-height: 1;
+  text-transform: uppercase;
+  animation: rise 0.9s var(--ease) both;
+}
+.contact-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; }
+.contact-list li {
+  display: grid;
+  grid-template-columns: 140px 1fr;
+  align-items: baseline;
+  padding-top: 14px;
+  border-top: 1px solid var(--line);
+  font-size: clamp(18px, 1.8vw, 26px);
+  font-stretch: 108%;
+  animation: rise 0.9s var(--ease) both;
+}
+.contact-list li:nth-child(1) { animation-delay: 0.12s; }
+.contact-list li:nth-child(2) { animation-delay: 0.2s; }
+.contact-list li:nth-child(3) { animation-delay: 0.28s; }
+.label-k {
+  font-size: 14px;
+  font-stretch: 112%;
+  text-transform: uppercase;
+  color: var(--mute);
+}
+.contact-list a { transition: color 0.3s; }
+.contact-list a:hover { color: var(--soft); }
+
 /* ---------- Page projet ---------- */
 .player {
   position: relative;
@@ -340,10 +382,11 @@ ol { list-style: none; margin: 0; padding: 0; }
 
 /* ---------- Mobile ---------- */
 @media (max-width: 720px) {
-  .nav { grid-template-columns: 1fr auto 1fr; }
-  .nav a:nth-child(3) ~ a { display: none; }
-  .nav a:nth-child(2) { order: 3; justify-self: end; }
-  .nav .wordmark { justify-self: center; }
+  .nav { grid-template-columns: repeat(3, 1fr); row-gap: 12px; }
+  .nav .wordmark { grid-column: 1 / -1; order: -1; justify-self: center; }
+  .nav a:nth-child(2) { justify-self: center; }
+  .nav a:nth-child(4) { justify-self: end; }
+  .nav a:last-child { display: none; }
   .nav a,
   .cap,
   .num,
@@ -351,15 +394,18 @@ ol { list-style: none; margin: 0; padding: 0; }
   .meta,
   .facts dt,
   .pager a { font-size: 12px; }
+  .nav a { font-size: 11px; }
   .nav .wordmark { font-size: 17px; }
 
-  .grid-wrap { --top: 64px; --bottom: 24px; --gap: 12px; --caption: 24px; }
+  .grid-wrap { --top: 84px; --bottom: 24px; --gap: 12px; --caption: 24px; }
   .grid { --cols: 1 !important; --rows: var(--n) !important; }
   .meta { gap: 8px; font-size: 11px; }
   .grid:hover .thumb:not(:hover) .frame { opacity: 1; }
 
   .studio,
   .sheet { grid-template-columns: 1fr; }
+  .contact-list li { grid-template-columns: 1fr; gap: 4px; }
+  .label-k { font-size: 12px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
