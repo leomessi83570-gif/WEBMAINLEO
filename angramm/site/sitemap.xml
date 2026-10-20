@@ -5,13 +5,13 @@
   <url><loc>https://angramm.com/studio/</loc><lastmod>2026-10-20</lastmod></url>
   <url><loc>https://angramm.com/contact/</loc><lastmod>2026-10-20</lastmod></url>
   <url>
-    <loc>https://angramm.com/work/volcan/</loc>
+    <loc>https://angramm.com/work/om/</loc>
     <lastmod>2026-10-20</lastmod>
     <video:video>
-      <video:thumbnail_loc>https://angramm.com/media/volcan/poster.jpg</video:thumbnail_loc>
-      <video:title>Volcan · Film</video:title>
-      <video:description>Un film entre prises de vue réelles et images de synthèse : une expédition au cœur d&#39;un volcan.</video:description>
-      <video:content_loc>https://angramm.com/media/volcan/full.mp4</video:content_loc>
+      <video:thumbnail_loc>https://angramm.com/media/om/poster.jpg</video:thumbnail_loc>
+      <video:title>Olympique de Marseille · Film</video:title>
+      <video:description>Un film pour l&#39;Olympique de Marseille, entre prises de vue réelles et images de synthèse : une expédition au cœur d&#39;un volcan.</video:description>
+      <video:content_loc>https://angramm.com/media/om/full.mp4</video:content_loc>
       <video:duration>81</video:duration>
     </video:video>
   </url>
