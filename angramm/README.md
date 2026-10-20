@@ -6,10 +6,10 @@ Site statique (HTML/CSS/JS, aucune dépendance), dans l'esprit de 530degres.agen
 
 | Nom | Ce que c'est | Où la retrouver |
 | --- | --- | --- |
-| **Horizon** | Site horizontal seul : films plein écran au scroll, grille Projets, Studio, Contact | commit `326b43a` (tag local `angramm-horizon`) |
+| **Horizon** | Site horizontal seul : films plein écran au scroll (sur téléphone, recadrés pour remplir l'écran comme division.global), grille Projets, Studio, Contact | dossier `angramm-horizon/` (vidéos partagées avec `angramm/site/media`) |
 | **Duo** (actuelle) | Écran de chargement ANGRAMM → choix **Vertical / Horizontal** → même site pour chaque format ; son au clic sur les films ; film ANGRAMM sur la page Studio | branche `claude/beautiful-brahmagupta-19mnnt` |
 
-Pour revenir à Horizon : `git checkout 326b43a -- angramm` (puis `node build.mjs`).
+Les deux versions vivent côte à côte : `angramm-horizon/` (Horizon) et `angramm/` (Duo). Chacune se génère avec `node build.mjs` dans son dossier.
 
 Pages : `/` (chargement + choix du format), `/horizontal/` et `/vertical/` (films au scroll),
 `/horizontal/projets/` et `/vertical/projets/` (grille + films), `/studio/`, `/contact/`, `/work/<slug>/` (un film).

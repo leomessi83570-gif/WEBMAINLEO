@@ -1,0 +1,48 @@
+[
+  {
+    "slug": "om",
+    "client": "Olympique de Marseille",
+    "short": "OM",
+    "title": "Film",
+    "summary": "Un film pour l'Olympique de Marseille, entre prises de vue réelles et images de synthèse : une expédition au cœur d'un volcan.",
+    "location": "",
+    "start": 27,
+    "duration": 81,
+    "width": 1276,
+    "height": 720
+  },
+  {
+    "slug": "lacoste",
+    "client": "Lacoste",
+    "title": "Vinyle",
+    "summary": "Un ascenseur, un étage, une session vinyle : un film de mode pour Lacoste, entre clair-obscur et matières.",
+    "location": "",
+    "start": 26,
+    "duration": 48,
+    "width": 960,
+    "height": 720
+  },
+  {
+    "slug": "om-cma-cgm",
+    "client": "Olympique de Marseille × CMA CGM",
+    "short": "OM × CMA CGM",
+    "title": "Marseille",
+    "summary": "Les joueurs de l'OM débarquent sur le port de Marseille pour dévoiler le nouveau maillot floqué CMA CGM, au milieu des conteneurs et des dockers.",
+    "location": "Marseille",
+    "start": 60,
+    "duration": 70,
+    "width": 1278,
+    "height": 720
+  },
+  {
+    "slug": "mizuno-rio",
+    "client": "Mizuno",
+    "title": "Rio de Janeiro",
+    "summary": "Une favela de Rio de Janeiro qui s'illumine : un film Mizuno sur la débrouille, l'énergie et la lumière.",
+    "location": "Rio de Janeiro",
+    "start": 12,
+    "duration": 46,
+    "width": 1276,
+    "height": 720
+  }
+]
