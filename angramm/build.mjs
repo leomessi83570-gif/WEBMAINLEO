@@ -73,7 +73,7 @@ const header = (current = '') => {
 </header>`;
 };
 
-const tail = `<div class="cursor is-off" aria-hidden="true"><svg viewBox="0 0 40 48" width="26" height="31"><path d="M5 45 12 4 38 42" fill="none" stroke="currentColor" stroke-width="6" stroke-linejoin="miter" stroke-miterlimit="10"/></svg></div>
+const tail = `<div class="cursor is-off" aria-hidden="true"><span>A</span></div>
 <script src="/assets/main.js" defer></script>
 </body>
 </html>

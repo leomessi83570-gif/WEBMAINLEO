@@ -264,8 +264,18 @@ ol { list-style: none; margin: 0; padding: 0; }
     will-change: transform;
     transition: opacity 0.2s;
   }
-  .cursor svg { display: block; transform: translate(-8px, -3px); transition: transform 0.25s var(--ease); }
-  .cursor.is-link svg { transform: translate(-8px, -3px) scale(1.35); }
+  /* Le A du logo ANGRAMM, pointe du A = point cliqué */
+  .cursor span {
+    display: block;
+    font-size: 30px;
+    font-weight: 600;
+    font-stretch: 112%;
+    line-height: 1;
+    transform: translate(-50%, -14%);
+    transform-origin: 50% 14%;
+    transition: transform 0.25s var(--ease);
+  }
+  .cursor.is-link span { transform: translate(-50%, -14%) scale(1.35); }
   .cursor.is-off { opacity: 0; }
 }
 
