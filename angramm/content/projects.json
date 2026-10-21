@@ -3,7 +3,7 @@
     "slug": "om",
     "client": "Olympique de Marseille",
     "short": "OM",
-    "title": "Film",
+    "title": "Maillot 26/27",
     "summary": "Un film pour l'Olympique de Marseille, entre prises de vue réelles et images de synthèse : une expédition au cœur d'un volcan.",
     "location": "",
     "start": 27,
@@ -13,14 +13,15 @@
   },
   {
     "slug": "lacoste",
-    "client": "Lacoste",
-    "title": "Vinyle",
+    "client": "Lacoste × Family 3.0",
+    "title": "FW26",
     "summary": "Un ascenseur, un étage, une session vinyle : un film de mode pour Lacoste, entre clair-obscur et matières.",
     "location": "",
     "start": 26,
     "duration": 48,
     "width": 960,
-    "height": 720
+    "height": 720,
+    "short": "Lacoste"
   },
   {
     "slug": "om-cma-cgm",
@@ -36,14 +37,15 @@
   },
   {
     "slug": "mizuno-rio",
-    "client": "Mizuno",
+    "client": "Mizuno × Vrunk",
     "title": "Rio de Janeiro",
-    "summary": "Une favela de Rio de Janeiro qui s'illumine : un film Mizuno sur la débrouille, l'énergie et la lumière.",
+    "summary": "Une favela de Rio de Janeiro qui s'illumine : la collection Mizuno × Vrunk entre débrouille, énergie et lumière.",
     "location": "Rio de Janeiro",
     "start": 12,
     "duration": 46,
     "width": 1276,
-    "height": 720
+    "height": 720,
+    "short": "Mizuno × Vrunk"
   },
   {
     "slug": "endoume-kappa",
@@ -59,34 +61,62 @@
   {
     "slug": "mizuno-vrunk",
     "client": "Mizuno × Vrunk",
-    "title": "Collection",
-    "summary": "Motocross, drift et images de synthèse : la collection Mizuno × Vrunk mise en scène entre les tours, sous une pluie de pétales.",
-    "location": "",
+    "title": "Nanterre",
+    "summary": "Motocross, drift et images de synthèse : la collection Mizuno × Vrunk mise en scène avec Ven1 entre les tours de Nanterre, sous une pluie de pétales.",
+    "location": "Nanterre",
     "start": 32,
     "duration": 57,
     "width": 720,
     "height": 1280
   },
   {
+    "slug": "mizuno-vrunk-sao-paulo",
+    "client": "Mizuno × Vrunk",
+    "title": "São Paulo",
+    "summary": "La collection Mizuno × Vrunk à São Paulo avec KYAN : chaussures, survêtements et ruelles de la ville.",
+    "location": "São Paulo",
+    "start": 34
+  },
+  {
     "slug": "umbro",
-    "client": "Umbro",
+    "client": "Umbro × SAiSON × Chroniques2mars",
     "title": "Marseille",
     "summary": "Un terrain de quartier au pied de Notre-Dame-de-la-Garde et l'homme qui en trace les lignes : un film Umbro sur le football amateur à Marseille.",
     "location": "Marseille",
     "start": 30,
     "duration": 59,
     "width": 360,
-    "height": 640
+    "height": 640,
+    "short": "Umbro"
+  },
+  {
+    "slug": "crocs-saison",
+    "client": "Crocs × SAiSON × Chroniques2mars",
+    "short": "Crocs",
+    "title": "Marseille",
+    "summary": "Crocs débarque à Marseille avec SAiSON et Chroniques2mars : un faux flash info, le foot de quartier et des Crocs au bord de l'eau.",
+    "location": "Marseille",
+    "start": 24
+  },
+  {
+    "slug": "lacoste-fw24",
+    "client": "Lacoste × Family 3.0",
+    "short": "Lacoste",
+    "title": "FW24",
+    "summary": "Jumelles, bateaux et calanques : la collection Lacoste FW24 imaginée avec Family 3.0, tournée à Marseille.",
+    "location": "Marseille",
+    "start": 4
   },
   {
     "slug": "adidas-adizero",
-    "client": "adidas",
+    "client": "adidas × Family 3.0",
     "title": "Adizero Evo SL",
     "summary": "De l'orbite au bitume : la Adizero Evo SL, entre images de synthèse et course au lever du jour.",
     "location": "",
     "start": 26,
     "duration": 40,
     "width": 720,
-    "height": 1280
+    "height": 1280,
+    "short": "adidas"
   }
 ]

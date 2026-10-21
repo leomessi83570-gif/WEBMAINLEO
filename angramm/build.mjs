@@ -179,7 +179,7 @@ function formatProjects(f) {
   const n = F.list.length;
   const vertical = f === 'vertical';
   const cols = vertical ? Math.min(n, 4) : Math.ceil(Math.sqrt(n));
-  const mcols = vertical ? 2 : 1;
+  const mcols = vertical ? (n > 4 ? 3 : 2) : 1;
   const vars = `--cols:${cols};--rows:${Math.ceil(n / cols)};--mcols:${mcols};--mrows:${Math.ceil(n / mcols)};--ar:${vertical ? '9 / 16' : '16 / 9'};--k:${vertical ? 9 / 16 : 16 / 9}`;
   const cells = F.list
     .map(
