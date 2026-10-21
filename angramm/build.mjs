@@ -97,7 +97,7 @@ const tail = `<div class="cursor is-off" aria-hidden="true"><span>A</span></div>
 const reelsMarkup = (list, eager) =>
   list
     .map(
-      (p, i) => `<div class="reel${p.height > p.width ? ' is-portrait' : ''}" style="--poster:url(/media/${p.slug}/poster.jpg)">
+      (p, i) => `<div class="reel${p.height > p.width ? ' is-portrait' : ''}">
     <canvas class="ambient" width="64" height="36" aria-hidden="true"></canvas>
     <video muted loop playsinline preload="${eager && i === 0 ? 'auto' : 'none'}" poster="/media/${p.slug}/poster.jpg" data-src="/media/${p.slug}/full.mp4#t=${p.start || 0}"></video>
     <a class="cap" href="/work/${p.slug}/">${esc(p.short || p.client)} <span class="arr">→</span><span class="t">${esc(p.title)}</span></a>
@@ -375,7 +375,7 @@ function project(p) {
 <body class="work" data-fmt="${f}">
 ${header({ current: 'projets', fmt: f, kind: 'projets' })}
 <main>
-  <section class="player${p.height > p.width ? ' is-portrait' : ''}" aria-label="Film" style="--poster:url(/media/${p.slug}/poster.jpg)">
+  <section class="player${p.height > p.width ? ' is-portrait' : ''}" aria-label="Film">
     <canvas class="ambient" width="64" height="36" aria-hidden="true"></canvas>
     <video class="film tap-sound" src="/media/${p.slug}/full.mp4" poster="/media/${p.slug}/poster.jpg" playsinline autoplay muted preload="auto" width="${p.width}" height="${p.height}"></video>
     <h1 class="cap">${esc(p.client)} <span>${esc(p.title)}</span></h1>

@@ -16,12 +16,13 @@
     addEventListener('pageshow', (e) => e.persisted && document.body.classList.remove('is-leaving'));
   }
 
-  const load = (v) => {
+  // full = true : le film va être lu, on le télécharge. Sinon on ne lit que l'en-tête.
+  const load = (v, full = true) => {
     if (v.dataset.src) {
       v.src = v.dataset.src;
       v.removeAttribute('data-src');
-      v.preload = 'auto';
     }
+    v.preload = full ? 'auto' : 'metadata';
   };
   const play = (v) => !reduced && v.play().catch(() => {});
 
@@ -30,7 +31,7 @@
   if (reels.length) {
     // Charge le film visible et le suivant, pas les autres.
     const near = new IntersectionObserver(
-      (entries) => entries.forEach((e) => e.isIntersecting && load(e.target.querySelector('video'))),
+      (entries) => entries.forEach((e) => e.isIntersecting && load(e.target.querySelector('video'), false)),
       { rootMargin: '100% 0px' }
     );
     const seen = new IntersectionObserver(

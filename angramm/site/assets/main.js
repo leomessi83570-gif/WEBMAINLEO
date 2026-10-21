@@ -34,12 +34,14 @@
   }
   document.querySelectorAll('a[data-fmt]').forEach((a) => a.addEventListener('click', () => store.set('angramm-fmt', a.dataset.fmt)));
 
-  const load = (v) => {
+  // full = true : le film va être lu, on le télécharge. Sinon on ne lit que l'en-tête
+  // (le film suivant est prêt à démarrer sans disputer la connexion au film en cours).
+  const load = (v, full = true) => {
     if (v.dataset.src) {
       v.src = v.dataset.src;
       v.removeAttribute('data-src');
-      v.preload = 'auto';
     }
+    v.preload = full ? 'auto' : 'metadata';
   };
   const play = (v) => !reduced && v.play().catch(() => {});
 
@@ -71,25 +73,40 @@
   };
 
   // ---------- Fond flou : l'espace autour d'un film non plein écran reprend ses couleurs ----------
-  // Le film est recopié ~15 fois/s dans un canvas minuscule, agrandi et flouté en CSS :
-  // bien plus léger qu'une deuxième vidéo.
+  // Le film est recopié ~10 fois/s dans un canvas minuscule (64 px) ; le flou est calculé à cette
+  // petite taille puis l'image est agrandie par la carte graphique : quasi gratuit, même en scrollant.
   const startAmbient = (box) => {
     const c = box.querySelector('.ambient');
     const v = box.querySelector('video');
     stopAmbient(box);
     if (!c || reduced || getComputedStyle(v).objectFit !== 'contain') return;
-    c.height = Math.max(1, Math.round((c.width * box.clientHeight) / box.clientWidth));
+    const bw = box.clientWidth, bh = box.clientHeight;
+    c.width = 64;
+    c.height = Math.max(1, Math.round((64 * bh) / bw));
+    const k = (bw / 64) * 1.15; // un peu plus grand que l'écran pour cacher les bords flous
+    c.style.width = '64px';
+    c.style.height = `${c.height}px`;
+    c.style.transform = `translate(${(bw - 64 * k) / 2}px, ${(bh - c.height * k) / 2}px) scale(${k})`;
     const ctx = c.getContext('2d');
+    const draw = (src, w, h) => {
+      const r = c.width / c.height;
+      let sw = w, sh = sw / r;
+      if (sh > h) { sh = h; sw = sh * r; }
+      ctx.drawImage(src, (w - sw) / 2, (h - sh) / 2, sw, sh, 0, 0, c.width, c.height);
+      c.classList.add('is-live');
+    };
+    // en attendant le film : l'affiche
+    if (v.poster && !c.classList.contains('is-live')) {
+      const img = new Image();
+      img.onload = () => draw(img, img.naturalWidth, img.naturalHeight);
+      img.src = v.poster;
+    }
     let last = 0;
     const tick = (t) => {
       box.ambient = requestAnimationFrame(tick);
-      if (t - last < 66 || v.readyState < 2 || !v.videoWidth) return;
+      if (t - last < 100 || v.paused || v.readyState < 2 || !v.videoWidth) return;
       last = t;
-      const r = c.width / c.height;
-      let sw = v.videoWidth, sh = sw / r;
-      if (sh > v.videoHeight) { sh = v.videoHeight; sw = sh * r; }
-      ctx.drawImage(v, (v.videoWidth - sw) / 2, (v.videoHeight - sh) / 2, sw, sh, 0, 0, c.width, c.height);
-      c.classList.add('is-live');
+      draw(v, v.videoWidth, v.videoHeight);
     };
     box.ambient = requestAnimationFrame(tick);
   };
@@ -122,9 +139,9 @@
   // ---------- Films plein écran : chacun se lance quand il arrive à l'écran ----------
   const reels = [...document.querySelectorAll('.reel')];
   if (reels.length) {
-    // Charge le film visible et le suivant, pas les autres.
+    // Le film visible se télécharge ; le suivant ne charge que son en-tête.
     const near = new IntersectionObserver(
-      (entries) => entries.forEach((e) => e.isIntersecting && load(e.target.querySelector('video'))),
+      (entries) => entries.forEach((e) => e.isIntersecting && load(e.target.querySelector('video'), false)),
       { rootMargin: '100% 0px' }
     );
     const seen = new IntersectionObserver(
