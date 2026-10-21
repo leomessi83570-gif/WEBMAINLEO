@@ -301,6 +301,31 @@ ${tail}`
   );
 }
 
+// ---------- 404 : servie par Netlify / Vercel pour toute adresse inconnue ----------
+function notFound() {
+  write(
+    '404.html',
+    `${head({
+      title: `Page introuvable | ${site.name}®`,
+      description: site.description,
+      path: '/404.html',
+      image: `/media/${projects[0].slug}/poster.jpg`,
+      extra: '<meta name="robots" content="noindex">\n',
+    })}
+<body class="page-contact">
+${header()}
+<main class="contact">
+  <h1 class="contact-title">Page<br>introuvable</h1>
+  <ul class="contact-list">
+    <li><span class="label-k">Accueil</span><a href="/">${esc(site.name)}®</a></li>
+    <li><span class="label-k">Projets</span><a href="/horizontal/projets/">Horizontal</a></li>
+    <li><span class="label-k">Projets</span><a href="/vertical/projets/">Vertical</a></li>
+  </ul>
+</main>
+${tail}`
+  );
+}
+
 // ---------- Pages projet ----------
 function project(p) {
   const f = fmtOf(p);
@@ -421,6 +446,7 @@ intro();
 Object.keys(FORMATS).forEach((f) => { formatHome(f); formatProjects(f); });
 studioPage();
 contactPage();
+notFound();
 projects.forEach(project);
 seoFiles();
 console.log(`OK : ${projects.length + 7} pages générées dans site/`);

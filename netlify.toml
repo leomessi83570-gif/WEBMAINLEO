@@ -1,5 +1,7 @@
-# Netlify : « Base directory » = angramm (le reste est lu ici)
+# Netlify (déploiement depuis GitHub) : le site ANGRAMM « Duo » est dans angramm/.
+# Rien à régler côté Netlify : base, commande et dossier publié sont lus ici.
 [build]
+  base = "angramm"
   command = "node build.mjs"
   publish = "site"
 
