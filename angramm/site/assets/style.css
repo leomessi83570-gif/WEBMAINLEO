@@ -247,6 +247,11 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 }
 .meta .n,
 .meta .t { color: var(--mute); }
+/* Vignettes verticales étroites : client sur une ligne, titre dessous */
+.grid-vertical { --caption: 50px; }
+.grid-vertical .meta { flex-wrap: wrap; align-content: flex-end; row-gap: 2px; }
+.grid-vertical .meta .c { max-width: calc(100% - 3em); overflow: hidden; text-overflow: ellipsis; }
+.grid-vertical .meta .t { flex-basis: 100%; overflow: hidden; text-overflow: ellipsis; }
 .meta .c { color: var(--soft); transition: color 0.3s; }
 .thumb:hover .meta .c,
 .thumb:focus-visible .meta .c { color: var(--fg); }
@@ -596,6 +601,8 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
   .studio-film video { height: auto; width: min(100%, 360px); }
   .reel .num { display: none; }
   .reel .snd { left: auto; right: var(--gutter); translate: none; }
+  .grid-vertical { --caption: 24px; }
+  .grid-vertical .meta { flex-wrap: nowrap; }
   .grid-vertical .meta .t { display: none; }
   .contact-list li { grid-template-columns: 1fr; gap: 4px; }
   .label-k { font-size: 12px; }
