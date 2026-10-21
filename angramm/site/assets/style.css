@@ -168,9 +168,10 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
   opacity: 0;
 }
 .reel .cap { left: var(--gutter); transition: color 0.3s; }
-.reel .cap span { display: inline-block; transition: transform 0.4s var(--ease); }
+.reel .cap .arr { display: inline-block; transition: transform 0.4s var(--ease); }
+.reel .cap .t { display: none; }
 .reel .cap:hover { color: var(--fg); }
-.reel .cap:hover span { transform: translateX(4px); }
+.reel .cap:hover .arr { transform: translateX(4px); }
 .reel .snd { left: 50%; translate: -50% 0; }
 .reel .num { right: var(--gutter); font-variant-numeric: tabular-nums; }
 
@@ -182,9 +183,7 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 @media (orientation: landscape) {
   .reel.is-portrait video { object-fit: contain; }
 }
-@media (orientation: portrait) {
-  .reel:not(.is-portrait) video { object-fit: contain; }
-}
+/* Sur téléphone, les films horizontaux remplissent tout l'écran (recadrés au centre), comme division.global */
 
 /* ---------- Projets : grille alignée, tout visible sans scroll ---------- */
 .grid-wrap {
@@ -600,6 +599,12 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
   .sheet { grid-template-columns: 1fr; }
   .studio-film video { height: auto; width: min(100%, 360px); }
   .reel .num { display: none; }
+  /* Légende façon Division : client en blanc, titre en gris dessous */
+  .reel .cap,
+  .reel .snd { bottom: max(28px, env(safe-area-inset-bottom)); }
+  .reel .cap { font-size: 20px; font-weight: 500; line-height: 1.15; color: var(--fg); }
+  .reel .cap .arr { display: none; }
+  .reel .cap .t { display: block; color: var(--soft); }
   .reel .snd { left: auto; right: var(--gutter); translate: none; }
   .grid-vertical { --caption: 24px; }
   .grid-vertical .meta { flex-wrap: nowrap; }

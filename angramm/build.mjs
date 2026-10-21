@@ -100,7 +100,7 @@ const reelsMarkup = (list, eager) =>
       (p, i) => `<div class="reel${p.height > p.width ? ' is-portrait' : ''}" style="--poster:url(/media/${p.slug}/poster.jpg)">
     <canvas class="ambient" width="64" height="36" aria-hidden="true"></canvas>
     <video muted loop playsinline preload="${eager && i === 0 ? 'auto' : 'none'}" poster="/media/${p.slug}/poster.jpg" data-src="/media/${p.slug}/full.mp4#t=${p.start || 0}"></video>
-    <a class="cap" href="/work/${p.slug}/">${esc(p.short || p.client)} <span>→</span></a>
+    <a class="cap" href="/work/${p.slug}/">${esc(p.short || p.client)} <span class="arr">→</span><span class="t">${esc(p.title)}</span></a>
     <button class="snd" type="button" aria-pressed="false">Son <span>off</span></button>
     <span class="num">${num(i)} / ${num(list.length - 1)}</span>
   </div>`
