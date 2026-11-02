@@ -1,9 +1,8 @@
 (() => {
   const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const touch = matchMedia('(hover: none)').matches;
   const store = {
-    get: (k, s = localStorage) => { try { return s.getItem(k); } catch (e) { return null; } },
-    set: (k, v, s = localStorage) => { try { s.setItem(k, v); } catch (e) {} },
+    get: (k, s = sessionStorage) => { try { return s.getItem(k); } catch (e) { return null; } },
+    set: (k, v, s = sessionStorage) => { try { s.setItem(k, v); } catch (e) {} },
   };
 
   // ---------- Transition de page sans View Transitions (Firefox…) ----------
@@ -13,7 +12,7 @@
       const a = e.target.closest('a');
       if (!a || reduced || e.defaultPrevented || e.button || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
       const url = new URL(a.href, location);
-      if (a.target || url.origin !== location.origin || (url.pathname === location.pathname && url.hash)) return;
+      if (a.target || url.origin !== location.origin || url.protocol === 'mailto:' || (url.pathname === location.pathname && url.hash)) return;
       e.preventDefault();
       document.body.classList.add('is-leaving');
       setTimeout(() => (location.href = url.href), 280);
@@ -21,22 +20,13 @@
     addEventListener('pageshow', (e) => e.persisted && document.body.classList.remove('is-leaving'));
   }
 
-  // ---------- Format choisi (vertical / horizontal), retenu d'une page à l'autre ----------
-  const pageFmt = document.body.dataset.fmt;
-  if (pageFmt) store.set('angramm-fmt', pageFmt);
-  const fmt = pageFmt || store.get('angramm-fmt');
-  if (fmt) {
-    document.querySelectorAll('[data-fmt-link="projets"]').forEach((a) => (a.href = `/${fmt}/projets/`));
-    document.querySelectorAll('.fmt a').forEach((a) => {
-      if (a.dataset.fmt === fmt) a.setAttribute('aria-current', 'true');
-      else a.removeAttribute('aria-current');
-    });
-  }
-  document.querySelectorAll('a[data-fmt]').forEach((a) => a.addEventListener('click', () => store.set('angramm-fmt', a.dataset.fmt)));
-
   // full = true : le film va être lu, on le télécharge. Sinon on ne lit que l'en-tête
   // (le film suivant est prêt à démarrer sans disputer la connexion au film en cours).
   const load = (v, full = true) => {
+    if (v.dataset.poster) {
+      v.poster = v.dataset.poster;
+      v.removeAttribute('data-poster');
+    }
     if (v.dataset.src) {
       v.src = v.dataset.src;
       v.removeAttribute('data-src');
@@ -65,6 +55,7 @@
     sync(v);
   };
   const bindSound = (v, btn) => {
+    if (!v) return;
     if (btn) {
       buttons.set(v, btn);
       btn.addEventListener('click', () => toggleSound(v));
@@ -75,6 +66,10 @@
   // ---------- Fond flou : l'espace autour d'un film non plein écran reprend ses couleurs ----------
   // Le film est recopié ~10 fois/s dans un canvas minuscule (64 px) ; le flou est calculé à cette
   // petite taille puis l'image est agrandie par la carte graphique : quasi gratuit, même en scrollant.
+  const stopAmbient = (box) => {
+    if (box.ambient) cancelAnimationFrame(box.ambient);
+    box.ambient = 0;
+  };
   const startAmbient = (box) => {
     const c = box.querySelector('.ambient');
     const v = box.querySelector('video');
@@ -95,7 +90,6 @@
       ctx.drawImage(src, (w - sw) / 2, (h - sh) / 2, sw, sh, 0, 0, c.width, c.height);
       c.classList.add('is-live');
     };
-    // en attendant le film : l'affiche
     if (v.poster && !c.classList.contains('is-live')) {
       const img = new Image();
       img.onload = () => draw(img, img.naturalWidth, img.naturalHeight);
@@ -110,28 +104,13 @@
     };
     box.ambient = requestAnimationFrame(tick);
   };
-  const stopAmbient = (box) => {
-    if (box.ambient) cancelAnimationFrame(box.ambient);
-    box.ambient = 0;
-  };
 
-  // ---------- Accueil : chargement ANGRAMM puis choix du format ----------
-  if (document.body.classList.contains('intro')) {
+  // ---------- Écran de chargement ANGRAMM (une fois par visite) ----------
+  if (document.body.classList.contains('has-loader')) {
     const ready = () => {
       document.body.classList.add('is-ready');
-      store.set('angramm-intro', '1', sessionStorage);
-      if (touch && !reduced) opts.forEach(start); // sur mobile, les deux aperçus tournent
+      store.set('angramm-intro', '1');
     };
-    const opts = [...document.querySelectorAll('.opt')];
-    const start = (o) => {
-      const v = o.querySelector('video');
-      load(v);
-      v.play().then(() => o.classList.add('is-playing')).catch(() => {});
-    };
-    opts.forEach((o) => {
-      o.addEventListener('mouseenter', () => !reduced && start(o));
-      o.addEventListener('mouseleave', () => { if (!touch) { o.classList.remove('is-playing'); o.querySelector('video').pause(); } });
-    });
     if (document.documentElement.classList.contains('skip-intro')) ready();
     else setTimeout(ready, 1900);
   }
@@ -165,23 +144,28 @@
     });
   }
 
-  // ---------- Projets : l'aperçu s'anime au survol ----------
-  document.querySelectorAll('.thumb').forEach((a) => {
-    const v = a.querySelector('video');
-    a.addEventListener('mouseenter', () => {
-      if (reduced) return;
-      load(v);
-      v.currentTime = 0;
-      v.play().then(() => a.classList.add('is-playing')).catch(() => {});
-    });
-    a.addEventListener('mouseleave', () => { a.classList.remove('is-playing'); v.pause(); });
-  });
+  // ---------- Mosaïque : les aperçus tournent tout seuls quand ils sont à l'écran ----------
+  const tiles = [...document.querySelectorAll('.tile')];
+  if (tiles.length && !reduced) {
+    const io = new IntersectionObserver(
+      (entries) =>
+        entries.forEach((e) => {
+          const v = e.target.querySelector('video');
+          if (e.isIntersecting) {
+            load(v);
+            v.play().then(() => e.target.classList.add('is-playing')).catch(() => {});
+          } else v.pause();
+        }),
+      { threshold: 0.5 }
+    );
+    tiles.forEach((t) => io.observe(t));
+  }
 
   // ---------- Page projet : le film démarre avec le son quand le navigateur l'autorise ----------
   const film = document.querySelector('.film');
   if (film) {
-    bindSound(film, document.querySelector('.player .snd'));
     const player = document.querySelector('.player');
+    bindSound(film, document.querySelector('.player .snd'));
     startAmbient(player);
     addEventListener('resize', () => startAmbient(player));
     if (reduced) film.pause();
@@ -193,12 +177,30 @@
     }
   }
 
-  // ---------- Studio : le film ANGRAMM, son au clic ----------
-  const studioFilm = document.querySelector('.studio-film video');
-  if (studioFilm) {
-    bindSound(studioFilm, document.querySelector('.studio-film .snd'));
-    if (reduced) studioFilm.pause();
+  // ---------- Team : le film ANGRAMM (son au clic) et les onglets « Behind the scenes » ----------
+  const teamFilm = document.querySelector('.team-film video');
+  if (teamFilm) {
+    bindSound(teamFilm, document.querySelector('.team-film .snd'));
+    if (reduced) teamFilm.pause();
   }
+  const tabs = [...document.querySelectorAll('[role="tab"]')];
+  const select = (tab, focus) => {
+    tabs.forEach((t) => {
+      const on = t === tab;
+      t.setAttribute('aria-selected', String(on));
+      t.tabIndex = on ? 0 : -1;
+      document.getElementById(t.getAttribute('aria-controls')).hidden = !on;
+    });
+    if (focus) tab.focus();
+    tab.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+  };
+  tabs.forEach((t, i) => {
+    t.addEventListener('click', () => select(t));
+    t.addEventListener('keydown', (e) => {
+      const d = { ArrowRight: 1, ArrowLeft: -1 }[e.key];
+      if (d) { e.preventDefault(); select(tabs[(i + d + tabs.length) % tabs.length], true); }
+    });
+  });
 
   // ---------- Curseur ----------
   const cursor = document.querySelector('.cursor');

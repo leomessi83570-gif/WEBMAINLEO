@@ -6,14 +6,17 @@ Site statique (HTML/CSS/JS, aucune dépendance), dans l'esprit de 530degres.agen
 
 | Nom | Ce que c'est | Où la retrouver |
 | --- | --- | --- |
-| **Horizon** | Site horizontal seul : films plein écran au scroll (sur téléphone, recadrés pour remplir l'écran comme division.global), grille Projets, Studio, Contact | dossier `angramm-horizon/` (vidéos partagées avec `angramm/site/media`) |
-| **Duo** (actuelle) | Écran de chargement ANGRAMM → choix **Vertical / Horizontal** → même site pour chaque format ; son au clic sur les films ; film ANGRAMM sur la page Studio | branche `claude/beautiful-brahmagupta-19mnnt` |
+| **Horizon** | Site horizontal seul (FR) : films plein écran au scroll, grille Projets, Studio, Contact | dossier `angramm-horizon/` |
+| **Duo** | Choix Vertical / Horizontal à l'entrée, un site par format (FR) | commit `766a811` : `git checkout 766a811 -- angramm` |
+| **Mosaic** (actuelle) | Tous les projets ensemble, site en anglais : chargement ANGRAMM → films au scroll ; Projects en mosaïque 2 par ligne ; Team (textes, valeurs, coulisses par projet) ; Contact façon division.global ; Garamond pour les textes, Archivo pour les titres | ce dossier, branche `claude/beautiful-brahmagupta-19mnnt` |
 
-Les deux versions vivent côte à côte : `angramm-horizon/` (Horizon) et `angramm/` (Duo). Chacune se génère avec `node build.mjs` dans son dossier.
+Pages : `/` (chargement + films au scroll + présentation), `/projects/` (mosaïque + films), `/team/`, `/contact/`, `/work/<slug>/` (un film).
+Anciennes adresses (`/studio/`, `/horizontal/…`, `/vertical/…`, `/projets/`) redirigées en 301 (`site/_redirects` et `netlify.toml`).
 
-Pages : `/` (chargement + choix du format), `/horizontal/` et `/vertical/` (films au scroll),
-`/horizontal/projets/` et `/vertical/projets/` (grille + films), `/studio/`, `/contact/`, `/work/<slug>/` (un film).
-Le format d'un projet est déduit de ses dimensions (`width` / `height` dans `content/projects.json`).
+### À compléter
+- `content/site.json` → `team.intro`, `team.values` : textes proposés, à valider ; `team.members` : `[{ "role": "Founder | CEO", "name": "…" }]` (la section s'affiche dès qu'il y a un nom)
+- Photos de tournage : déposer les images dans `site/media/<slug>/bts/` (webp/jpg), elles remplacent automatiquement les images du film dans l'onglet du projet
+- `content/projects.json` → `credits` par projet (réalisation, production, agence…)
 
 ## Structure
 
@@ -23,8 +26,9 @@ content/projects.json   liste des projets (ordre = ordre d'affichage)
 build.mjs               génère les pages HTML + sitemap.xml + robots.txt + llms.txt
 site/                   dossier à mettre en ligne
   assets/               style.css, main.js
-  fonts/                Archivo variable (OFL), la typo de marque
-  media/<slug>/         full.mp4 (film d'origine, sans réencodage), preview.mp4 (8 s, survol de la grille), poster.jpg
+  fonts/                Archivo (titres, OFL) + EB Garamond (textes, OFL)
+  media/<slug>/         full.mp4 (1080p H.264), preview.mp4 (8 s, mosaïque), poster.jpg/.webp, thumb.webp, still-1..4.webp, bts/ (optionnel)
+  _headers, _redirects  cache et redirections, lus par Netlify même en glisser-déposer
 ```
 
 ## Typo

@@ -22,7 +22,32 @@
 
 [[redirects]]
   from = "/projets/"
-  to = "/horizontal/projets/"
+  to = "/projects/"
+  status = 301
+
+[[redirects]]
+  from = "/studio/"
+  to = "/team/"
+  status = 301
+
+[[redirects]]
+  from = "/horizontal/projets/"
+  to = "/projects/"
+  status = 301
+
+[[redirects]]
+  from = "/vertical/projets/"
+  to = "/projects/"
+  status = 301
+
+[[redirects]]
+  from = "/horizontal/"
+  to = "/"
+  status = 301
+
+[[redirects]]
+  from = "/vertical/"
+  to = "/"
   status = 301
 
 [[redirects]]

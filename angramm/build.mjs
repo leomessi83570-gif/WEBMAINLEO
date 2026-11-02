@@ -1,6 +1,6 @@
 // Génère les pages HTML statiques du site ANGRAMM dans site/.
 // Usage : node build.mjs   (aucune dépendance)
-import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
+import { readFileSync, writeFileSync, mkdirSync, existsSync, readdirSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -9,21 +9,16 @@ const out = join(root, 'site');
 const site = JSON.parse(readFileSync(join(root, 'content/site.json'), 'utf8'));
 const projects = JSON.parse(readFileSync(join(root, 'content/projects.json'), 'utf8'));
 const base = site.url.replace(/\/$/, '');
-const today = new Date().toISOString().slice(0, 10);
+const lastUpdate = projects.map((p) => p.date || site.fallbackDate).sort().at(-1);
 
-// Deux sites en un : les films verticaux et les films horizontaux.
-const fmtOf = (p) => (p.height > p.width ? 'vertical' : 'horizontal');
-const FORMATS = {
-  horizontal: { label: 'Horizontal', list: projects.filter((p) => fmtOf(p) === 'horizontal') },
-  vertical: { label: 'Vertical', list: projects.filter((p) => fmtOf(p) === 'vertical') },
-};
-
+const isVertical = (p) => p.height > p.width;
 const esc = (s = '') =>
   String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
 const jsonLd = (data) => `<script type="application/ld+json">${JSON.stringify(data).replace(/</g, '\\u003c')}</script>`;
 const iso = (sec) => `PT${Math.floor(sec / 60)}M${Math.round(sec % 60)}S`;
-const num = (i) => String(i + 1).padStart(2, '0');
 const name = (p) => `${p.client} · ${p.title}`;
+const year = (p) => (p.date || '').slice(0, 4);
+const media = (p, file) => `/media/${p.slug}/${file}`;
 const write = (path, html) => {
   mkdirSync(dirname(join(out, path)), { recursive: true });
   writeFileSync(join(out, path), html);
@@ -33,15 +28,20 @@ const org = {
   '@type': 'Organization',
   '@id': `${base}/#org`,
   name: site.name,
+  alternateName: `${site.name}®`,
   url: `${base}/`,
-  logo: `${base}/favicon.svg`,
-  description: site.description,
+  logo: { '@type': 'ImageObject', url: `${base}/assets/angramm-logo.png`, width: 512, height: 512 },
+  image: `${base}/assets/og.jpg`,
+  description: site.intro[0],
+  slogan: site.tagline,
+  email: site.email,
   sameAs: [site.instagram],
-  ...(site.email && { email: site.email }),
-  ...(site.city && { address: { '@type': 'PostalAddress', addressLocality: site.city, addressCountry: site.country } }),
+  knowsAbout: ['Film production', 'Advertising', 'Creative direction', 'CGI', 'Vertical video', 'Fashion film', 'Sports marketing'],
+  areaServed: ['FR', 'Worldwide'],
+  address: { '@type': 'PostalAddress', addressLocality: site.city, addressCountry: site.country },
 };
 
-function head({ title, description, path, image, video, extra = '' }) {
+function head({ title, description, path, image = '/assets/og.jpg', video, noindex = false, serif = true, extra = '' }) {
   const url = `${base}${path}`;
   return `<!doctype html>
 <html lang="${site.lang}">
@@ -50,7 +50,7 @@ function head({ title, description, path, image, video, extra = '' }) {
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>${esc(title)}</title>
 <meta name="description" content="${esc(description)}">
-<link rel="canonical" href="${url}">
+${noindex ? '<meta name="robots" content="noindex">\n' : ''}<link rel="canonical" href="${url}">
 <meta name="theme-color" content="#000000">
 <meta property="og:type" content="${video ? 'video.other' : 'website'}">
 <meta property="og:site_name" content="${esc(site.name)}">
@@ -61,28 +61,23 @@ function head({ title, description, path, image, video, extra = '' }) {
 <meta property="og:image" content="${base}${image}">
 ${video ? `<meta property="og:video" content="${base}${video}">\n<meta property="og:video:type" content="video/mp4">\n` : ''}<meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/assets/angramm-logo.png">
 <link rel="preload" href="/fonts/archivo-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="/assets/style.css">
+${serif ? '<link rel="preload" href="/fonts/ebgaramond-latin.woff2" as="font" type="font/woff2" crossorigin>\n' : ''}<link rel="stylesheet" href="/assets/style.css">
 <script>if (!('PageRevealEvent' in window)) document.documentElement.classList.add('no-vt');</script>
 ${extra}</head>`;
 }
 
-// En-tête façon 530° : liens fins répartis, logo au centre, bascule de format H / V.
-// fmt = format de la page (null pour Studio / Contact : main.js reprend le dernier format choisi).
-// kind = 'home' | 'projets' pour que la bascule mène à la page équivalente de l'autre format.
-const header = ({ current = '', fmt = null, kind = 'home' } = {}) => {
-  const link = (href, label, key, attrs = '') => `<a href="${href}"${attrs}${current === key ? ' aria-current="page"' : ''}>${label}</a>`;
-  const target = (f) => (kind === 'projets' ? `/${f}/projets/` : `/${f}/`);
-  const toggle = Object.entries(FORMATS)
-    .map(([f, F]) => `<a href="${target(f)}" data-fmt="${f}" ${fmt === f ? ' aria-current="true"' : ''}>${F.label}</a>`)
-    .join('<span>/</span>');
+// En-tête façon 530° : liens fins répartis, logo au centre.
+const header = (current = '') => {
+  const link = (href, label, key) => `<a href="${href}"${current === key ? ' aria-current="page"' : ''}>${label}</a>`;
   return `<header class="top">
-  <nav class="nav" aria-label="Navigation principale">
-    ${link(`/${fmt || 'horizontal'}/projets/`, 'Projets', 'projets', fmt ? '' : ' data-fmt-link="projets"')}
-    ${link('/studio/', 'Studio', 'studio')}
-    <a class="wordmark" href="/" aria-label="${esc(site.name)}, accueil">${esc(site.name)}<sup>®</sup></a>
+  <nav class="nav" aria-label="Main">
+    ${link('/projects/', 'Projects', 'projects')}
+    ${link('/team/', 'Team', 'team')}
+    <a class="wordmark" href="/" aria-label="${esc(site.name)}, home">${esc(site.name)}<sup>®</sup></a>
     ${link('/contact/', 'Contact', 'contact')}
-    <span class="fmt" aria-label="Format">${toggle}</span>
+    <a href="${esc(site.instagram)}" rel="me noopener" target="_blank">Instagram</a>
   </nav>
 </header>`;
 };
@@ -94,33 +89,22 @@ const tail = `<div class="cursor is-off" aria-hidden="true"><span>A</span></div>
 `;
 
 // Films plein écran qui défilent au scroll ; un clic sur le film met le son.
-const reelsMarkup = (list, eager) =>
-  list
+const reelsMarkup = (eager) =>
+  projects
     .map(
-      (p, i) => `<div class="reel${p.height > p.width ? ' is-portrait' : ''}">
+      (p, i) => `<div class="reel${isVertical(p) ? ' is-portrait' : ''}">
     <canvas class="ambient" width="64" height="36" aria-hidden="true"></canvas>
-    <video muted loop playsinline preload="${eager && i === 0 ? 'auto' : 'none'}" poster="/media/${p.slug}/poster.jpg" data-src="/media/${p.slug}/full.mp4#t=${p.start || 0}"></video>
+    <video muted loop playsinline preload="${eager && i === 0 ? 'auto' : 'none'}" ${eager && i === 0 ? 'poster' : 'data-poster'}="${media(p, 'poster.webp')}" data-src="${media(p, 'full.mp4')}#t=${p.start || 0}"></video>
     <a class="cap" href="/work/${p.slug}/">${esc(p.short || p.client)} <span class="arr">→</span><span class="t">${esc(p.title)}</span></a>
-    <button class="snd" type="button" aria-pressed="false">Son <span>off</span></button>
-    <span class="num">${num(i)} / ${num(list.length - 1)}</span>
+    <button class="snd" type="button" aria-pressed="false">Sound <span>off</span></button>
   </div>`
     )
     .join('\n  ');
 
-// ---------- Accueil : écran de chargement puis choix du format ----------
-function intro() {
-  const opt = (f) => {
-    const F = FORMATS[f];
-    const p = F.list[0];
-    return `<a class="opt opt-${f}" href="/${f}/" data-fmt="${f}">
-    <video muted loop playsinline preload="none" poster="/media/${p.slug}/poster.jpg" data-src="/media/${p.slug}/preview.mp4" aria-hidden="true"></video>
-    <span class="opt-in">
-      <span class="shape" aria-hidden="true"></span>
-      <span class="opt-name">${F.label}</span>
-      <span class="opt-n">${String(F.list.length).padStart(2, '0')} films</span>
-    </span>
-  </a>`;
-  };
+const clients = [...new Set(projects.flatMap((p) => p.client.split(' × ')))];
+
+// ---------- Accueil : chargement ANGRAMM puis les films au scroll ----------
+function home() {
   const ld = {
     '@context': 'https://schema.org',
     '@graph': [org, { '@type': 'WebSite', '@id': `${base}/#site`, url: `${base}/`, name: site.name, inLanguage: site.lang, publisher: { '@id': `${base}/#org` } }],
@@ -131,65 +115,40 @@ function intro() {
       title: `${site.name}® · ${site.tagline}`,
       description: site.description,
       path: '/',
-      image: `/media/${FORMATS.horizontal.list[0].slug}/poster.jpg`,
-      extra: `<script>try { if (sessionStorage.getItem('angramm-intro') || matchMedia('(prefers-reduced-motion: reduce)').matches) document.documentElement.classList.add('skip-intro'); } catch (e) {}</script>\n${jsonLd(ld)}\n`,
+      serif: false,
+      extra: `<link rel="preload" href="${media(projects[0], 'poster.webp')}" as="image" fetchpriority="high">
+<script>try { if (sessionStorage.getItem('angramm-intro') || matchMedia('(prefers-reduced-motion: reduce)').matches) document.documentElement.classList.add('skip-intro'); } catch (e) {}</script>
+${jsonLd(ld)}\n`,
     })}
-<body class="intro">
+<body class="home has-loader">
 <div class="loader" aria-hidden="true">
   <span class="loader-mark">${esc(site.name)}<sup>®</sup></span>
   <span class="loader-bar"><i></i></span>
 </div>
-<header class="intro-top"><a class="wordmark" href="/">${esc(site.name)}<sup>®</sup></a></header>
-<main class="choice">
-  <h1 class="sr-only">${esc(site.name)}® · ${esc(site.tagline)}</h1>
-  <p class="choice-label">Choisir un format</p>
-  ${opt('vertical')}
-  ${opt('horizontal')}
-</main>
-<nav class="intro-foot" aria-label="Pages"><a href="/studio/">Studio</a><a href="/contact/">Contact</a></nav>
-${tail}`
-  );
-}
-
-// ---------- /<format>/ : les films défilent au scroll ----------
-function formatHome(f) {
-  const F = FORMATS[f];
-  write(
-    `${f}/index.html`,
-    `${head({
-      title: `${F.label} · ${site.name}®`,
-      description: `Les films ${F.label.toLowerCase()}s d'${site.name}® : ${F.list.map((p) => p.short || p.client).join(', ')}.`,
-      path: `/${f}/`,
-      image: `/media/${F.list[0].slug}/poster.jpg`,
-      extra: `<link rel="preload" href="/media/${F.list[0].slug}/poster.jpg" as="image" fetchpriority="high">\n`,
-    })}
-<body class="home" data-fmt="${f}">
-${header({ fmt: f, kind: 'home' })}
+${header()}
 <main class="reels">
-  <h1 class="sr-only">${esc(site.name)}® · films ${F.label.toLowerCase()}s</h1>
-  ${reelsMarkup(F.list, true)}
+  <h1 class="sr-only">${esc(site.name)}® · ${esc(site.tagline)}</h1>
+  ${reelsMarkup(true)}
+  <section class="endcard" aria-label="${esc(site.name)}">
+    <p class="lede">${esc(site.intro[0])}</p>
+    <p class="endcard-links"><a href="/projects/">All projects →</a><a href="/team/">Team →</a><a href="/contact/">${esc(site.cta)} →</a></p>
+  </section>
 </main>
 ${tail}`
   );
 }
 
-// ---------- /<format>/projets/ : grille alignée qui tient dans l'écran, puis les films au scroll ----------
-function formatProjects(f) {
-  const F = FORMATS[f];
-  const n = F.list.length;
-  const vertical = f === 'vertical';
-  const cols = vertical ? Math.min(n, 4) : Math.ceil(Math.sqrt(n));
-  const mcols = vertical ? (n > 4 ? 3 : 2) : 1;
-  const vars = `--cols:${cols};--rows:${Math.ceil(n / cols)};--mcols:${mcols};--mrows:${Math.ceil(n / mcols)};--ar:${vertical ? '9 / 16' : '16 / 9'};--k:${vertical ? 9 / 16 : 16 / 9}`;
-  const cells = F.list
+// ---------- Projets : mosaïque 2 par ligne, les aperçus tournent au scroll ; puis les films ----------
+function projectsPage() {
+  const tiles = projects
     .map(
-      (p, i) => `<li class="cell" style="--i:${i}">
-      <a class="thumb" href="/work/${p.slug}/">
+      (p, i) => `<li>
+      <a class="tile" href="/work/${p.slug}/">
         <span class="frame">
-          <img src="/media/${p.slug}/poster.jpg" alt="${esc(name(p))}" width="${p.width}" height="${p.height}" decoding="async">
-          <video muted loop playsinline preload="none" data-src="/media/${p.slug}/preview.mp4" aria-hidden="true"></video>
+          <img src="${media(p, 'thumb.webp')}" alt="${esc(`${name(p)} — film by ${site.name}`)}" width="${isVertical(p) ? 720 : Math.round((720 * p.width) / p.height)}" height="${isVertical(p) ? Math.round((720 * p.height) / p.width) : 720}" ${i < 2 ? `loading="eager"${i === 0 ? ' fetchpriority="high"' : ''}` : 'loading="lazy"'} decoding="async">
+          <video muted loop playsinline preload="none" data-src="${media(p, 'preview.mp4')}" aria-hidden="true"></video>
         </span>
-        <span class="meta"><span class="n">${num(i)}</span> <span class="c">${esc(p.short || p.client)}</span> <span class="t">${esc(p.title)}</span></span>
+        <span class="meta"><span class="c">${esc(p.short || p.client)}</span><span class="t">${esc(p.title)}</span></span>
       </a>
     </li>`
     )
@@ -200,126 +159,177 @@ function formatProjects(f) {
       org,
       {
         '@type': 'CollectionPage',
-        name: `Projets ${F.label.toLowerCase()}s · ${site.name}`,
-        url: `${base}/${f}/projets/`,
+        name: `Projects · ${site.name}`,
+        url: `${base}/projects/`,
+        inLanguage: site.lang,
         mainEntity: {
           '@type': 'ItemList',
-          itemListElement: F.list.map((p, i) => ({ '@type': 'ListItem', position: i + 1, url: `${base}/work/${p.slug}/`, name: name(p) })),
+          itemListElement: projects.map((p, i) => ({ '@type': 'ListItem', position: i + 1, url: `${base}/work/${p.slug}/`, name: name(p) })),
         },
       },
     ],
   };
   write(
-    `${f}/projets/index.html`,
+    'projects/index.html',
     `${head({
-      title: `Projets ${F.label.toLowerCase()}s | ${site.name}®`,
-      description: `Tous les films ${F.label.toLowerCase()}s ${site.name} : ${F.list.map((p) => p.short || p.client).join(', ')}.`,
-      path: `/${f}/projets/`,
-      image: `/media/${F.list[0].slug}/poster.jpg`,
+      title: `Projects | ${site.name}®`,
+      description: `Films and campaigns by ${site.name}: ${clients.slice(0, 8).join(', ')}. Vertical and horizontal formats.`,
+      path: '/projects/',
+      serif: false,
       extra: `${jsonLd(ld)}\n`,
     })}
-<body class="page-projets" data-fmt="${f}">
-${header({ current: 'projets', fmt: f, kind: 'projets' })}
-<main class="grid-wrap">
-  <h1 class="sr-only">Projets ${F.label.toLowerCase()}s</h1>
-  <ol class="grid grid-${f}" style="${vars}">
-    ${cells}
-  </ol>
+<body class="page-projects">
+${header('projects')}
+<main class="mosaic-wrap">
+  <h1 class="page-title">Projects</h1>
+  <ul class="mosaic">
+    ${tiles}
+  </ul>
 </main>
 <section class="reels" aria-label="Films">
-  ${reelsMarkup(F.list, false)}
+  ${reelsMarkup(false)}
 </section>
 ${tail}`
   );
 }
 
-// ---------- Studio ----------
-function studioPage() {
-  const clients = [...new Set(projects.flatMap((p) => p.client.split(' × ')))];
+// ---------- Team : qui on est, nos valeurs, coulisses par projet ----------
+function bts(p) {
+  // photos de tournage déposées dans site/media/<slug>/bts/ ; sinon, images extraites du film
+  const dir = join(out, 'media', p.slug, 'bts');
+  const files = existsSync(dir) ? readdirSync(dir).filter((f) => /\.(webp|jpe?g|png|avif)$/i.test(f)).sort() : [];
+  return files.length ? files.map((f) => media(p, `bts/${f}`)) : [1, 2, 3, 4].map((n) => media(p, `still-${n}.webp`));
+}
+
+function teamPage() {
+  const T = site.team;
   const film = site.studioFilm;
+  const tabs = projects
+    .map((p, i) => `<button class="tab" type="button" role="tab" id="tab-${p.slug}" aria-controls="panel-${p.slug}" aria-selected="${i === 0}"${i ? ' tabindex="-1"' : ''}>${esc(p.short || p.client)} <span>${esc(p.title)}</span></button>`)
+    .join('\n      ');
+  const panels = projects
+    .map(
+      (p, i) => `<div class="panel${isVertical(p) ? ' is-portrait' : ''}" role="tabpanel" id="panel-${p.slug}" aria-labelledby="tab-${p.slug}"${i ? ' hidden' : ''}>
+      ${bts(p)
+        .map((src) => `<img src="${src}" alt="${esc(`${name(p)}, behind the scenes`)}" loading="lazy" decoding="async">`)
+        .join('\n      ')}
+    </div>`
+    )
+    .join('\n    ');
+  const members = (T.members || [])
+    .map((m) => `<li><span class="role">${esc(m.role)}</span><span class="who">${esc(m.name)}</span></li>`)
+    .join('\n      ');
+  const ld = {
+    '@context': 'https://schema.org',
+    '@graph': [
+      org,
+      { '@type': 'AboutPage', url: `${base}/team/`, inLanguage: site.lang, about: { '@id': `${base}/#org` } },
+    ],
+  };
   write(
-    'studio/index.html',
+    'team/index.html',
     `${head({
-      title: `Studio | ${site.name}®`,
-      description: site.description,
-      path: '/studio/',
-      image: film ? film.poster : `/media/${projects[0].slug}/poster.jpg`,
-      extra: `${jsonLd({ '@context': 'https://schema.org', '@graph': [org, { '@type': 'AboutPage', url: `${base}/studio/`, about: { '@id': `${base}/#org` } }] })}\n`,
+      title: `Team | ${site.name}®`,
+      description: `Who we are: ${site.name}, a creative agency and audiovisual production company from Marseille, France. Our crew, our values and behind the scenes.`,
+      path: '/team/',
+      image: film ? film.poster.replace('.webp', '.jpg') : '/assets/og.jpg',
+      extra: `${jsonLd(ld)}\n`,
     })}
-<body class="page-studio">
-${header({ current: 'studio' })}
-<main class="studio">
-  <h1 class="sr-only">Studio</h1>
-  <div class="studio-col">
-    <div class="studio-text">
-      ${site.about.map((p) => `<p>${esc(p)}</p>`).join('\n      ')}
+<body class="page-team">
+${header('team')}
+<main class="team">
+  <section class="team-hero">
+    <div class="team-text">
+      <h1 class="page-title">Team</h1>
+      ${T.intro.map((t) => `<p class="lede">${esc(t)}</p>`).join('\n      ')}
     </div>
-    <dl class="facts">
-      <div><dt>Clients</dt><dd>${clients.map(esc).join(', ')}</dd></div>
-      ${site.city ? `<div><dt>Basé à</dt><dd>${esc(site.city)}</dd></div>` : ''}
-    </dl>
-  </div>
-  ${
-    film
-      ? `<figure class="studio-film">
-    <video class="tap-sound" src="${film.src}" poster="${film.poster}" muted loop playsinline autoplay preload="auto" width="${film.width}" height="${film.height}"></video>
-    <figcaption><button class="snd" type="button" aria-pressed="false">Son <span>off</span></button></figcaption>
-  </figure>`
-      : ''
-  }
+    ${
+      film
+        ? `<figure class="team-film">
+      <video src="${film.src}" poster="${film.poster}" muted loop playsinline autoplay preload="metadata" width="${film.width}" height="${film.height}"></video>
+      <figcaption><button class="snd" type="button" aria-pressed="false">Sound <span>off</span></button></figcaption>
+    </figure>`
+        : ''
+    }
+  </section>
+
+  <section class="values" aria-labelledby="h-values">
+    <h2 id="h-values" class="label">Values</h2>
+    <ol>
+      ${T.values.map((v) => `<li><h3>${esc(v.title)}</h3><p>${esc(v.text)}</p></li>`).join('\n      ')}
+    </ol>
+  </section>
+
+  ${members ? `<section class="members" aria-labelledby="h-members">
+    <h2 id="h-members" class="label">The crew</h2>
+    <ul>
+      ${members}
+    </ul>
+  </section>` : ''}
+
+  <section class="bts" aria-labelledby="h-bts">
+    <h2 id="h-bts" class="label">Behind the scenes</h2>
+    <div class="tabs" role="tablist" aria-label="Projects">
+      ${tabs}
+    </div>
+    ${panels}
+  </section>
+
+  <section class="clients" aria-labelledby="h-clients">
+    <h2 id="h-clients" class="label">Selected clients</h2>
+    <p>${clients.map(esc).join(' · ')}</p>
+  </section>
 </main>
 ${tail}`
   );
 }
 
-// ---------- Contact ----------
+// ---------- Contact, façon division.global ----------
+const mailIcon = '<svg viewBox="0 0 20 14" width="16" height="11" aria-hidden="true"><path d="M1 1h18v12H1zM1 1l9 7 9-7" fill="none" stroke="currentColor" stroke-width="1.2"/></svg>';
 function contactPage() {
   const handle = '@' + site.instagram.replace(/\/$/, '').split('/').pop();
-  const lines = [
-    site.email && `<li><span class="label-k">E-mail</span><a href="mailto:${esc(site.email)}">${esc(site.email)}</a></li>`,
-    `<li><span class="label-k">Instagram</span><a href="${esc(site.instagram)}" rel="me noopener" target="_blank">${esc(handle)} ↗</a></li>`,
-    site.city && `<li><span class="label-k">Basé à</span><span>${esc(site.city)}</span></li>`,
-  ].filter(Boolean);
   write(
     'contact/index.html',
     `${head({
       title: `Contact | ${site.name}®`,
-      description: `Contacter ${site.name}® pour un film ou une campagne.`,
+      description: `Contact ${site.name}®, creative agency and audiovisual production company in Marseille. ${site.cta}`,
       path: '/contact/',
-      image: `/media/${projects[0].slug}/poster.jpg`,
-      extra: `${jsonLd({ '@context': 'https://schema.org', '@graph': [org, { '@type': 'ContactPage', url: `${base}/contact/`, about: { '@id': `${base}/#org` } }] })}\n`,
+      extra: `${jsonLd({ '@context': 'https://schema.org', '@graph': [org, { '@type': 'ContactPage', url: `${base}/contact/`, inLanguage: site.lang, about: { '@id': `${base}/#org` } }] })}\n`,
     })}
 <body class="page-contact">
-${header({ current: 'contact' })}
+${header('contact')}
 <main class="contact">
-  <h1 class="contact-title">Un film,<br>une campagne&nbsp;?</h1>
-  <ul class="contact-list">
-    ${lines.join('\n    ')}
+  <h1 class="sr-only">Contact</h1>
+  <div class="contact-text">
+    ${site.intro.map((t) => `<p class="lede">${esc(t)}</p>`).join('\n    ')}
+    <p class="lede cta">${esc(site.cta)}</p>
+  </div>
+  <ul class="inquiries">
+    <li><a href="mailto:${esc(site.email)}">${mailIcon}<span class="label-k">New projects</span><span class="v">${esc(site.email)}</span></a></li>
+    <li><a href="mailto:${esc(site.email)}?subject=Press">${mailIcon}<span class="label-k">Press &amp; partnerships</span><span class="v">${esc(site.email)}</span></a></li>
+    <li><a href="${esc(site.instagram)}" rel="me noopener" target="_blank"><span class="ico">↗</span><span class="label-k">Instagram</span><span class="v">${esc(handle)}</span></a></li>
+    <li><span class="ico">◎</span><span class="label-k">Based in</span><span class="v">${esc(site.city)}, France</span></li>
   </ul>
 </main>
 ${tail}`
   );
 }
 
-// ---------- 404 : servie par Netlify / Vercel pour toute adresse inconnue ----------
+// ---------- 404 ----------
 function notFound() {
   write(
     '404.html',
-    `${head({
-      title: `Page introuvable | ${site.name}®`,
-      description: site.description,
-      path: '/404.html',
-      image: `/media/${projects[0].slug}/poster.jpg`,
-      extra: '<meta name="robots" content="noindex">\n',
-    })}
+    `${head({ title: `Page not found | ${site.name}®`, description: site.description, path: '/404.html', noindex: true })}
 <body class="page-contact">
 ${header()}
 <main class="contact">
-  <h1 class="contact-title">Page<br>introuvable</h1>
-  <ul class="contact-list">
-    <li><span class="label-k">Accueil</span><a href="/">${esc(site.name)}®</a></li>
-    <li><span class="label-k">Projets</span><a href="/horizontal/projets/">Horizontal</a></li>
-    <li><span class="label-k">Projets</span><a href="/vertical/projets/">Vertical</a></li>
+  <div class="contact-text">
+    <h1 class="page-title">Page not found</h1>
+    <p class="lede">This page doesn't exist, or it has moved. The films are still here.</p>
+  </div>
+  <ul class="inquiries">
+    <li><a href="/"><span class="ico">→</span><span class="label-k">Home</span><span class="v">${esc(site.name)}®</span></a></li>
+    <li><a href="/projects/"><span class="ico">→</span><span class="label-k">Projects</span><span class="v">All films</span></a></li>
   </ul>
 </main>
 ${tail}`
@@ -327,73 +337,78 @@ ${tail}`
 }
 
 // ---------- Pages projet ----------
-function project(p) {
-  const f = fmtOf(p);
-  const list = FORMATS[f].list;
-  const next = list[(list.indexOf(p) + 1) % list.length];
+function project(p, i) {
+  const next = projects[(i + 1) % projects.length];
   const path = `/work/${p.slug}/`;
+  const date = p.date || site.fallbackDate;
   const ld = {
     '@context': 'https://schema.org',
     '@graph': [
       org,
       {
         '@type': 'VideoObject',
+        '@id': `${base}${path}#video`,
         name: name(p),
         description: p.summary,
-        thumbnailUrl: [`${base}/media/${p.slug}/poster.jpg`],
-        contentUrl: `${base}/media/${p.slug}/full.mp4`,
-        uploadDate: p.date || today,
+        thumbnailUrl: [`${base}${media(p, 'poster.jpg')}`, `${base}${media(p, 'poster.webp')}`],
+        contentUrl: `${base}${media(p, 'full.mp4')}`,
+        embedUrl: `${base}${path}`,
+        uploadDate: date,
         duration: iso(p.duration),
         width: p.width,
         height: p.height,
         inLanguage: site.lang,
         creator: { '@id': `${base}/#org` },
+        productionCompany: { '@id': `${base}/#org` },
         ...(p.location && { contentLocation: { '@type': 'Place', name: p.location } }),
       },
       {
         '@type': 'BreadcrumbList',
         itemListElement: [
           { '@type': 'ListItem', position: 1, name: site.name, item: `${base}/` },
-          { '@type': 'ListItem', position: 2, name: `Projets ${FORMATS[f].label.toLowerCase()}s`, item: `${base}/${f}/projets/` },
+          { '@type': 'ListItem', position: 2, name: 'Projects', item: `${base}/projects/` },
           { '@type': 'ListItem', position: 3, name: name(p), item: `${base}${path}` },
         ],
       },
     ],
   };
   const dur = `${Math.floor(p.duration / 60)}′${String(Math.round(p.duration % 60)).padStart(2, '0')}″`;
+  const desc = `${p.summary} A film by ${site.name}.`.slice(0, 300);
 
   write(
     `work/${p.slug}/index.html`,
     `${head({
       title: `${name(p)} | ${site.name}®`,
-      description: p.summary,
+      description: desc.length > 158 ? `${p.summary.slice(0, 155).replace(/\s+\S*$/, '')}…` : desc,
       path,
-      image: `/media/${p.slug}/poster.jpg`,
-      video: `/media/${p.slug}/full.mp4`,
-      extra: `${jsonLd(ld)}\n`,
+      image: media(p, 'poster.jpg'),
+      video: media(p, 'full.mp4'),
+      extra: `<link rel="preload" href="${media(p, 'poster.webp')}" as="image" fetchpriority="high">\n${jsonLd(ld)}\n`,
     })}
-<body class="work" data-fmt="${f}">
-${header({ current: 'projets', fmt: f, kind: 'projets' })}
+<body class="work">
+${header('projects')}
 <main>
-  <section class="player${p.height > p.width ? ' is-portrait' : ''}" aria-label="Film">
+  <section class="player${isVertical(p) ? ' is-portrait' : ''}" aria-label="Film">
     <canvas class="ambient" width="64" height="36" aria-hidden="true"></canvas>
-    <video class="film tap-sound" src="/media/${p.slug}/full.mp4" poster="/media/${p.slug}/poster.jpg" playsinline autoplay muted preload="auto" width="${p.width}" height="${p.height}"></video>
+    <video class="film" src="${media(p, 'full.mp4')}" poster="${media(p, 'poster.webp')}" playsinline autoplay muted preload="auto" width="${p.width}" height="${p.height}"></video>
     <h1 class="cap">${esc(p.client)} <span>${esc(p.title)}</span></h1>
-    <button class="snd" type="button" aria-pressed="false">Son <span>off</span></button>
+    <button class="snd" type="button" aria-pressed="false">Sound <span>off</span></button>
   </section>
 
   <article class="sheet">
-    <p class="summary">${esc(p.summary)}</p>
+    <p class="lede">${esc(p.summary)}</p>
     <dl class="facts">
       <div><dt>Client</dt><dd>${esc(p.client)}</dd></div>
-      ${p.location ? `<div><dt>Lieu</dt><dd>${esc(p.location)}</dd></div>` : ''}
-      <div><dt>Format</dt><dd>${FORMATS[f].label}</dd></div>
-      <div><dt>Durée</dt><dd>${dur}</dd></div>
+      ${p.location ? `<div><dt>Location</dt><dd>${esc(p.location)}</dd></div>` : ''}
+      ${p.date ? `<div><dt>Year</dt><dd>${year(p)}</dd></div>` : ''}
+      <div><dt>Format</dt><dd>${isVertical(p) ? 'Vertical 9:16' : 'Horizontal'}</dd></div>
+      <div><dt>Duration</dt><dd>${dur}</dd></div>
+      <div><dt>Production</dt><dd>${esc(site.name)}®</dd></div>
       ${(p.credits || []).map((c) => `<div><dt>${esc(c.role)}</dt><dd>${esc(c.name)}</dd></div>`).join('')}
     </dl>
-    <nav class="pager" aria-label="Projets">
-      <a href="/${f}/projets/">Tous les projets</a>
-      <a href="/work/${next.slug}/">Suivant : ${esc(next.short || next.client)}</a>
+    <nav class="pager" aria-label="Projects">
+      <a href="/projects/">All projects</a>
+      <a href="/work/${next.slug}/">Next: ${esc(next.short || next.client)} →</a>
     </nav>
   </article>
 </main>
@@ -401,24 +416,25 @@ ${tail}`
   );
 }
 
-// ---------- SEO : sitemap, robots, llms.txt ----------
+// ---------- SEO + hébergement : sitemap, robots, llms.txt, _headers, _redirects ----------
 function seoFiles() {
-  const page = (path) => `  <url><loc>${base}${path}</loc><lastmod>${today}</lastmod></url>`;
+  const page = (path, lastmod = lastUpdate) => `  <url><loc>${base}${path}</loc><lastmod>${lastmod}</lastmod></url>`;
   const urls = [
     page('/'),
-    ...Object.keys(FORMATS).flatMap((f) => [page(`/${f}/`), page(`/${f}/projets/`)]),
-    page('/studio/'),
+    page('/projects/'),
+    page('/team/'),
     page('/contact/'),
     ...projects.map(
       (p) => `  <url>
     <loc>${base}/work/${p.slug}/</loc>
-    <lastmod>${today}</lastmod>
+    <lastmod>${p.date || site.fallbackDate}</lastmod>
     <video:video>
-      <video:thumbnail_loc>${base}/media/${p.slug}/poster.jpg</video:thumbnail_loc>
+      <video:thumbnail_loc>${base}${media(p, 'poster.jpg')}</video:thumbnail_loc>
       <video:title>${esc(name(p))}</video:title>
       <video:description>${esc(p.summary)}</video:description>
-      <video:content_loc>${base}/media/${p.slug}/full.mp4</video:content_loc>
+      <video:content_loc>${base}${media(p, 'full.mp4')}</video:content_loc>
       <video:duration>${Math.round(p.duration)}</video:duration>
+      <video:publication_date>${p.date || site.fallbackDate}</video:publication_date>
     </video:video>
   </url>`
     ),
@@ -432,21 +448,28 @@ ${urls.join('\n')}
 `
   );
   write('robots.txt', `User-agent: *\nAllow: /\n\nSitemap: ${base}/sitemap.xml\n`);
-  const section = (f) =>
-    `## Films ${FORMATS[f].label.toLowerCase()}s\n\n${FORMATS[f].list.map((p) => `- [${name(p)}](${base}/work/${p.slug}/): ${p.summary}`).join('\n')}`;
   write(
     'llms.txt',
-    `# ${site.name}®\n\n> ${site.description}\n\n${site.about.join(' ')}\n\n${section('horizontal')}\n\n${section('vertical')}\n\n## Contact\n\n${
-      site.email ? `- E-mail : ${site.email}\n` : ''
-    }- Instagram : ${site.instagram}\n`
+    `# ${site.name}®\n\n> ${site.intro[0]}\n\n${site.team.intro.join(' ')}\n\nBased in ${site.city}, France. Contact: ${site.email}\n\n## Films\n\n${projects
+      .map((p) => `- [${name(p)}](${base}/work/${p.slug}/)${p.date ? ` (${year(p)})` : ''}: ${p.summary}`)
+      .join('\n')}\n\n## Pages\n\n- [Projects](${base}/projects/)\n- [Team](${base}/team/)\n- [Contact](${base}/contact/)\n- Instagram: ${site.instagram}\n`
+  );
+  // Lus par Netlify même en glisser-déposer (netlify.toml ne l'est qu'en déploiement Git)
+  write(
+    '_headers',
+    `/media/*\n  Cache-Control: public, max-age=31536000, immutable\n/fonts/*\n  Cache-Control: public, max-age=31536000, immutable\n/assets/*\n  Cache-Control: public, max-age=3600, must-revalidate\n/*\n  X-Content-Type-Options: nosniff\n  Referrer-Policy: strict-origin-when-cross-origin\n`
+  );
+  write(
+    '_redirects',
+    ['/projets/ /projects/ 301', '/studio/ /team/ 301', '/horizontal/projets/ /projects/ 301', '/vertical/projets/ /projects/ 301', '/horizontal/ / 301', '/vertical/ / 301', '/work/volcan/ /work/om/ 301', ''].join('\n')
   );
 }
 
-intro();
-Object.keys(FORMATS).forEach((f) => { formatHome(f); formatProjects(f); });
-studioPage();
+home();
+projectsPage();
+teamPage();
 contactPage();
 notFound();
 projects.forEach(project);
 seoFiles();
-console.log(`OK : ${projects.length + 7} pages générées dans site/`);
+console.log(`OK : ${projects.length + 5} pages générées dans site/`);
