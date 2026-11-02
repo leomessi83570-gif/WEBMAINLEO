@@ -10,7 +10,7 @@ Site statique (HTML/CSS/JS, aucune dépendance), dans l'esprit de 530degres.agen
 | **Duo** | Choix Vertical / Horizontal à l'entrée, un site par format (FR) | commit `766a811` : `git checkout 766a811 -- angramm` |
 | **Mosaic** (actuelle) | Tous les projets ensemble, site en anglais : chargement ANGRAMM → films au scroll ; Projects en mosaïque 2 par ligne ; Team (textes, valeurs, coulisses par projet) ; Contact façon division.global ; Garamond pour les textes, Archivo pour les titres | ce dossier, branche `claude/beautiful-brahmagupta-19mnnt` |
 
-Pages : `/` (chargement + films au scroll + présentation), `/projects/` (mosaïque + films), `/team/`, `/contact/`, `/work/<slug>/` (un film).
+Pages : `/` (chargement + films au scroll + présentation), `/projects/` (mosaïque seule), `/team/`, `/contact/`, `/work/<slug>/` (un film).
 Anciennes adresses (`/studio/`, `/horizontal/…`, `/vertical/…`, `/projets/`) redirigées en 301 (`site/_redirects` et `netlify.toml`).
 
 ### À compléter

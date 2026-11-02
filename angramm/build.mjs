@@ -138,7 +138,7 @@ ${tail}`
   );
 }
 
-// ---------- Projets : mosaïque 2 par ligne, les aperçus tournent au scroll ; puis les films ----------
+// ---------- Projets : mosaïque 2 par ligne, les aperçus tournent au scroll ----------
 function projectsPage() {
   const tiles = projects
     .map(
@@ -186,9 +186,6 @@ ${header('projects')}
     ${tiles}
   </ul>
 </main>
-<section class="reels" aria-label="Films">
-  ${reelsMarkup(false)}
-</section>
 ${tail}`
   );
 }

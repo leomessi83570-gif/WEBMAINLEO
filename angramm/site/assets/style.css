@@ -40,7 +40,6 @@
 
 html { -webkit-text-size-adjust: 100%; }
 html:has(body.home) { scroll-snap-type: y mandatory; }
-html:has(body.page-projects) { scroll-snap-type: y proximity; }
 
 body {
   margin: 0;
@@ -517,8 +516,7 @@ body:not(.home) .top {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  html:has(body.home),
-  html:has(body.page-projects) { scroll-snap-type: none; }
+  html:has(body.home) { scroll-snap-type: none; }
   *,
   *::before,
   *::after,
