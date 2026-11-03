@@ -17,6 +17,15 @@ const esc = (s = '') =>
 const jsonLd = (data) => `<script type="application/ld+json">${JSON.stringify(data).replace(/</g, '\\u003c')}</script>`;
 const iso = (sec) => `PT${Math.floor(sec / 60)}M${Math.round(sec % 60)}S`;
 const name = (p) => p.name || `${p.client} · ${p.title}`;
+// Légende sur deux temps, façon division.global : « MIZUNO x VRUNK » + « KYAN, São Paulo »
+const lines = (p) => {
+  const n = name(p);
+  const paren = n.match(/^(.*?)\s*\((.+)\)\s*$/);
+  if (paren) return [paren[1], paren[2]];
+  const season = n.match(/^(.*?)\s+((?:FW|SS)\d{2}|\d{2}\/\d{2})$/);
+  if (season) return [season[1], season[2]];
+  return [n, p.title];
+};
 // Logo officiel ANGRAMM (vectoriel, couleur = currentColor)
 const logoSvg = readFileSync(join(out, 'assets/angramm-logo.svg'), 'utf8').replace('<svg ', '<svg aria-hidden="true" focusable="false" ');
 const year = (p) => (p.date || '').slice(0, 4);
@@ -97,7 +106,7 @@ const reelsMarkup = (eager) =>
       (p, i) => `<div class="reel${isVertical(p) ? ' is-portrait' : ''}">
     <canvas class="ambient" width="64" height="36" aria-hidden="true"></canvas>
     <video muted loop playsinline preload="${eager && i === 0 ? 'auto' : 'none'}" ${eager && i === 0 ? 'poster' : 'data-poster'}="${media(p, 'poster.webp')}" data-src="${media(p, 'full.mp4')}#t=${p.start || 0}"></video>
-    <a class="cap" href="/work/${p.slug}/">${esc(name(p))} <span class="arr">→</span></a>
+    <a class="cap" href="/work/${p.slug}/"><span class="l1">${esc(lines(p)[0])}</span> <span class="l2">${esc(lines(p)[1])}</span></a>
     <button class="snd" type="button" aria-pressed="false">Sound <span>off</span></button>
   </div>`
     )

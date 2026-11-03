@@ -39,7 +39,20 @@
 *::after { box-sizing: border-box; }
 
 html { -webkit-text-size-adjust: 100%; }
-html:has(body.home) { scroll-snap-type: y mandatory; }
+/* Accueil : les films défilent dans un cadre fixe. La page elle-même ne bouge pas, donc la barre
+   du navigateur mobile reste en place : chaque film garde exactement la taille de l'écran. */
+body.home { overflow: hidden; height: 100%; }
+.home .reels {
+  position: fixed;
+  inset: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scroll-snap-type: y mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.home .reels::-webkit-scrollbar { display: none; }
+.home .reel { height: 100%; }
 
 body {
   margin: 0;
@@ -135,7 +148,8 @@ body:not(.home) .top {
 }
 .nav > :first-child { justify-self: start; }
 .nav > :last-child { justify-self: end; }
-.nav a { transition: color 0.3s; text-shadow: 0 0 14px rgba(0, 0, 0, 0.35); }
+.nav a { color: var(--fg); transition: opacity 0.3s; text-shadow: 0 0 14px rgba(0, 0, 0, 0.35); }
+.nav a:not(.wordmark):hover { opacity: 0.6; }
 .nav a:hover,
 .nav a[aria-current] { color: var(--fg); }
 
@@ -163,6 +177,7 @@ body:not(.home) .top {
   position: relative;
   height: 100vh;
   height: 100svh;
+  scroll-snap-stop: always;
   overflow: hidden;
   background: #000;
   isolation: isolate;
@@ -194,19 +209,23 @@ body:not(.home) .top {
 .reel .snd {
   position: absolute;
   z-index: 1;
-  bottom: max(18px, env(safe-area-inset-bottom));
   opacity: 0;
   transform: translateY(10px);
   transition: opacity 0.8s var(--ease) 0.2s, transform 0.8s var(--ease) 0.2s, color 0.3s;
 }
 .reel.in-view .cap,
 .reel.in-view .snd { opacity: 1; transform: none; }
-.reel .cap { left: var(--gutter); right: 160px; }
-.reel .cap .arr { display: inline-block; transition: transform 0.4s var(--ease); }
-.reel .cap .t { display: none; }
-.reel .cap:hover { color: var(--fg); }
-.reel .cap:hover .arr { transform: translateX(4px); }
-.reel .snd { right: var(--gutter); }
+/* Titre du film façon division.global : au milieu à gauche, grand, nom en blanc, détail en gris */
+.reel .cap {
+  left: var(--gutter);
+  right: var(--gutter);
+  top: 50%;
+  translate: 0 -50%;
+  text-shadow: 0 0 24px rgba(0, 0, 0, 0.35);
+}
+.reel .cap .l2 { color: rgba(255, 255, 255, 0.55); }
+.reel .cap:hover .l1 { opacity: 0.85; }
+.reel .snd { right: var(--gutter); bottom: max(18px, env(safe-area-inset-bottom)); }
 .snd span { color: var(--mute); }
 .snd[aria-pressed='true'],
 .snd[aria-pressed='true'] span { color: var(--fg); }
@@ -223,10 +242,9 @@ body:not(.home) .top {
   color: var(--fg);
   line-height: 1.2;
 }
-.reel .cap,
+.reel .cap { font-size: clamp(30px, 3.6vw, 60px); line-height: 1.05; max-width: 18em; }
 .player .cap { font-size: clamp(20px, 1.7vw, 26px); }
 .meta { font-size: clamp(17px, 1.4vw, 21px); }
-.reel .cap .arr { font-family: var(--sans); font-size: 0.7em; vertical-align: 0.12em; margin-left: 0.2em; }
 .page-projects .intro { margin-bottom: clamp(36px, 5vw, 64px); color: var(--soft); }
 
 /* Fond flou : canvas de 64 px, flou calculé petit puis agrandi par main.js (transform) */
@@ -486,10 +504,15 @@ body:not(.home) .top {
 
 /* ---------- Mobile ---------- */
 @media (max-width: 720px) {
-  .nav { display: flex; align-items: center; gap: 16px; }
-  .nav .wordmark { margin-right: auto; }
-  .nav .wordmark svg { height: 12px; }
-  .nav a:last-child { display: none; }
+  /* En-tête façon division.global : logo, fine ligne, menu sur une ligne */
+  .nav { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; row-gap: 14px; }
+  .nav .wordmark {
+    flex: 0 0 calc(100% + 2 * var(--gutter));
+    margin: 0 calc(-1 * var(--gutter));
+    padding: 2px var(--gutter) 14px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+  }
+  .nav .wordmark svg { height: 18px; }
   .nav a,
   .cap,
   .snd,
@@ -503,15 +526,15 @@ body:not(.home) .top {
   .nav a { font-size: 11px; }
 
   /* Légende façon Division : client en blanc, titre en gris dessous */
-  .reel .cap,
   .reel .snd { bottom: max(28px, env(safe-area-inset-bottom)); }
-  .reel .cap { font-size: 22px; right: 104px; }
+  .reel .cap { font-size: 30px; line-height: 1.08; }
+  .reel .cap .l2 { display: block; }
   .player .cap { right: 104px; bottom: max(28px, env(safe-area-inset-bottom)); }
   .player .snd { bottom: max(28px, env(safe-area-inset-bottom)); }
-  .reel .cap .arr { display: none; }
 
   .mosaic-wrap,
-  .team { padding-top: 104px; }
+  .team { padding-top: 132px; }
+  .contact { padding-top: 140px; }
   .mosaic { gap: 28px 10px; }
   .meta { font-size: 17px; }
 
@@ -527,7 +550,7 @@ body:not(.home) .top {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  html:has(body.home) { scroll-snap-type: none; }
+  .home .reels { scroll-snap-type: none; }
   *,
   *::before,
   *::after,
