@@ -33,7 +33,7 @@ site/                   dossier à mettre en ligne
 
 ## Typo
 
-Le logo est dessiné dans une grotesque de type Helvetica Neue Bold élargie.
+Le logo officiel (LOGO-ANGRAMM-DEF.ai) est intégré en SVG vectoriel : `site/assets/angramm-logo.svg` (header, écran de chargement), décliné en PNG, image de partage et favicon (le A). Les titres reprennent la typo de ce logo ; Archivo sert pour les titres de page et les menus.
 Équivalent libre retenu : **Archivo** (Google Fonts, licence OFL), axe de largeur à **112 %**,
 graisse **600**, en capitales. Si ANGRAMM a la licence de la typo d'origine
 (Neue Haas Grotesk / Helvetica Now Display), il suffit de remplacer le fichier dans `site/fonts/`.

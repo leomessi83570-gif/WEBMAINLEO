@@ -1,6 +1,7 @@
 [
   {
     "slug": "om",
+    "name": "Olympique de Marseille 26/27",
     "client": "Olympique de Marseille",
     "short": "OM",
     "title": "2026/27 Kit",
@@ -13,6 +14,7 @@
   },
   {
     "slug": "endoume-kappa",
+    "name": "KAPPA x US ENDOUME",
     "client": "Kappa × US Endoume",
     "short": "Kappa",
     "title": "Marseille",
@@ -26,6 +28,7 @@
   },
   {
     "slug": "lacoste",
+    "name": "FAMILY 3.0 x LACOSTE FW26",
     "client": "Lacoste × Family 3.0",
     "short": "Lacoste",
     "title": "FW26",
@@ -38,6 +41,7 @@
   },
   {
     "slug": "mizuno-vrunk-sao-paulo",
+    "name": "MIZUNO x VRUNK (KYAN, São Paulo)",
     "client": "Mizuno × Vrunk",
     "title": "São Paulo",
     "summary": "The Mizuno × Vrunk collection in São Paulo with KYAN: sneakers, tracksuits and the city's alleys, cut to the rhythm of the street.",
@@ -50,6 +54,7 @@
   },
   {
     "slug": "mizuno-rio",
+    "name": "MIZUNO x VRUNK (Rio de Janeiro)",
     "client": "Mizuno × Vrunk",
     "short": "Mizuno × Vrunk",
     "title": "Rio de Janeiro",
@@ -63,6 +68,7 @@
   },
   {
     "slug": "mizuno-vrunk",
+    "name": "MIZUNO x VRUNK (Ven1, Nanterre)",
     "client": "Mizuno × Vrunk",
     "title": "Nanterre",
     "summary": "Motocross, drifting and CGI: the Mizuno × Vrunk collection staged with Ven1 among the towers of Nanterre, under a rain of petals.",
@@ -75,6 +81,7 @@
   },
   {
     "slug": "om-cma-cgm",
+    "name": "Olympique de Marseille x CMA CGM",
     "client": "Olympique de Marseille × CMA CGM",
     "short": "OM × CMA CGM",
     "title": "Marseille",
@@ -87,6 +94,7 @@
   },
   {
     "slug": "adidas-adizero",
+    "name": "ADIDAS x FAMILY 3.0",
     "client": "adidas × Family 3.0",
     "short": "adidas",
     "title": "Adizero Evo SL",
@@ -99,6 +107,7 @@
   },
   {
     "slug": "lacoste-fw24",
+    "name": "FAMILY 3.0 x LACOSTE FW24",
     "client": "Lacoste × Family 3.0",
     "short": "Lacoste",
     "title": "FW24",
@@ -112,6 +121,7 @@
   },
   {
     "slug": "umbro",
+    "name": "UMBRO x SAiSON x Chroniques2mars",
     "client": "Umbro × SAiSON × Chroniques2mars",
     "short": "Umbro",
     "title": "Marseille",
@@ -125,6 +135,7 @@
   },
   {
     "slug": "crocs-saison",
+    "name": "CROCS x SAiSON x Chroniques2mars",
     "client": "Crocs × SAiSON × Chroniques2mars",
     "short": "Crocs",
     "title": "Marseille",

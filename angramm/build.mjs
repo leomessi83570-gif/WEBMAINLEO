@@ -16,7 +16,9 @@ const esc = (s = '') =>
   String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
 const jsonLd = (data) => `<script type="application/ld+json">${JSON.stringify(data).replace(/</g, '\\u003c')}</script>`;
 const iso = (sec) => `PT${Math.floor(sec / 60)}M${Math.round(sec % 60)}S`;
-const name = (p) => `${p.client} · ${p.title}`;
+const name = (p) => p.name || `${p.client} · ${p.title}`;
+// Logo officiel ANGRAMM (vectoriel, couleur = currentColor)
+const logoSvg = readFileSync(join(out, 'assets/angramm-logo.svg'), 'utf8').replace('<svg ', '<svg aria-hidden="true" focusable="false" ');
 const year = (p) => (p.date || '').slice(0, 4);
 const media = (p, file) => `/media/${p.slug}/${file}`;
 const write = (path, html) => {
@@ -61,7 +63,7 @@ ${noindex ? '<meta name="robots" content="noindex">\n' : ''}<link rel="canonical
 <meta property="og:image" content="${base}${image}">
 ${video ? `<meta property="og:video" content="${base}${video}">\n<meta property="og:video:type" content="video/mp4">\n` : ''}<meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
-<link rel="apple-touch-icon" href="/assets/angramm-logo.png">
+<link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
 <link rel="preload" href="/fonts/archivo-latin.woff2" as="font" type="font/woff2" crossorigin>
 ${serif ? '<link rel="preload" href="/fonts/ebgaramond-latin.woff2" as="font" type="font/woff2" crossorigin>\n' : ''}<link rel="stylesheet" href="/assets/style.css">
 <script>if (!('PageRevealEvent' in window)) document.documentElement.classList.add('no-vt');</script>
@@ -73,9 +75,9 @@ const header = (current = '') => {
   const link = (href, label, key) => `<a href="${href}"${current === key ? ' aria-current="page"' : ''}>${label}</a>`;
   return `<header class="top">
   <nav class="nav" aria-label="Main">
+    <a class="wordmark" href="/" aria-label="${esc(site.name)}®, home">${logoSvg}</a>
     ${link('/projects/', 'Projects', 'projects')}
     ${link('/team/', 'Team', 'team')}
-    <a class="wordmark" href="/" aria-label="${esc(site.name)}, home">${esc(site.name)}<sup>®</sup></a>
     ${link('/contact/', 'Contact', 'contact')}
     <a href="${esc(site.instagram)}" rel="me noopener" target="_blank">Instagram</a>
   </nav>
@@ -95,7 +97,7 @@ const reelsMarkup = (eager) =>
       (p, i) => `<div class="reel${isVertical(p) ? ' is-portrait' : ''}">
     <canvas class="ambient" width="64" height="36" aria-hidden="true"></canvas>
     <video muted loop playsinline preload="${eager && i === 0 ? 'auto' : 'none'}" ${eager && i === 0 ? 'poster' : 'data-poster'}="${media(p, 'poster.webp')}" data-src="${media(p, 'full.mp4')}#t=${p.start || 0}"></video>
-    <a class="cap" href="/work/${p.slug}/">${esc(p.short || p.client)} <span class="arr">→</span><span class="t">${esc(p.title)}</span></a>
+    <a class="cap" href="/work/${p.slug}/">${esc(name(p))} <span class="arr">→</span></a>
     <button class="snd" type="button" aria-pressed="false">Sound <span>off</span></button>
   </div>`
     )
@@ -122,7 +124,7 @@ ${jsonLd(ld)}\n`,
     })}
 <body class="home has-loader">
 <div class="loader" aria-hidden="true">
-  <span class="loader-mark">${esc(site.name)}<sup>®</sup></span>
+  <span class="loader-mark">${logoSvg}</span>
   <span class="loader-bar"><i></i></span>
 </div>
 ${header()}
@@ -148,7 +150,7 @@ function projectsPage() {
           <img src="${media(p, 'thumb.webp')}" alt="${esc(`${name(p)} — film by ${site.name}`)}" width="${isVertical(p) ? 720 : Math.round((720 * p.width) / p.height)}" height="${isVertical(p) ? Math.round((720 * p.height) / p.width) : 720}" ${i < 2 ? `loading="eager"${i === 0 ? ' fetchpriority="high"' : ''}` : 'loading="lazy"'} decoding="async">
           <video muted loop playsinline preload="none" data-src="${media(p, 'preview.mp4')}" aria-hidden="true"></video>
         </span>
-        <span class="meta"><span class="c">${esc(p.short || p.client)}</span><span class="t">${esc(p.title)}</span></span>
+        <span class="meta">${esc(name(p))}</span>
       </a>
     </li>`
     )
@@ -172,7 +174,7 @@ function projectsPage() {
   write(
     'projects/index.html',
     `${head({
-      title: `Projects | ${site.name}®`,
+      title: `Projects: films for OM, Lacoste, Mizuno & adidas | ${site.name}®`,
       description: `Films and campaigns by ${site.name}: ${clients.slice(0, 8).join(', ')}. Vertical and horizontal formats.`,
       path: '/projects/',
       serif: false,
@@ -182,6 +184,7 @@ function projectsPage() {
 ${header('projects')}
 <main class="mosaic-wrap">
   <h1 class="page-title">Projects</h1>
+  <p class="lede intro">Films and campaigns for sport, fashion and culture brands, in vertical and horizontal formats.</p>
   <ul class="mosaic">
     ${tiles}
   </ul>
@@ -202,13 +205,13 @@ function teamPage() {
   const T = site.team;
   const film = site.studioFilm;
   const tabs = projects
-    .map((p, i) => `<button class="tab" type="button" role="tab" id="tab-${p.slug}" aria-controls="panel-${p.slug}" aria-selected="${i === 0}"${i ? ' tabindex="-1"' : ''}>${esc(p.short || p.client)} <span>${esc(p.title)}</span></button>`)
+    .map((p, i) => `<button class="tab" type="button" role="tab" id="tab-${p.slug}" aria-controls="panel-${p.slug}" aria-selected="${i === 0}"${i ? ' tabindex="-1"' : ''}>${esc(name(p))}</button>`)
     .join('\n      ');
   const panels = projects
     .map(
       (p, i) => `<div class="panel${isVertical(p) ? ' is-portrait' : ''}" role="tabpanel" id="panel-${p.slug}" aria-labelledby="tab-${p.slug}"${i ? ' hidden' : ''}>
       ${bts(p)
-        .map((src) => `<img src="${src}" alt="${esc(`${name(p)}, behind the scenes`)}" loading="lazy" decoding="async">`)
+        .map((src) => `<img src="${src}" alt="${esc(`${name(p)}, ${src.includes('/bts/') ? 'behind the scenes' : 'still from the film'}`)}" loading="lazy" decoding="async">`)
         .join('\n      ')}
     </div>`
     )
@@ -226,7 +229,7 @@ function teamPage() {
   write(
     'team/index.html',
     `${head({
-      title: `Team | ${site.name}®`,
+      title: `Team: creative agency & production in Marseille | ${site.name}®`,
       description: `Who we are: ${site.name}, a creative agency and audiovisual production company from Marseille, France. Our crew, our values and behind the scenes.`,
       path: '/team/',
       image: film ? film.poster.replace('.webp', '.jpg') : '/assets/og.jpg',
@@ -288,7 +291,7 @@ function contactPage() {
   write(
     'contact/index.html',
     `${head({
-      title: `Contact | ${site.name}®`,
+      title: `Contact: start your film project | ${site.name}®`,
       description: `Contact ${site.name}®, creative agency and audiovisual production company in Marseille. ${site.cta}`,
       path: '/contact/',
       extra: `${jsonLd({ '@context': 'https://schema.org', '@graph': [org, { '@type': 'ContactPage', url: `${base}/contact/`, inLanguage: site.lang, about: { '@id': `${base}/#org` } }] })}\n`,
@@ -388,7 +391,7 @@ ${header('projects')}
   <section class="player${isVertical(p) ? ' is-portrait' : ''}" aria-label="Film">
     <canvas class="ambient" width="64" height="36" aria-hidden="true"></canvas>
     <video class="film" src="${media(p, 'full.mp4')}" poster="${media(p, 'poster.webp')}" playsinline autoplay muted preload="auto" width="${p.width}" height="${p.height}"></video>
-    <h1 class="cap">${esc(p.client)} <span>${esc(p.title)}</span></h1>
+    <h1 class="cap">${esc(name(p))}</h1>
     <button class="snd" type="button" aria-pressed="false">Sound <span>off</span></button>
   </section>
 
@@ -405,7 +408,7 @@ ${header('projects')}
     </dl>
     <nav class="pager" aria-label="Projects">
       <a href="/projects/">All projects</a>
-      <a href="/work/${next.slug}/">Next: ${esc(next.short || next.client)} →</a>
+      <a href="/work/${next.slug}/">Next: ${esc(name(next))} →</a>
     </nav>
   </article>
 </main>
