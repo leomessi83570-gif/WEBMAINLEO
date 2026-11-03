@@ -1,6 +1,7 @@
 // Génère les pages HTML statiques du site ANGRAMM dans site/.
 // Usage : node build.mjs   (aucune dépendance)
 import { readFileSync, writeFileSync, mkdirSync, existsSync, readdirSync } from 'node:fs';
+import { createHash } from 'node:crypto';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -11,6 +12,8 @@ const projects = JSON.parse(readFileSync(join(root, 'content/projects.json'), 'u
 const base = site.url.replace(/\/$/, '');
 const lastUpdate = projects.map((p) => p.date || site.fallbackDate).sort().at(-1);
 
+// Empreinte du fichier dans l'adresse (style.css?v=…) : une nouvelle version n'est jamais masquée par le cache du navigateur
+const version = (file) => createHash('sha1').update(readFileSync(join(out, 'assets', file))).digest('hex').slice(0, 10);
 const isVertical = (p) => p.height > p.width;
 const esc = (s = '') =>
   String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
@@ -74,7 +77,7 @@ ${video ? `<meta property="og:video" content="${base}${video}">\n<meta property=
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
 <link rel="preload" href="/fonts/archivo-latin.woff2" as="font" type="font/woff2" crossorigin>
-${serif ? '<link rel="preload" href="/fonts/ebgaramond-latin.woff2" as="font" type="font/woff2" crossorigin>\n' : ''}<link rel="stylesheet" href="/assets/style.css">
+${serif ? '<link rel="preload" href="/fonts/ebgaramond-latin.woff2" as="font" type="font/woff2" crossorigin>\n' : ''}<link rel="stylesheet" href="/assets/style.css?v=${version("style.css")}">
 <script>if (!('PageRevealEvent' in window)) document.documentElement.classList.add('no-vt');</script>
 ${extra}</head>`;
 }
@@ -93,7 +96,7 @@ const header = (current = '') => {
 };
 
 const tail = `<div class="cursor is-off" aria-hidden="true"><span>A</span></div>
-<script src="/assets/main.js" defer></script>
+<script src="/assets/main.js?v=${version("main.js")}" defer></script>
 </body>
 </html>
 `;
