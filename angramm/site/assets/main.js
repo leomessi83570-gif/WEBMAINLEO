@@ -33,7 +33,16 @@
     }
     v.preload = full ? 'auto' : 'metadata';
   };
-  const play = (v) => !reduced && v.play().catch(() => {});
+  // Les films sont le contenu du site : ils démarrent même avec « Réduire les animations ».
+  // Si le téléphone bloque la lecture automatique (mode économie d'énergie sur iPhone),
+  // on relance au premier geste (toucher, scroll, clavier).
+  const blocked = new Set();
+  const play = (v) => v.play().then(() => blocked.delete(v)).catch(() => blocked.add(v));
+  const retry = () => blocked.forEach((v) => {
+    const box = v.closest('.reel, .tile');
+    if (!box || box.classList.contains('in-view') || box.classList.contains('tile')) play(v);
+  });
+  ['touchstart', 'pointerdown', 'keydown', 'wheel'].forEach((t) => addEventListener(t, retry, { passive: true }));
 
   // ---------- Son : un clic sur un film met le son (un seul film audible à la fois) ----------
   const buttons = new Map();
@@ -146,14 +155,15 @@
 
   // ---------- Mosaïque : les aperçus tournent tout seuls quand ils sont à l'écran ----------
   const tiles = [...document.querySelectorAll('.tile')];
-  if (tiles.length && !reduced) {
+  if (tiles.length) {
     const io = new IntersectionObserver(
       (entries) =>
         entries.forEach((e) => {
           const v = e.target.querySelector('video');
           if (e.isIntersecting) {
             load(v);
-            v.play().then(() => e.target.classList.add('is-playing')).catch(() => {});
+            play(v);
+            v.addEventListener('playing', () => e.target.classList.add('is-playing'), { once: true });
           } else v.pause();
         }),
       { threshold: 0.5 }
@@ -168,8 +178,7 @@
     bindSound(film, document.querySelector('.player .snd'));
     startAmbient(player);
     addEventListener('resize', () => startAmbient(player));
-    if (reduced) film.pause();
-    else {
+    {
       film.muted = false;
       film.play()
         .then(() => { audible = film; sync(film); })
@@ -181,7 +190,6 @@
   const teamFilm = document.querySelector('.team-film video');
   if (teamFilm) {
     bindSound(teamFilm, document.querySelector('.team-film .snd'));
-    if (reduced) teamFilm.pause();
   }
   const tabs = [...document.querySelectorAll('[role="tab"]')];
   const select = (tab, focus) => {

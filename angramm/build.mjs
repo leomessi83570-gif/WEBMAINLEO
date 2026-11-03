@@ -88,7 +88,6 @@ const header = (current = '') => {
     ${link('/projects/', 'Projects', 'projects')}
     ${link('/team/', 'Team', 'team')}
     ${link('/contact/', 'Contact', 'contact')}
-    <a href="${esc(site.instagram)}" rel="me noopener" target="_blank">Instagram</a>
   </nav>
 </header>`;
 };
