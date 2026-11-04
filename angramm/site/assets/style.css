@@ -229,7 +229,7 @@ body:not(.home) .top {
 .reel .cap,
 .reel.in-view .cap { opacity: 1; transform: none; transition: opacity 0.3s; }
 
-/* Variante A (par défaut) : chaque ligne monte légèrement en sortant d'un flou, la grise juste après */
+/* Titres : chaque ligne monte légèrement en sortant d'un flou, la grise juste après */
 .reel .cap .l1,
 .reel .cap .l2 {
   display: inline-block;
@@ -248,22 +248,6 @@ body:not(.home) .top {
 }
 .reel.in-view .cap .l2 { transition-delay: 0.45s; }
 
-/* Variante B : lettre par lettre (main.js découpe le titre quand <html data-title-anim="letters">) */
-[data-title-anim='letters'] .reel .cap .l1,
-[data-title-anim='letters'] .reel .cap .l2 { opacity: 1; transform: none; filter: none; transition: none; }
-.reel .cap .w { display: inline-block; white-space: nowrap; }
-.reel .cap .ch {
-  display: inline-block;
-  opacity: 0;
-  transform: translateY(0.35em);
-  transition: opacity 0.35s var(--ease), transform 0.35s var(--ease);
-}
-.reel.in-view .cap .ch {
-  opacity: 1;
-  transform: none;
-  transition-duration: 0.8s;
-  transition-delay: calc(0.2s + var(--i) * 0.028s);
-}
 .reel .snd { right: var(--gutter); bottom: max(18px, env(safe-area-inset-bottom)); }
 .snd span { color: var(--mute); }
 .snd[aria-pressed='true'],
