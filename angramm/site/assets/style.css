@@ -224,7 +224,46 @@ body:not(.home) .top {
   text-shadow: 0 0 24px rgba(0, 0, 0, 0.35);
 }
 .reel .cap .l2 { color: rgba(255, 255, 255, 0.55); }
-.reel .cap:hover .l1 { opacity: 0.85; }
+.reel .cap:hover { opacity: 0.85; }
+/* Le titre est toujours là ; ce sont ses lignes qui apparaissent à chaque film. */
+.reel .cap,
+.reel.in-view .cap { opacity: 1; transform: none; transition: opacity 0.3s; }
+
+/* Variante A (par défaut) : chaque ligne monte légèrement en sortant d'un flou, la grise juste après */
+.reel .cap .l1,
+.reel .cap .l2 {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(0.45em);
+  filter: blur(8px);
+  transition: opacity 0.5s var(--ease), transform 0.5s var(--ease), filter 0.5s var(--ease);
+}
+.reel.in-view .cap .l1,
+.reel.in-view .cap .l2 {
+  opacity: 1;
+  transform: none;
+  filter: blur(0);
+  transition-duration: 1.1s;
+  transition-delay: 0.25s;
+}
+.reel.in-view .cap .l2 { transition-delay: 0.45s; }
+
+/* Variante B : lettre par lettre (main.js découpe le titre quand <html data-title-anim="letters">) */
+[data-title-anim='letters'] .reel .cap .l1,
+[data-title-anim='letters'] .reel .cap .l2 { opacity: 1; transform: none; filter: none; transition: none; }
+.reel .cap .w { display: inline-block; white-space: nowrap; }
+.reel .cap .ch {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(0.35em);
+  transition: opacity 0.35s var(--ease), transform 0.35s var(--ease);
+}
+.reel.in-view .cap .ch {
+  opacity: 1;
+  transform: none;
+  transition-duration: 0.8s;
+  transition-delay: calc(0.2s + var(--i) * 0.028s);
+}
 .reel .snd { right: var(--gutter); bottom: max(18px, env(safe-area-inset-bottom)); }
 .snd span { color: var(--mute); }
 .snd[aria-pressed='true'],

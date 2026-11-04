@@ -124,6 +124,25 @@
     else setTimeout(ready, 1900);
   }
 
+  // ---------- Titres des films : variante « lettre par lettre » (?anim=letters) ----------
+  const anim = new URLSearchParams(location.search).get('anim') || document.documentElement.dataset.titleAnim;
+  if (anim === 'letters') {
+    document.documentElement.dataset.titleAnim = 'letters';
+    document.querySelectorAll('.reel .cap').forEach((cap) => {
+      cap.setAttribute('aria-label', cap.textContent.replace(/\s+/g, ' ').trim());
+      let i = 0;
+      cap.querySelectorAll('.l1, .l2').forEach((line) => {
+        line.setAttribute('aria-hidden', 'true');
+        const esc = (c) => (c === '<' ? '&lt;' : c === '&' ? '&amp;' : c);
+        // un mot = un bloc insécable, pour que le titre ne se coupe jamais au milieu d'un mot
+        line.innerHTML = line.textContent
+          .split(/(\s+)/)
+          .map((w) => (/^\s+$/.test(w) ? ' ' : `<span class="w">${[...w].map((c) => `<span class="ch" style="--i:${i++}">${esc(c)}</span>`).join('')}</span>`))
+          .join('');
+      });
+    });
+  }
+
   // ---------- Films plein écran : chacun se lance quand il arrive à l'écran ----------
   const reels = [...document.querySelectorAll('.reel')];
   if (reels.length) {
