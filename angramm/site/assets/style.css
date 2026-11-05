@@ -223,6 +223,8 @@ body:not(.home) .top {
   translate: 0 -50%;
   text-shadow: 0 0 24px rgba(0, 0, 0, 0.35);
 }
+.reel .cap .l1,
+.reel .cap .l2 { display: block; width: fit-content; }
 .reel .cap .l2 { color: rgba(255, 255, 255, 0.55); }
 .reel .cap:hover { opacity: 0.85; }
 /* Le titre est toujours là ; ce sont ses lignes qui apparaissent à chaque film. */
@@ -232,7 +234,8 @@ body:not(.home) .top {
 /* Titres : chaque ligne monte légèrement en sortant d'un flou, la grise juste après */
 .reel .cap .l1,
 .reel .cap .l2 {
-  display: inline-block;
+  display: block;
+  width: fit-content;
   opacity: 0;
   transform: translateY(0.45em);
   filter: blur(8px);

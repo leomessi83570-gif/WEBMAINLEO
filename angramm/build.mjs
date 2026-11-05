@@ -22,6 +22,7 @@ const iso = (sec) => `PT${Math.floor(sec / 60)}M${Math.round(sec % 60)}S`;
 const name = (p) => p.name || `${p.client} · ${p.title}`;
 // Légende sur deux temps, façon division.global : « MIZUNO x VRUNK » + « KYAN, São Paulo »
 const lines = (p) => {
+  if (p.lines) return p.lines; // titre imposé par le client (ligne blanche, ligne grise)
   const n = name(p);
   const paren = n.match(/^(.*?)\s*\((.+)\)\s*$/);
   if (paren) return [paren[1], paren[2]];

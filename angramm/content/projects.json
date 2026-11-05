@@ -10,7 +10,11 @@
     "start": 27,
     "duration": 80,
     "width": 1920,
-    "height": 1080
+    "height": 1080,
+    "lines": [
+      "Olympique de Marseille",
+      "Official campaign 26/27"
+    ]
   },
   {
     "slug": "endoume-kappa",
