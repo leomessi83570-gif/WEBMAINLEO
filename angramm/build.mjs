@@ -19,7 +19,9 @@ const esc = (s = '') =>
   String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
 const jsonLd = (data) => `<script type="application/ld+json">${JSON.stringify(data).replace(/</g, '\\u003c')}</script>`;
 const iso = (sec) => `PT${Math.floor(sec / 60)}M${Math.round(sec % 60)}S`;
-const name = (p) => p.name || `${p.client} · ${p.title}`;
+const name = (p) => (p.lines ? p.lines.join(' · ') : `${p.client} · ${p.title}`);
+// Titre sur deux lignes (blanc / gris), même rendu partout
+const twoLines = (p) => `<span class="l1">${esc(lines(p)[0])}</span> <span class="l2">${esc(lines(p)[1])}</span>`;
 // Légende sur deux temps, façon division.global : « MIZUNO x VRUNK » + « KYAN, São Paulo »
 const lines = (p) => {
   if (p.lines) return p.lines; // titre imposé par le client (ligne blanche, ligne grise)
@@ -145,7 +147,7 @@ ${header()}
   ${reelsMarkup(true)}
   <section class="endcard" aria-label="${esc(site.name)}">
     <p class="lede">${esc(site.intro[0])}</p>
-    <p class="endcard-links"><a href="/projects/">All projects →</a><a href="/team/">Team →</a><a href="/contact/">${esc(site.cta)} →</a></p>
+    <p class="endcard-links"><a href="/projects/">All projects →</a><a href="/team/">Team →</a><a href="/contact/">Contact →</a></p>
   </section>
 </main>
 ${tail}`
@@ -162,7 +164,7 @@ function projectsPage() {
           <img src="${media(p, 'thumb.webp')}" alt="${esc(`${name(p)} — film by ${site.name}`)}" width="${isVertical(p) ? 720 : Math.round((720 * p.width) / p.height)}" height="${isVertical(p) ? Math.round((720 * p.height) / p.width) : 720}" ${i < 2 ? `loading="eager"${i === 0 ? ' fetchpriority="high"' : ''}` : 'loading="lazy"'} decoding="async">
           <video muted loop playsinline preload="none" data-src="${media(p, 'preview.mp4')}" aria-hidden="true"></video>
         </span>
-        <span class="meta">${esc(name(p))}</span>
+        <span class="meta">${twoLines(p)}</span>
       </a>
     </li>`
     )
@@ -217,7 +219,7 @@ function teamPage() {
   const T = site.team;
   const film = site.studioFilm;
   const tabs = projects
-    .map((p, i) => `<button class="tab" type="button" role="tab" id="tab-${p.slug}" aria-controls="panel-${p.slug}" aria-selected="${i === 0}"${i ? ' tabindex="-1"' : ''}>${esc(name(p))}</button>`)
+    .map((p, i) => `<button class="tab" type="button" role="tab" id="tab-${p.slug}" aria-controls="panel-${p.slug}" aria-selected="${i === 0}"${i ? ' tabindex="-1"' : ''}>${twoLines(p)}</button>`)
     .join('\n      ');
   const panels = projects
     .map(
@@ -304,7 +306,7 @@ function contactPage() {
     'contact/index.html',
     `${head({
       title: `Contact: start your film project | ${site.name}®`,
-      description: `Contact ${site.name}®, creative agency and audiovisual production company in Marseille. ${site.cta}`,
+      description: `Contact ${site.name}®, creative agency and audiovisual production company in Marseille.`,
       path: '/contact/',
       extra: `${jsonLd({ '@context': 'https://schema.org', '@graph': [org, { '@type': 'ContactPage', url: `${base}/contact/`, inLanguage: site.lang, about: { '@id': `${base}/#org` } }] })}\n`,
     })}
@@ -314,13 +316,10 @@ ${header('contact')}
   <h1 class="sr-only">Contact</h1>
   <div class="contact-text">
     ${site.intro.map((t) => `<p class="lede">${esc(t)}</p>`).join('\n    ')}
-    <p class="lede cta">${esc(site.cta)}</p>
   </div>
   <ul class="inquiries">
-    <li><a href="mailto:${esc(site.email)}">${mailIcon}<span class="label-k">New projects</span><span class="v">${esc(site.email)}</span></a></li>
-    <li><a href="mailto:${esc(site.email)}?subject=Press">${mailIcon}<span class="label-k">Press &amp; partnerships</span><span class="v">${esc(site.email)}</span></a></li>
+    <li><a href="mailto:${esc(site.email)}">${mailIcon}<span class="label-k">Mail</span><span class="v">${esc(site.email)}</span></a></li>
     <li><a href="${esc(site.instagram)}" rel="me noopener" target="_blank"><span class="ico">↗</span><span class="label-k">Instagram</span><span class="v">${esc(handle)}</span></a></li>
-    <li><span class="ico">◎</span><span class="label-k">Based in</span><span class="v">${esc(site.city)}, France</span></li>
   </ul>
 </main>
 ${tail}`
@@ -403,7 +402,7 @@ ${header('projects')}
   <section class="player${isVertical(p) ? ' is-portrait' : ''}" aria-label="Film">
     <canvas class="ambient" width="64" height="36" aria-hidden="true"></canvas>
     <video class="film" src="${media(p, 'full.mp4')}" poster="${media(p, 'poster.webp')}" playsinline autoplay muted preload="auto" width="${p.width}" height="${p.height}"></video>
-    <h1 class="cap">${esc(name(p))}</h1>
+    <h1 class="cap">${twoLines(p)}</h1>
     <button class="snd" type="button" aria-pressed="false">Sound <span>off</span></button>
   </section>
 
@@ -473,7 +472,7 @@ ${urls.join('\n')}
   );
   write(
     '_redirects',
-    ['/projets/ /projects/ 301', '/studio/ /team/ 301', '/horizontal/projets/ /projects/ 301', '/vertical/projets/ /projects/ 301', '/horizontal/ / 301', '/vertical/ / 301', '/work/volcan/ /work/om/ 301', ''].join('\n')
+    ['/projets/ /projects/ 301', '/studio/ /team/ 301', '/horizontal/projets/ /projects/ 301', '/vertical/projets/ /projects/ 301', '/horizontal/ / 301', '/vertical/ / 301', '/work/volcan/ /work/om/ 301', '/work/lacoste-fw24/ /work/lacoste-ss25/ 301', ''].join('\n')
   );
 }
 

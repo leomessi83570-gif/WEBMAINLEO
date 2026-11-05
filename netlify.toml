@@ -54,3 +54,8 @@
   from = "/work/volcan/"
   to = "/work/om/"
   status = 301
+
+[[redirects]]
+  from = "/work/lacoste-fw24/"
+  to = "/work/lacoste-ss25/"
+  status = 301

@@ -1,10 +1,9 @@
 [
   {
     "slug": "om",
-    "name": "Olympique de Marseille 26/27",
     "client": "Olympique de Marseille",
     "short": "OM",
-    "title": "2026/27 Kit",
+    "title": "Official campaign 26/27",
     "summary": "A film for Olympique de Marseille unveiling the 2026/27 kit. Live action and CGI meet in a cinematic expedition, from the stands to the heart of a blue-lit volcano.",
     "date": "2026-07-01",
     "start": 27,
@@ -12,40 +11,29 @@
     "width": 1920,
     "height": 1080,
     "lines": [
-      "Olympique de Marseille",
+      "OLYMPIQUE DE MARSEILLE",
       "Official campaign 26/27"
     ]
   },
   {
     "slug": "endoume-kappa",
-    "name": "KAPPA x US ENDOUME",
     "client": "Kappa × US Endoume",
     "short": "Kappa",
-    "title": "Marseille",
-    "summary": "The new kit of US Endoume Catalans, a neighbourhood club founded in 1925, worn through the streets, beaches and creeks of Marseille, from Notre-Dame-de-la-Garde to the Vallon des Auffes.",
+    "title": "Jersey kit 26/27",
+    "summary": "The US Endoume 26/27 jersey kit by Kappa: the neighbourhood club founded in 1925, worn through the streets, beaches and creeks of Marseille, from Notre-Dame-de-la-Garde to the Vallon des Auffes.",
     "location": "Marseille",
     "date": "2026-09-08",
     "start": 17,
     "duration": 63,
     "width": 1036,
-    "height": 1842
-  },
-  {
-    "slug": "lacoste",
-    "name": "FAMILY 3.0 x LACOSTE FW26",
-    "client": "Lacoste × Family 3.0",
-    "short": "Lacoste",
-    "title": "FW26",
-    "summary": "An elevator, a single floor and a vinyl session: Lacoste's FW26 collection, created with Family 3.0 and filmed in chiaroscuro between record shelves and sound systems.",
-    "date": "2026-10-12",
-    "start": 26,
-    "duration": 48,
-    "width": 1440,
-    "height": 1080
+    "height": 1842,
+    "lines": [
+      "KAPPA",
+      "US ENDOUME Jersey kit 26/27"
+    ]
   },
   {
     "slug": "mizuno-vrunk-sao-paulo",
-    "name": "MIZUNO x VRUNK (KYAN, São Paulo)",
     "client": "Mizuno × Vrunk",
     "title": "São Paulo",
     "summary": "The Mizuno × Vrunk collection in São Paulo with KYAN: sneakers, tracksuits and the city's alleys, cut to the rhythm of the street.",
@@ -54,11 +42,14 @@
     "start": 9,
     "duration": 47,
     "width": 1080,
-    "height": 1920
+    "height": 1920,
+    "lines": [
+      "MIZUNO x VRUNK",
+      "Kyan, São Paulo"
+    ]
   },
   {
     "slug": "mizuno-rio",
-    "name": "MIZUNO x VRUNK (Rio de Janeiro)",
     "client": "Mizuno × Vrunk",
     "short": "Mizuno × Vrunk",
     "title": "Rio de Janeiro",
@@ -68,11 +59,14 @@
     "start": 12,
     "duration": 46,
     "width": 1920,
-    "height": 1080
+    "height": 1080,
+    "lines": [
+      "MIZUNO x VRUNK",
+      "Rio de Janeiro"
+    ]
   },
   {
     "slug": "mizuno-vrunk",
-    "name": "MIZUNO x VRUNK (Ven1, Nanterre)",
     "client": "Mizuno × Vrunk",
     "title": "Nanterre",
     "summary": "Motocross, drifting and CGI: the Mizuno × Vrunk collection staged with Ven1 among the towers of Nanterre, under a rain of petals.",
@@ -81,51 +75,30 @@
     "start": 32,
     "duration": 57,
     "width": 1080,
-    "height": 1920
+    "height": 1920,
+    "lines": [
+      "MIZUNO x VRUNK",
+      "Ven1, Nanterre"
+    ]
   },
   {
     "slug": "om-cma-cgm",
-    "name": "Olympique de Marseille x CMA CGM",
-    "client": "Olympique de Marseille × CMA CGM",
-    "short": "OM × CMA CGM",
-    "title": "Marseille",
-    "summary": "The Olympique de Marseille squad lands at the port of Marseille to unveil the new kit sponsored by CMA CGM, shot among the containers and the dockers who keep the port running.",
+    "client": "PUMA × Olympique de Marseille",
+    "short": "PUMA",
+    "title": "Third jersey 25/26",
+    "summary": "PUMA and Olympique de Marseille unveil the 2025/26 third jersey at the port of Marseille, shot among the containers and the dockers who keep the port running.",
     "location": "Marseille",
     "start": 60,
     "duration": 70,
     "width": 1278,
-    "height": 720
-  },
-  {
-    "slug": "adidas-adizero",
-    "name": "ADIDAS x FAMILY 3.0",
-    "client": "adidas × Family 3.0",
-    "short": "adidas",
-    "title": "Adizero Evo SL",
-    "summary": "From orbit to asphalt: the adidas Adizero Evo SL with Family 3.0, mixing CGI with a run at first light.",
-    "date": "2025-04-19",
-    "start": 26,
-    "duration": 40,
-    "width": 1080,
-    "height": 1920
-  },
-  {
-    "slug": "lacoste-fw24",
-    "name": "FAMILY 3.0 x LACOSTE FW24",
-    "client": "Lacoste × Family 3.0",
-    "short": "Lacoste",
-    "title": "FW24",
-    "summary": "Binoculars, boats and calanques: Lacoste's FW24 collection, created with Family 3.0 and shot in Marseille.",
-    "location": "Marseille",
-    "date": "2025-03-09",
-    "start": 4,
-    "duration": 35,
-    "width": 1080,
-    "height": 1920
+    "height": 720,
+    "lines": [
+      "PUMA",
+      "Olympique de Marseille third jersey 25/26"
+    ]
   },
   {
     "slug": "umbro",
-    "name": "UMBRO x SAiSON x Chroniques2mars",
     "client": "Umbro × SAiSON × Chroniques2mars",
     "short": "Umbro",
     "title": "Marseille",
@@ -135,11 +108,14 @@
     "start": 30,
     "duration": 59,
     "width": 1080,
-    "height": 1920
+    "height": 1920,
+    "lines": [
+      "UMBRO",
+      "SAiSON Chroniques2mars"
+    ]
   },
   {
     "slug": "crocs-saison",
-    "name": "CROCS x SAiSON x Chroniques2mars",
     "client": "Crocs × SAiSON × Chroniques2mars",
     "short": "Crocs",
     "title": "Marseille",
@@ -149,6 +125,59 @@
     "start": 24,
     "duration": 65,
     "width": 1080,
-    "height": 1920
+    "height": 1920,
+    "lines": [
+      "CROCS",
+      "SAiSON Chroniques2mars"
+    ]
+  },
+  {
+    "slug": "adidas-adizero",
+    "client": "adidas × Family 3.0",
+    "short": "adidas",
+    "title": "Adizero Evo SL",
+    "summary": "From orbit to asphalt: the adidas Adizero Evo SL with Family 3.0, mixing CGI with a run at first light.",
+    "date": "2025-04-19",
+    "start": 26,
+    "duration": 40,
+    "width": 1080,
+    "height": 1920,
+    "lines": [
+      "ADIDAS Adizero Evo SL",
+      "Family 3.0"
+    ]
+  },
+  {
+    "slug": "lacoste",
+    "client": "Lacoste × Family 3.0",
+    "short": "Lacoste",
+    "title": "FW26",
+    "summary": "An elevator, a single floor and a vinyl session: Lacoste's FW26 collection, created with Family 3.0 and filmed in chiaroscuro between record shelves and sound systems.",
+    "date": "2026-10-12",
+    "start": 26,
+    "duration": 48,
+    "width": 1440,
+    "height": 1080,
+    "lines": [
+      "LACOSTE FW26",
+      "Family 3.0"
+    ]
+  },
+  {
+    "slug": "lacoste-ss25",
+    "client": "Lacoste × Family 3.0",
+    "short": "Lacoste",
+    "title": "SS25",
+    "summary": "Binoculars, boats and calanques: Lacoste's SS25 collection, created with Family 3.0 and shot in Marseille.",
+    "location": "Marseille",
+    "date": "2025-03-09",
+    "start": 4,
+    "duration": 35,
+    "width": 1080,
+    "height": 1920,
+    "lines": [
+      "LACOSTE SS25",
+      "Family 3.0"
+    ]
   }
 ]
