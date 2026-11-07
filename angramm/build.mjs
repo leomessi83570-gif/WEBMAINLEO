@@ -8,7 +8,11 @@ import { fileURLToPath } from 'node:url';
 const root = dirname(fileURLToPath(import.meta.url));
 const out = join(root, 'site');
 const site = JSON.parse(readFileSync(join(root, 'content/site.json'), 'utf8'));
-const projects = JSON.parse(readFileSync(join(root, 'content/projects.json'), 'utf8'));
+const allProjects = JSON.parse(readFileSync(join(root, 'content/projects.json'), 'utf8'));
+// Le site ne montre que les films horizontaux (demande client) ; les verticaux restent dans projects.json pour plus tard.
+const landscape = (p) => p.width > p.height;
+const projects = allProjects.filter(landscape);
+const archived = allProjects.filter((p) => !landscape(p));
 const base = site.url.replace(/\/$/, '');
 const lastUpdate = projects.map((p) => p.date || site.fallbackDate).sort().at(-1);
 
@@ -117,7 +121,7 @@ const reelsMarkup = (eager) =>
     )
     .join('\n  ');
 
-const clients = [...new Set(projects.flatMap((p) => p.client.split(' × ')))];
+const clients = [...new Set(allProjects.flatMap((p) => p.client.split(' × ')))];
 
 // ---------- Accueil : chargement ANGRAMM puis les films au scroll ----------
 function home() {
@@ -189,7 +193,7 @@ function projectsPage() {
     'projects/index.html',
     `${head({
       title: `Projects: films for OM, Lacoste, Mizuno & adidas | ${site.name}®`,
-      description: `Films and campaigns by ${site.name}: ${clients.slice(0, 8).join(', ')}. Vertical and horizontal formats.`,
+      description: `Films and campaigns by ${site.name}: ${clients.slice(0, 8).join(', ')}.`,
       path: '/projects/',
       serif: false,
       extra: `${jsonLd(ld)}\n`,
@@ -198,7 +202,7 @@ function projectsPage() {
 ${header('projects')}
 <main class="mosaic-wrap">
   <h1 class="page-title">Projects</h1>
-  <p class="lede intro">Films and campaigns for sport, fashion and culture brands, in vertical and horizontal formats.</p>
+  <p class="lede intro">Films and campaigns for sport, fashion and culture brands.</p>
   <ul class="mosaic">
     ${tiles}
   </ul>
@@ -217,7 +221,7 @@ function bts(p) {
 
 function teamPage() {
   const T = site.team;
-  const film = site.studioFilm;
+  const film = site.studioFilm && site.studioFilm.width > site.studioFilm.height ? site.studioFilm : null;
   const tabs = projects
     .map((p, i) => `<button class="tab" type="button" role="tab" id="tab-${p.slug}" aria-controls="panel-${p.slug}" aria-selected="${i === 0}"${i ? ' tabindex="-1"' : ''}>${twoLines(p)}</button>`)
     .join('\n      ');
@@ -244,7 +248,7 @@ function teamPage() {
     'team/index.html',
     `${head({
       title: `Team: creative agency & production in Marseille | ${site.name}®`,
-      description: `Who we are: ${site.name}, a creative agency and audiovisual production company from Marseille, France. Our crew, our values and behind the scenes.`,
+      description: `Who we are: ${site.name}, a creative agency and audiovisual production company from Marseille, France. Our crew, our values and our clients.`,
       path: '/team/',
       image: film ? film.poster.replace('.webp', '.jpg') : '/assets/og.jpg',
       extra: `${jsonLd(ld)}\n`,
@@ -281,14 +285,6 @@ ${header('team')}
     </ul>
   </section>` : ''}
 
-  <section class="bts" aria-labelledby="h-bts">
-    <h2 id="h-bts" class="label">Behind the scenes</h2>
-    <div class="tabs" role="tablist" aria-label="Projects">
-      ${tabs}
-    </div>
-    ${panels}
-  </section>
-
   <section class="clients" aria-labelledby="h-clients">
     <h2 id="h-clients" class="label">Selected clients</h2>
     <p>${clients.map(esc).join(' · ')}</p>
@@ -299,7 +295,6 @@ ${tail}`
 }
 
 // ---------- Contact, façon division.global ----------
-const mailIcon = '<svg viewBox="0 0 20 14" width="16" height="11" aria-hidden="true"><path d="M1 1h18v12H1zM1 1l9 7 9-7" fill="none" stroke="currentColor" stroke-width="1.2"/></svg>';
 function contactPage() {
   const handle = '@' + site.instagram.replace(/\/$/, '').split('/').pop();
   write(
@@ -318,8 +313,8 @@ ${header('contact')}
     ${site.intro.map((t) => `<p class="lede">${esc(t)}</p>`).join('\n    ')}
   </div>
   <ul class="inquiries">
-    <li><a href="mailto:${esc(site.email)}">${mailIcon}<span class="label-k">Mail</span><span class="v">${esc(site.email)}</span></a></li>
-    <li><a href="${esc(site.instagram)}" rel="me noopener" target="_blank"><span class="ico">↗</span><span class="label-k">Instagram</span><span class="v">${esc(handle)}</span></a></li>
+    <li><a href="mailto:${esc(site.email)}"><span class="label-k">Mail</span><span class="v">${esc(site.email)}</span></a></li>
+    <li><a href="${esc(site.instagram)}" rel="me noopener" target="_blank"><span class="label-k">Instagram</span><span class="v">${esc(handle)}</span></a></li>
   </ul>
 </main>
 ${tail}`
@@ -339,8 +334,8 @@ ${header()}
     <p class="lede">This page doesn't exist, or it has moved. The films are still here.</p>
   </div>
   <ul class="inquiries">
-    <li><a href="/"><span class="ico">→</span><span class="label-k">Home</span><span class="v">${esc(site.name)}®</span></a></li>
-    <li><a href="/projects/"><span class="ico">→</span><span class="label-k">Projects</span><span class="v">All films</span></a></li>
+    <li><a href="/"><span class="label-k">Home</span><span class="v">${esc(site.name)}®</span></a></li>
+    <li><a href="/projects/"><span class="label-k">Projects</span><span class="v">All films</span></a></li>
   </ul>
 </main>
 ${tail}`
@@ -472,7 +467,7 @@ ${urls.join('\n')}
   );
   write(
     '_redirects',
-    ['/projets/ /projects/ 301', '/studio/ /team/ 301', '/horizontal/projets/ /projects/ 301', '/vertical/projets/ /projects/ 301', '/horizontal/ / 301', '/vertical/ / 301', '/work/volcan/ /work/om/ 301', '/work/lacoste-fw24/ /work/lacoste-ss25/ 301', ''].join('\n')
+    ['/projets/ /projects/ 301', '/studio/ /team/ 301', '/horizontal/projets/ /projects/ 301', '/vertical/projets/ /projects/ 301', '/horizontal/ / 301', '/vertical/ / 301', '/work/volcan/ /work/om/ 301', '/work/lacoste-fw24/ /projects/ 301', ...archived.map((p) => `/work/${p.slug}/ /projects/ 302`), ''].join('\n')
   );
 }
 

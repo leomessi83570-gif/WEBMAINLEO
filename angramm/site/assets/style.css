@@ -314,7 +314,7 @@ body:not(.home) .top {
 .frame {
   position: relative;
   display: block;
-  aspect-ratio: 4 / 5;
+  aspect-ratio: 16 / 9;
   overflow: hidden;
   background: #111;
 }
@@ -340,7 +340,7 @@ body:not(.home) .top {
   grid-template-columns: minmax(0, 1fr) auto;
   gap: 48px clamp(32px, 6vw, 120px);
   align-items: end;
-  min-height: calc(100svh - 216px);
+
 }
 .team-film { display: grid; gap: 12px; justify-items: start; }
 .team-film video {
@@ -403,7 +403,7 @@ body:not(.home) .top {
 .inquiries li > a,
 .inquiries li:not(:has(a)) {
   display: grid;
-  grid-template-columns: 24px minmax(180px, 280px) 1fr;
+  grid-template-columns: minmax(120px, 200px) 1fr;
   align-items: baseline;
   gap: 12px;
   padding: 16px 0;
@@ -570,8 +570,7 @@ body:not(.home) .top {
   .values ol { grid-template-columns: 1fr; }
   .panel { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .inquiries li > a,
-  .inquiries li:not(:has(a)) { grid-template-columns: 22px 1fr; }
-  .inquiries .v { grid-column: 2; }
+  .inquiries li:not(:has(a)) { grid-template-columns: 1fr; gap: 4px; }
   .facts div { grid-template-columns: 96px 1fr; }
 }
 
