@@ -98,6 +98,23 @@
     ]
   },
   {
+    "slug": "om-prise-du-vel",
+    "client": "Olympique de Marseille",
+    "short": "OM",
+    "title": "Prise du Vel",
+    "summary": "Les Marseillaises take over the Vélodrome: a campaign for the Olympique de Marseille women's team, from neighbourhood pitches and hairdressers to a packed stadium, for their match against Montpellier at the Orange Vélodrome.",
+    "location": "Marseille",
+    "date": "2026-03-27",
+    "start": 36,
+    "duration": 69,
+    "width": 1920,
+    "height": 1080,
+    "lines": [
+      "OLYMPIQUE DE MARSEILLE",
+      "Les Marseillaises, Prise du Vel"
+    ]
+  },
+  {
     "slug": "umbro",
     "client": "Umbro × SAiSON × Chroniques2mars",
     "short": "Umbro",
