@@ -593,3 +593,15 @@ body:not(.home) .top {
 .player .cap .l2 { color: rgba(255, 255, 255, 0.55); }
 .tab .l1 { color: inherit; }
 .tab .l2 { color: inherit; opacity: 0.6; text-transform: none; font-stretch: normal; }
+
+/* Ordinateur : uniquement les films 16:9 (accueil, mosaïque, film du studio).
+   Téléphone : les deux formats. */
+@media (min-width: 721px) {
+  .reel.is-portrait,
+  .mosaic li.is-portrait,
+  .team-film { display: none; }
+}
+/* Téléphone : vignettes 4:5, qui conviennent aux deux formats */
+@media (max-width: 720px) {
+  .frame { aspect-ratio: 4 / 5; }
+}

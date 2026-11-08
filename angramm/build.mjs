@@ -9,10 +9,9 @@ const root = dirname(fileURLToPath(import.meta.url));
 const out = join(root, 'site');
 const site = JSON.parse(readFileSync(join(root, 'content/site.json'), 'utf8'));
 const allProjects = JSON.parse(readFileSync(join(root, 'content/projects.json'), 'utf8'));
-// Le site ne montre que les films horizontaux (demande client) ; les verticaux restent dans projects.json pour plus tard.
-const landscape = (p) => p.width > p.height;
-const projects = allProjects.filter(landscape);
-const archived = allProjects.filter((p) => !landscape(p));
+// Tous les films sont générés ; sur ordinateur, le CSS ne montre que les horizontaux (classe is-portrait),
+// sur téléphone on voit les deux formats.
+const projects = allProjects;
 const base = site.url.replace(/\/$/, '');
 const lastUpdate = projects.map((p) => p.date || site.fallbackDate).sort().at(-1);
 
@@ -162,7 +161,7 @@ ${tail}`
 function projectsPage() {
   const tiles = projects
     .map(
-      (p, i) => `<li>
+      (p, i) => `<li${isVertical(p) ? ' class="is-portrait"' : ''}>
       <a class="tile" href="/work/${p.slug}/">
         <span class="frame">
           <img src="${media(p, 'thumb.webp')}" alt="${esc(`${name(p)} — film by ${site.name}`)}" width="${isVertical(p) ? 720 : Math.round((720 * p.width) / p.height)}" height="${isVertical(p) ? Math.round((720 * p.height) / p.width) : 720}" ${i < 2 ? `loading="eager"${i === 0 ? ' fetchpriority="high"' : ''}` : 'loading="lazy"'} decoding="async">
@@ -221,7 +220,7 @@ function bts(p) {
 
 function teamPage() {
   const T = site.team;
-  const film = site.studioFilm && site.studioFilm.width > site.studioFilm.height ? site.studioFilm : null;
+  const film = site.studioFilm;
   const tabs = projects
     .map((p, i) => `<button class="tab" type="button" role="tab" id="tab-${p.slug}" aria-controls="panel-${p.slug}" aria-selected="${i === 0}"${i ? ' tabindex="-1"' : ''}>${twoLines(p)}</button>`)
     .join('\n      ');
@@ -467,7 +466,7 @@ ${urls.join('\n')}
   );
   write(
     '_redirects',
-    ['/projets/ /projects/ 301', '/studio/ /team/ 301', '/horizontal/projets/ /projects/ 301', '/vertical/projets/ /projects/ 301', '/horizontal/ / 301', '/vertical/ / 301', '/work/volcan/ /work/om/ 301', '/work/lacoste-fw24/ /projects/ 301', ...archived.map((p) => `/work/${p.slug}/ /projects/ 302`), ''].join('\n')
+    ['/projets/ /projects/ 301', '/studio/ /team/ 301', '/horizontal/projets/ /projects/ 301', '/vertical/projets/ /projects/ 301', '/horizontal/ / 301', '/vertical/ / 301', '/work/volcan/ /work/om/ 301', '/work/lacoste-fw24/ /work/lacoste-ss25/ 301', ''].join('\n')
   );
 }
 

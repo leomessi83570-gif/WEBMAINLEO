@@ -17,6 +17,30 @@
     </video:video>
   </url>
   <url>
+    <loc>https://angramm.com/work/endoume-kappa/</loc>
+    <lastmod>2026-09-08</lastmod>
+    <video:video>
+      <video:thumbnail_loc>https://angramm.com/media/endoume-kappa/poster.jpg</video:thumbnail_loc>
+      <video:title>KAPPA · US ENDOUME Jersey kit 26/27</video:title>
+      <video:description>The US Endoume 26/27 jersey kit by Kappa: the neighbourhood club founded in 1925, worn through the streets, beaches and creeks of Marseille, from Notre-Dame-de-la-Garde to the Vallon des Auffes.</video:description>
+      <video:content_loc>https://angramm.com/media/endoume-kappa/full.mp4</video:content_loc>
+      <video:duration>63</video:duration>
+      <video:publication_date>2026-09-08</video:publication_date>
+    </video:video>
+  </url>
+  <url>
+    <loc>https://angramm.com/work/mizuno-vrunk-sao-paulo/</loc>
+    <lastmod>2026-03-18</lastmod>
+    <video:video>
+      <video:thumbnail_loc>https://angramm.com/media/mizuno-vrunk-sao-paulo/poster.jpg</video:thumbnail_loc>
+      <video:title>MIZUNO x VRUNK · Kyan, São Paulo</video:title>
+      <video:description>The Mizuno × Vrunk collection in São Paulo with KYAN: sneakers, tracksuits and the city&#39;s alleys, cut to the rhythm of the street.</video:description>
+      <video:content_loc>https://angramm.com/media/mizuno-vrunk-sao-paulo/full.mp4</video:content_loc>
+      <video:duration>47</video:duration>
+      <video:publication_date>2026-03-18</video:publication_date>
+    </video:video>
+  </url>
+  <url>
     <loc>https://angramm.com/work/mizuno-rio/</loc>
     <lastmod>2026-03-10</lastmod>
     <video:video>
@@ -26,6 +50,18 @@
       <video:content_loc>https://angramm.com/media/mizuno-rio/full.mp4</video:content_loc>
       <video:duration>46</video:duration>
       <video:publication_date>2026-03-10</video:publication_date>
+    </video:video>
+  </url>
+  <url>
+    <loc>https://angramm.com/work/mizuno-vrunk/</loc>
+    <lastmod>2025-09-10</lastmod>
+    <video:video>
+      <video:thumbnail_loc>https://angramm.com/media/mizuno-vrunk/poster.jpg</video:thumbnail_loc>
+      <video:title>MIZUNO x VRUNK · Ven1, Nanterre</video:title>
+      <video:description>Motocross, drifting and CGI: the Mizuno × Vrunk collection staged with Ven1 among the towers of Nanterre, under a rain of petals.</video:description>
+      <video:content_loc>https://angramm.com/media/mizuno-vrunk/full.mp4</video:content_loc>
+      <video:duration>57</video:duration>
+      <video:publication_date>2025-09-10</video:publication_date>
     </video:video>
   </url>
   <url>
@@ -53,6 +89,42 @@
     </video:video>
   </url>
   <url>
+    <loc>https://angramm.com/work/umbro/</loc>
+    <lastmod>2024-09-19</lastmod>
+    <video:video>
+      <video:thumbnail_loc>https://angramm.com/media/umbro/poster.jpg</video:thumbnail_loc>
+      <video:title>UMBRO · SAiSON Chroniques2mars</video:title>
+      <video:description>A neighbourhood pitch below Notre-Dame-de-la-Garde and the man who paints its lines: a film for Umbro, SAiSON and Chroniques2mars about grassroots football in Marseille.</video:description>
+      <video:content_loc>https://angramm.com/media/umbro/full.mp4</video:content_loc>
+      <video:duration>59</video:duration>
+      <video:publication_date>2024-09-19</video:publication_date>
+    </video:video>
+  </url>
+  <url>
+    <loc>https://angramm.com/work/crocs-saison/</loc>
+    <lastmod>2024-05-30</lastmod>
+    <video:video>
+      <video:thumbnail_loc>https://angramm.com/media/crocs-saison/poster.jpg</video:thumbnail_loc>
+      <video:title>CROCS · SAiSON Chroniques2mars</video:title>
+      <video:description>Crocs lands in Marseille with SAiSON and Chroniques2mars: a mock news flash, street football and Crocs by the sea for a limited-edition drop.</video:description>
+      <video:content_loc>https://angramm.com/media/crocs-saison/full.mp4</video:content_loc>
+      <video:duration>65</video:duration>
+      <video:publication_date>2024-05-30</video:publication_date>
+    </video:video>
+  </url>
+  <url>
+    <loc>https://angramm.com/work/adidas-adizero/</loc>
+    <lastmod>2025-04-19</lastmod>
+    <video:video>
+      <video:thumbnail_loc>https://angramm.com/media/adidas-adizero/poster.jpg</video:thumbnail_loc>
+      <video:title>ADIDAS Adizero Evo SL · Family 3.0</video:title>
+      <video:description>From orbit to asphalt: the adidas Adizero Evo SL with Family 3.0, mixing CGI with a run at first light.</video:description>
+      <video:content_loc>https://angramm.com/media/adidas-adizero/full.mp4</video:content_loc>
+      <video:duration>40</video:duration>
+      <video:publication_date>2025-04-19</video:publication_date>
+    </video:video>
+  </url>
+  <url>
     <loc>https://angramm.com/work/lacoste/</loc>
     <lastmod>2026-10-12</lastmod>
     <video:video>
@@ -62,6 +134,18 @@
       <video:content_loc>https://angramm.com/media/lacoste/full.mp4</video:content_loc>
       <video:duration>48</video:duration>
       <video:publication_date>2026-10-12</video:publication_date>
+    </video:video>
+  </url>
+  <url>
+    <loc>https://angramm.com/work/lacoste-ss25/</loc>
+    <lastmod>2025-03-09</lastmod>
+    <video:video>
+      <video:thumbnail_loc>https://angramm.com/media/lacoste-ss25/poster.jpg</video:thumbnail_loc>
+      <video:title>LACOSTE SS25 · Family 3.0</video:title>
+      <video:description>Binoculars, boats and calanques: Lacoste&#39;s SS25 collection, created with Family 3.0 and shot in Marseille.</video:description>
+      <video:content_loc>https://angramm.com/media/lacoste-ss25/full.mp4</video:content_loc>
+      <video:duration>35</video:duration>
+      <video:publication_date>2025-03-09</video:publication_date>
     </video:video>
   </url>
 </urlset>
