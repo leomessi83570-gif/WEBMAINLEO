@@ -220,22 +220,6 @@ function bts(p) {
 
 function teamPage() {
   const T = site.team;
-  const film = site.studioFilm;
-  const tabs = projects
-    .map((p, i) => `<button class="tab" type="button" role="tab" id="tab-${p.slug}" aria-controls="panel-${p.slug}" aria-selected="${i === 0}"${i ? ' tabindex="-1"' : ''}>${twoLines(p)}</button>`)
-    .join('\n      ');
-  const panels = projects
-    .map(
-      (p, i) => `<div class="panel${isVertical(p) ? ' is-portrait' : ''}" role="tabpanel" id="panel-${p.slug}" aria-labelledby="tab-${p.slug}"${i ? ' hidden' : ''}>
-      ${bts(p)
-        .map((src) => `<img src="${src}" alt="${esc(`${name(p)}, ${src.includes('/bts/') ? 'behind the scenes' : 'still from the film'}`)}" loading="lazy" decoding="async">`)
-        .join('\n      ')}
-    </div>`
-    )
-    .join('\n    ');
-  const members = (T.members || [])
-    .map((m) => `<li><span class="role">${esc(m.role)}</span><span class="who">${esc(m.name)}</span></li>`)
-    .join('\n      ');
   const ld = {
     '@context': 'https://schema.org',
     '@graph': [
@@ -246,48 +230,23 @@ function teamPage() {
   write(
     'team/index.html',
     `${head({
-      title: `Team: creative agency & production in Marseille | ${site.name}®`,
-      description: `Who we are: ${site.name}, a creative agency and audiovisual production company from Marseille, France. Our crew, our values and our clients.`,
+      title: `Team: one crew, made by hand | ${site.name}®`,
+      description: `${site.name} is a creative agency and audiovisual production company from Marseille, France: one crew, made by hand, images that stay with people.`,
       path: '/team/',
-      image: film ? film.poster.replace('.webp', '.jpg') : '/assets/og.jpg',
       extra: `${jsonLd(ld)}\n`,
     })}
 <body class="page-team">
 ${header('team')}
 <main class="team">
-  <section class="team-hero">
-    <div class="team-text">
-      <h1 class="page-title">Team</h1>
-      ${T.intro.map((t) => `<p class="lede">${esc(t)}</p>`).join('\n      ')}
-    </div>
-    ${
-      film
-        ? `<figure class="team-film">
-      <video src="${film.src}" poster="${film.poster}" muted loop playsinline autoplay preload="metadata" width="${film.width}" height="${film.height}"></video>
-      <figcaption><button class="snd" type="button" aria-pressed="false">Sound <span>off</span></button></figcaption>
-    </figure>`
-        : ''
-    }
-  </section>
-
-  <section class="values" aria-labelledby="h-values">
-    <h2 id="h-values" class="label">Values</h2>
-    <ol>
-      ${T.values.map((v) => `<li><h3>${esc(v.title)}</h3><p>${esc(v.text)}</p></li>`).join('\n      ')}
-    </ol>
-  </section>
-
-  ${members ? `<section class="members" aria-labelledby="h-members">
-    <h2 id="h-members" class="label">The crew</h2>
-    <ul>
-      ${members}
-    </ul>
-  </section>` : ''}
-
-  <section class="clients" aria-labelledby="h-clients">
-    <h2 id="h-clients" class="label">Selected clients</h2>
-    <p>${clients.map(esc).join(' · ')}</p>
-  </section>
+  <h1 class="sr-only">Team</h1>
+  ${T.sections
+    .map(
+      (sec) => `<section class="team-block">
+    <h2 class="team-title">${esc(sec.title)}</h2>
+    ${sec.text.map((t) => `<p class="lede">${esc(t)}</p>`).join('\n    ')}
+  </section>`
+    )
+    .join('\n  ')}
 </main>
 ${tail}`
   );
@@ -308,13 +267,18 @@ function contactPage() {
 ${header('contact')}
 <main class="contact">
   <h1 class="sr-only">Contact</h1>
-  <div class="contact-text">
-    ${site.intro.map((t) => `<p class="lede">${esc(t)}</p>`).join('\n    ')}
-  </div>
   <ul class="inquiries">
     <li><a href="mailto:${esc(site.email)}"><span class="label-k">Mail</span><span class="v">${esc(site.email)}</span></a></li>
     <li><a href="${esc(site.instagram)}" rel="me noopener" target="_blank"><span class="label-k">Instagram</span><span class="v">${esc(handle)}</span></a></li>
   </ul>
+  ${
+    site.studioFilm
+      ? `<figure class="contact-film">
+    <video src="${site.studioFilm.src}" poster="${site.studioFilm.poster}" muted loop playsinline autoplay preload="metadata" width="${site.studioFilm.width}" height="${site.studioFilm.height}"></video>
+    <figcaption><button class="snd" type="button" aria-pressed="false">Sound <span>off</span></button></figcaption>
+  </figure>`
+      : ''
+  }
 </main>
 ${tail}`
   );
@@ -455,7 +419,7 @@ ${urls.join('\n')}
   write('robots.txt', `User-agent: *\nAllow: /\n\nSitemap: ${base}/sitemap.xml\n`);
   write(
     'llms.txt',
-    `# ${site.name}®\n\n> ${site.intro[0]}\n\n${site.team.intro.join(' ')}\n\nBased in ${site.city}, France. Contact: ${site.email}\n\n## Films\n\n${projects
+    `# ${site.name}®\n\n> ${site.intro[0]}\n\n${site.team.sections.map((x) => x.text.join(' ')).join(' ')}\n\nBased in ${site.city}, France. Contact: ${site.email}\n\n## Films\n\n${projects
       .map((p) => `- [${name(p)}](${base}/work/${p.slug}/)${p.date ? ` (${year(p)})` : ''}: ${p.summary}`)
       .join('\n')}\n\n## Pages\n\n- [Projects](${base}/projects/)\n- [Team](${base}/team/)\n- [Contact](${base}/contact/)\n- Instagram: ${site.instagram}\n`
   );

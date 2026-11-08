@@ -150,6 +150,9 @@ body:not(.home) .top {
 .nav > :last-child { justify-self: end; }
 .nav a { color: var(--fg); transition: opacity 0.3s; text-shadow: 0 0 14px rgba(0, 0, 0, 0.35); }
 .nav a:not(.wordmark):hover { opacity: 0.6; }
+/* Façon Division : sur une page, l'onglet en cours reste blanc, les autres s'atténuent */
+.nav:has([aria-current]) a:not(.wordmark):not([aria-current]) { opacity: 0.45; }
+.nav:has([aria-current]) a:not(.wordmark):not([aria-current]):hover { opacity: 0.8; }
 .nav a:hover,
 .nav a[aria-current] { color: var(--fg); }
 
@@ -599,9 +602,32 @@ body:not(.home) .top {
 @media (min-width: 721px) {
   .reel.is-portrait,
   .mosaic li.is-portrait,
-  .team-film { display: none; }
 }
 /* Téléphone : vignettes 4:5, qui conviennent aux deux formats */
 @media (max-width: 720px) {
   .frame { aspect-ratio: 4 / 5; }
+}
+
+/* ---------- Team : deux blocs de texte ---------- */
+.team { gap: clamp(64px, 9vw, 120px); align-content: center; min-height: 100svh; }
+.team-block { display: grid; gap: 22px; max-width: 760px; animation: rise 0.9s var(--ease) both; }
+.team-block + .team-block { animation-delay: 0.12s; }
+.team-title {
+  font-family: var(--sans);
+  font-weight: 600;
+  font-stretch: 112%;
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
+  font-size: clamp(20px, 2vw, 30px);
+  line-height: 1.1;
+}
+
+/* ---------- Contact : mail, Instagram et le film ANGRAMM ---------- */
+.contact { grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 48px clamp(32px, 6vw, 120px); }
+.contact-film { margin: 0; display: grid; gap: 12px; justify-items: start; animation: rise 0.9s var(--ease) 0.15s both; }
+.contact-film video { display: block; width: auto; height: min(70svh, 720px); aspect-ratio: 9 / 16; object-fit: cover; background: #111; cursor: pointer; }
+@media (max-width: 720px) {
+  .contact { grid-template-columns: 1fr; align-content: start; }
+  .contact-film video { height: auto; width: min(100%, 360px); }
+  .team { min-height: 0; align-content: start; }
 }

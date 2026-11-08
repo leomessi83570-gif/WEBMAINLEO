@@ -187,9 +187,9 @@
   }
 
   // ---------- Team : le film ANGRAMM (son au clic) et les onglets « Behind the scenes » ----------
-  const teamFilm = document.querySelector('.team-film video');
+  const teamFilm = document.querySelector('.contact-film video');
   if (teamFilm) {
-    bindSound(teamFilm, document.querySelector('.team-film .snd'));
+    bindSound(teamFilm, document.querySelector('.contact-film .snd'));
   }
   const tabs = [...document.querySelectorAll('[role="tab"]')];
   const select = (tab, focus) => {
