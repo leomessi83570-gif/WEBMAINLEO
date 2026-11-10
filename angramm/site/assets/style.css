@@ -728,4 +728,5 @@ body:not(.home) .top {
 }
 
 /* Page film : plus de texte, la fiche seule à gauche */
-.sheet { grid-template-columns: minmax(0, 560px); }
+.sheet { grid-template-columns: minmax(0, 1fr); }
+.sheet .facts { max-width: 560px; }
