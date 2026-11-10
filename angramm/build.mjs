@@ -153,10 +153,6 @@ ${header()}
 <main class="reels">
   <h1 class="sr-only">${esc(site.name)}® · ${esc(site.tagline)}</h1>
   ${reelsMarkup(true)}
-  <section class="endcard" aria-label="${esc(site.name)}">
-    <p class="lede">${esc(site.intro[0])}</p>
-    <p class="endcard-links"><a href="/films/">All films →</a><a href="/team/">Team →</a><a href="/contact/">Contact →</a></p>
-  </section>
 </main>
 ${tail}`
   );
@@ -406,7 +402,6 @@ ${header('films')}
   </section>
 
   <article class="sheet">
-    <p class="lede">${esc(p.summary)}</p>
     <dl class="facts">
       <div><dt>Client</dt><dd>${esc(p.client)}</dd></div>
       ${p.location ? `<div><dt>Location</dt><dd>${esc(p.location)}</dd></div>` : ''}

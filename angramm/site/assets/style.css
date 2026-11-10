@@ -726,3 +726,6 @@ body:not(.home) .top {
   .bts-wrap { padding-top: 132px; }
   .masonry { columns: 2; }
 }
+
+/* Page film : plus de texte, la fiche seule à gauche */
+.sheet { grid-template-columns: minmax(0, 560px); }
