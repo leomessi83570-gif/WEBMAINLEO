@@ -7,6 +7,13 @@
   src: url(/fonts/archivo-latin.woff2) format('woff2');
 }
 @font-face {
+  font-family: 'Helvetica Bold';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url(/fonts/helvetica-bold.woff2) format('woff2');
+}
+@font-face {
   font-family: 'EB Garamond';
   font-style: normal;
   font-weight: 400 800;
@@ -601,7 +608,7 @@ body:not(.home) .top {
    Téléphone : les deux formats. */
 @media (min-width: 721px) {
   .reel.is-portrait,
-  .mosaic li.is-portrait,
+  .mosaic li.is-portrait { display: none; }
 }
 /* Téléphone : vignettes 4:5, qui conviennent aux deux formats */
 @media (max-width: 720px) {
@@ -630,4 +637,92 @@ body:not(.home) .top {
   .contact { grid-template-columns: 1fr; align-content: start; }
   .contact-film video { height: auto; width: min(100%, 360px); }
   .team { min-height: 0; align-content: start; }
+}
+
+/* ================= Retours client (novembre) ================= */
+:root { --helv: 'Helvetica Bold', 'Helvetica Neue', Helvetica, Arial, sans-serif; }
+
+/* Menu (FILMS, TEAM, CONTACT), grands titres de page et titres de Team : Helvetica Bold */
+.nav a:not(.wordmark),
+.page-title,
+.team-title {
+  font-family: var(--helv);
+  font-weight: 700;
+  font-stretch: normal;
+  letter-spacing: 0;
+}
+
+/* Ordinateur : uniquement le 16:9 ; téléphone : uniquement le vertical */
+@media (max-width: 720px) {
+  .reel:not(.is-portrait),
+  .mosaic li:not(.is-portrait) { display: none; }
+}
+
+/* « OLYMPIQUE DE MARSEILLE » et autres noms toujours sur une seule ligne */
+.reel .cap .l1 { white-space: nowrap; }
+@media (max-width: 720px) {
+  .reel .cap { font-size: min(30px, 6.6vw); }
+}
+
+/* Contact : sans traits */
+.inquiries li > a,
+.inquiries li:not(:has(a)),
+.inquiries li:last-child > a,
+.inquiries li:last-child:not(:has(a)) { border: 0; padding: 10px 0; }
+
+/* Team sur un seul écran */
+.team {
+  min-height: 100svh;
+  padding-top: clamp(96px, 14vh, 140px);
+  padding-bottom: clamp(32px, 6vh, 64px);
+  gap: clamp(28px, 6vh, 64px);
+  align-content: center;
+}
+.team .lede { font-size: clamp(19px, min(2.2vw, 3.4vh), 34px); }
+.bts-link { display: inline-flex; align-items: baseline; gap: 14px; width: fit-content; transition: opacity 0.3s; animation: rise 0.9s var(--ease) 0.24s both; }
+.bts-link:hover { opacity: 0.6; }
+.bts-link .arr { font-family: var(--helv); font-size: clamp(20px, 2vw, 30px); }
+@media (max-width: 720px) {
+  .team { padding-top: 120px; min-height: 100svh; gap: 28px; align-content: start; }
+  .team .lede { font-size: 19px; }
+  .team-block { gap: 12px; }
+}
+
+/* Page film : flèches précédent / suivant */
+.player .arrow {
+  position: absolute;
+  z-index: 2;
+  top: 50%;
+  translate: 0 -50%;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  max-width: 34vw;
+  color: var(--fg);
+  text-shadow: 0 0 18px rgba(0, 0, 0, 0.4);
+  transition: opacity 0.3s, transform 0.4s var(--ease);
+}
+.player .arrow.prev { left: var(--gutter); }
+.player .arrow.next { right: var(--gutter); text-align: right; }
+.player .arrow .a { font-family: var(--helv); font-size: clamp(26px, 2.6vw, 40px); line-height: 1; }
+.player .arrow .t { font-family: var(--serif); font-size: clamp(15px, 1.2vw, 19px); line-height: 1.2; opacity: 0; transition: opacity 0.3s; }
+.player .arrow .k { display: block; font-family: var(--sans); font-size: 11px; text-transform: uppercase; font-stretch: 112%; color: var(--soft); margin-bottom: 4px; }
+.player .arrow:hover .t,
+.player .arrow:focus-visible .t { opacity: 1; }
+.player .arrow.prev:hover { transform: translateX(-4px); }
+.player .arrow.next:hover { transform: translateX(4px); }
+@media (max-width: 720px) {
+  .player .arrow .t { display: none; }
+  .player .arrow { top: auto; bottom: 72px; translate: none; }
+}
+
+/* Behind the scenes : grande mosaïque */
+.bts-wrap { padding: 120px var(--gutter) 96px; }
+.masonry { columns: 3 320px; column-gap: clamp(8px, 1.2vw, 16px); }
+.masonry .shot { display: block; margin-bottom: clamp(8px, 1.2vw, 16px); break-inside: avoid; overflow: hidden; background: #111; }
+.masonry img { display: block; width: 100%; height: auto; transition: transform 1.2s var(--ease), opacity 0.4s; }
+.masonry .shot:hover img { transform: scale(1.03); }
+@media (max-width: 720px) {
+  .bts-wrap { padding-top: 132px; }
+  .masonry { columns: 2; }
 }

@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
   <url><loc>https://angramm.com/</loc><lastmod>2026-10-20</lastmod></url>
-  <url><loc>https://angramm.com/projects/</loc><lastmod>2026-10-20</lastmod></url>
+  <url><loc>https://angramm.com/films/</loc><lastmod>2026-10-20</lastmod></url>
   <url><loc>https://angramm.com/team/</loc><lastmod>2026-10-20</lastmod></url>
+  <url><loc>https://angramm.com/behind-the-scenes/</loc><lastmod>2026-10-20</lastmod></url>
   <url><loc>https://angramm.com/contact/</loc><lastmod>2026-10-20</lastmod></url>
   <url>
     <loc>https://angramm.com/work/om/</loc>
     <lastmod>2026-07-01</lastmod>
     <video:video>
       <video:thumbnail_loc>https://angramm.com/media/om/poster.jpg</video:thumbnail_loc>
-      <video:title>OLYMPIQUE DE MARSEILLE · Official campaign 26/27</video:title>
+      <video:title>OLYMPIQUE DE MARSEILLE · EXP. VOLCANO</video:title>
       <video:description>A film for Olympique de Marseille unveiling the 2026/27 kit. Live action and CGI meet in a cinematic expedition, from the stands to the heart of a blue-lit volcano.</video:description>
       <video:content_loc>https://angramm.com/media/om/full.mp4</video:content_loc>
       <video:duration>80</video:duration>
@@ -17,15 +18,99 @@
     </video:video>
   </url>
   <url>
+    <loc>https://angramm.com/work/om-prise-du-vel/</loc>
+    <lastmod>2026-03-27</lastmod>
+    <video:video>
+      <video:thumbnail_loc>https://angramm.com/media/om-prise-du-vel/poster.jpg</video:thumbnail_loc>
+      <video:title>LES MARSEILLAISES · Prise du Vel</video:title>
+      <video:description>Les Marseillaises take over the Vélodrome: a campaign for the Olympique de Marseille women&#39;s team, from neighbourhood pitches and hairdressers to a packed stadium, for their match against Montpellier at the Orange Vélodrome.</video:description>
+      <video:content_loc>https://angramm.com/media/om-prise-du-vel/full.mp4</video:content_loc>
+      <video:duration>69</video:duration>
+      <video:publication_date>2026-03-27</video:publication_date>
+    </video:video>
+  </url>
+  <url>
+    <loc>https://angramm.com/work/cma-cgm-om/</loc>
+    <lastmod>2025-11-23</lastmod>
+    <video:video>
+      <video:thumbnail_loc>https://angramm.com/media/cma-cgm-om/poster.jpg</video:thumbnail_loc>
+      <video:title>CMA CGM x OM · Driven by passion</video:title>
+      <video:description>Driven by passion: CMA CGM and Olympique de Marseille, from the containers of the port of Marseille to the pitch.</video:description>
+      <video:content_loc>https://angramm.com/media/cma-cgm-om/full.mp4</video:content_loc>
+      <video:duration>53</video:duration>
+      <video:publication_date>2025-11-23</video:publication_date>
+    </video:video>
+  </url>
+  <url>
+    <loc>https://angramm.com/work/lacoste/</loc>
+    <lastmod>2026-10-12</lastmod>
+    <video:video>
+      <video:thumbnail_loc>https://angramm.com/media/lacoste/poster.jpg</video:thumbnail_loc>
+      <video:title>LACOSTE FW26 x Family 3.0 · AFTER RAIN</video:title>
+      <video:description>An elevator, a single floor and a vinyl session: Lacoste&#39;s FW26 collection, created with Family 3.0 and filmed in chiaroscuro between record shelves and sound systems.</video:description>
+      <video:content_loc>https://angramm.com/media/lacoste/full.mp4</video:content_loc>
+      <video:duration>48</video:duration>
+      <video:publication_date>2026-10-12</video:publication_date>
+    </video:video>
+  </url>
+  <url>
     <loc>https://angramm.com/work/endoume-kappa/</loc>
     <lastmod>2026-09-08</lastmod>
     <video:video>
       <video:thumbnail_loc>https://angramm.com/media/endoume-kappa/poster.jpg</video:thumbnail_loc>
-      <video:title>KAPPA · US ENDOUME Jersey kit 26/27</video:title>
+      <video:title>KAPPA · US ENDOUME jersey 26/27</video:title>
       <video:description>The US Endoume 26/27 jersey kit by Kappa: the neighbourhood club founded in 1925, worn through the streets, beaches and creeks of Marseille, from Notre-Dame-de-la-Garde to the Vallon des Auffes.</video:description>
       <video:content_loc>https://angramm.com/media/endoume-kappa/full.mp4</video:content_loc>
       <video:duration>63</video:duration>
       <video:publication_date>2026-09-08</video:publication_date>
+    </video:video>
+  </url>
+  <url>
+    <loc>https://angramm.com/work/crocs-saison/</loc>
+    <lastmod>2024-05-30</lastmod>
+    <video:video>
+      <video:thumbnail_loc>https://angramm.com/media/crocs-saison/poster.jpg</video:thumbnail_loc>
+      <video:title>CROCS x SAiSON x C2MARS · CROCS2MARS</video:title>
+      <video:description>Crocs lands in Marseille with SAiSON and Chroniques2mars: a mock news flash, street football and Crocs by the sea for a limited-edition drop.</video:description>
+      <video:content_loc>https://angramm.com/media/crocs-saison/full.mp4</video:content_loc>
+      <video:duration>65</video:duration>
+      <video:publication_date>2024-05-30</video:publication_date>
+    </video:video>
+  </url>
+  <url>
+    <loc>https://angramm.com/work/umbro/</loc>
+    <lastmod>2024-09-19</lastmod>
+    <video:video>
+      <video:thumbnail_loc>https://angramm.com/media/umbro/poster.jpg</video:thumbnail_loc>
+      <video:title>UMBRO x SAiSON x C2Mars · CLASSIC2MARS</video:title>
+      <video:description>A neighbourhood pitch below Notre-Dame-de-la-Garde and the man who paints its lines: a film for Umbro, SAiSON and Chroniques2mars about grassroots football in Marseille.</video:description>
+      <video:content_loc>https://angramm.com/media/umbro/full.mp4</video:content_loc>
+      <video:duration>59</video:duration>
+      <video:publication_date>2024-09-19</video:publication_date>
+    </video:video>
+  </url>
+  <url>
+    <loc>https://angramm.com/work/adidas-adizero/</loc>
+    <lastmod>2025-04-19</lastmod>
+    <video:video>
+      <video:thumbnail_loc>https://angramm.com/media/adidas-adizero/poster.jpg</video:thumbnail_loc>
+      <video:title>ADIDAS x Family 3.0 · Adizero Evo SL</video:title>
+      <video:description>From orbit to asphalt: the adidas Adizero Evo SL with Family 3.0, mixing CGI with a run at first light.</video:description>
+      <video:content_loc>https://angramm.com/media/adidas-adizero/full.mp4</video:content_loc>
+      <video:duration>40</video:duration>
+      <video:publication_date>2025-04-19</video:publication_date>
+    </video:video>
+  </url>
+  <url>
+    <loc>https://angramm.com/work/lacoste-ss25/</loc>
+    <lastmod>2025-03-09</lastmod>
+    <video:video>
+      <video:thumbnail_loc>https://angramm.com/media/lacoste-ss25/poster.jpg</video:thumbnail_loc>
+      <video:title>LACOSTE SS25 x Family 3.0 · Tennis to seaside</video:title>
+      <video:description>Binoculars, boats and calanques: Lacoste&#39;s SS25 collection, created with Family 3.0 and shot in Marseille.</video:description>
+      <video:content_loc>https://angramm.com/media/lacoste-ss25/full.mp4</video:content_loc>
+      <video:duration>35</video:duration>
+      <video:publication_date>2025-03-09</video:publication_date>
     </video:video>
   </url>
   <url>
@@ -74,78 +159,6 @@
       <video:content_loc>https://angramm.com/media/om-cma-cgm/full.mp4</video:content_loc>
       <video:duration>70</video:duration>
       <video:publication_date>2026-10-20</video:publication_date>
-    </video:video>
-  </url>
-  <url>
-    <loc>https://angramm.com/work/om-prise-du-vel/</loc>
-    <lastmod>2026-03-27</lastmod>
-    <video:video>
-      <video:thumbnail_loc>https://angramm.com/media/om-prise-du-vel/poster.jpg</video:thumbnail_loc>
-      <video:title>OLYMPIQUE DE MARSEILLE · Les Marseillaises, Prise du Vel</video:title>
-      <video:description>Les Marseillaises take over the Vélodrome: a campaign for the Olympique de Marseille women&#39;s team, from neighbourhood pitches and hairdressers to a packed stadium, for their match against Montpellier at the Orange Vélodrome.</video:description>
-      <video:content_loc>https://angramm.com/media/om-prise-du-vel/full.mp4</video:content_loc>
-      <video:duration>69</video:duration>
-      <video:publication_date>2026-03-27</video:publication_date>
-    </video:video>
-  </url>
-  <url>
-    <loc>https://angramm.com/work/umbro/</loc>
-    <lastmod>2024-09-19</lastmod>
-    <video:video>
-      <video:thumbnail_loc>https://angramm.com/media/umbro/poster.jpg</video:thumbnail_loc>
-      <video:title>UMBRO · SAiSON Chroniques2mars</video:title>
-      <video:description>A neighbourhood pitch below Notre-Dame-de-la-Garde and the man who paints its lines: a film for Umbro, SAiSON and Chroniques2mars about grassroots football in Marseille.</video:description>
-      <video:content_loc>https://angramm.com/media/umbro/full.mp4</video:content_loc>
-      <video:duration>59</video:duration>
-      <video:publication_date>2024-09-19</video:publication_date>
-    </video:video>
-  </url>
-  <url>
-    <loc>https://angramm.com/work/crocs-saison/</loc>
-    <lastmod>2024-05-30</lastmod>
-    <video:video>
-      <video:thumbnail_loc>https://angramm.com/media/crocs-saison/poster.jpg</video:thumbnail_loc>
-      <video:title>CROCS · SAiSON Chroniques2mars</video:title>
-      <video:description>Crocs lands in Marseille with SAiSON and Chroniques2mars: a mock news flash, street football and Crocs by the sea for a limited-edition drop.</video:description>
-      <video:content_loc>https://angramm.com/media/crocs-saison/full.mp4</video:content_loc>
-      <video:duration>65</video:duration>
-      <video:publication_date>2024-05-30</video:publication_date>
-    </video:video>
-  </url>
-  <url>
-    <loc>https://angramm.com/work/adidas-adizero/</loc>
-    <lastmod>2025-04-19</lastmod>
-    <video:video>
-      <video:thumbnail_loc>https://angramm.com/media/adidas-adizero/poster.jpg</video:thumbnail_loc>
-      <video:title>ADIDAS Adizero Evo SL · Family 3.0</video:title>
-      <video:description>From orbit to asphalt: the adidas Adizero Evo SL with Family 3.0, mixing CGI with a run at first light.</video:description>
-      <video:content_loc>https://angramm.com/media/adidas-adizero/full.mp4</video:content_loc>
-      <video:duration>40</video:duration>
-      <video:publication_date>2025-04-19</video:publication_date>
-    </video:video>
-  </url>
-  <url>
-    <loc>https://angramm.com/work/lacoste/</loc>
-    <lastmod>2026-10-12</lastmod>
-    <video:video>
-      <video:thumbnail_loc>https://angramm.com/media/lacoste/poster.jpg</video:thumbnail_loc>
-      <video:title>LACOSTE FW26 · Family 3.0</video:title>
-      <video:description>An elevator, a single floor and a vinyl session: Lacoste&#39;s FW26 collection, created with Family 3.0 and filmed in chiaroscuro between record shelves and sound systems.</video:description>
-      <video:content_loc>https://angramm.com/media/lacoste/full.mp4</video:content_loc>
-      <video:duration>48</video:duration>
-      <video:publication_date>2026-10-12</video:publication_date>
-    </video:video>
-  </url>
-  <url>
-    <loc>https://angramm.com/work/lacoste-ss25/</loc>
-    <lastmod>2025-03-09</lastmod>
-    <video:video>
-      <video:thumbnail_loc>https://angramm.com/media/lacoste-ss25/poster.jpg</video:thumbnail_loc>
-      <video:title>LACOSTE SS25 · Family 3.0</video:title>
-      <video:description>Binoculars, boats and calanques: Lacoste&#39;s SS25 collection, created with Family 3.0 and shot in Marseille.</video:description>
-      <video:content_loc>https://angramm.com/media/lacoste-ss25/full.mp4</video:content_loc>
-      <video:duration>35</video:duration>
-      <video:publication_date>2025-03-09</video:publication_date>
     </video:video>
   </url>
 </urlset>

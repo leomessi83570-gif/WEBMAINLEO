@@ -142,10 +142,19 @@
       { threshold: 0.6 }
     );
     reels.forEach((r) => {
-      bindSound(r.querySelector('video'), r.querySelector('.snd'));
+      const v = r.querySelector('video');
+      bindSound(v, r.querySelector('.snd'));
       near.observe(r);
       seen.observe(r);
+      // dès que ce film tourne, le suivant se télécharge en entier : il démarre instantanément au scroll
+      v.addEventListener('playing', () => {
+        const nextReel = reels.slice(reels.indexOf(r) + 1).find((x) => x.offsetParent);
+        if (nextReel) setTimeout(() => load(nextReel.querySelector('video')), 800);
+      });
     });
+    // le premier film visible (16:9 sur ordinateur, vertical sur téléphone) se charge tout de suite
+    const first = reels.find((x) => x.offsetParent);
+    if (first) load(first.querySelector('video'));
     addEventListener('resize', () => { const r = document.querySelector('.reel.in-view'); if (r) startAmbient(r); });
     document.addEventListener('visibilitychange', () => {
       const v = document.querySelector('.reel.in-view video');
@@ -185,6 +194,13 @@
         .catch(() => { film.muted = true; sync(film); film.play().catch(() => {}); });
     }
   }
+
+  // ---------- Page film : flèches du clavier ← → pour passer au film précédent / suivant ----------
+  document.querySelectorAll('.arrow[data-key]').forEach((a) => {
+    addEventListener('keydown', (e) => {
+      if (e.key === a.dataset.key && !e.metaKey && !e.ctrlKey && !e.altKey && !/input|textarea/i.test(e.target.tagName)) location.href = a.href;
+    });
+  });
 
   // ---------- Team : le film ANGRAMM (son au clic) et les onglets « Behind the scenes » ----------
   const teamFilm = document.querySelector('.contact-film video');

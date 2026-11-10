@@ -12,6 +12,8 @@ const allProjects = JSON.parse(readFileSync(join(root, 'content/projects.json'),
 // Tous les films sont générés ; sur ordinateur, le CSS ne montre que les horizontaux (classe is-portrait),
 // sur téléphone on voit les deux formats.
 const projects = allProjects;
+// Pages indexées : on écarte les doublons de format (ex. CMA CGM x OM 9:16, canonique vers la 16:9)
+const indexed = projects.filter((p) => !p.canonicalOf);
 const base = site.url.replace(/\/$/, '');
 const lastUpdate = projects.map((p) => p.date || site.fallbackDate).sort().at(-1);
 
@@ -24,7 +26,9 @@ const jsonLd = (data) => `<script type="application/ld+json">${JSON.stringify(da
 const iso = (sec) => `PT${Math.floor(sec / 60)}M${Math.round(sec % 60)}S`;
 const name = (p) => (p.lines ? p.lines.join(' · ') : `${p.client} · ${p.title}`);
 // Titre sur deux lignes (blanc / gris), même rendu partout
-const twoLines = (p) => `<span class="l1">${esc(lines(p)[0])}</span> <span class="l2">${esc(lines(p)[1])}</span>`;
+// 2e ligne entre guillemets (sauf noQuotes, ex. Mizuno x Vrunk)
+const l2 = (p) => (p.noQuotes ? lines(p)[1] : `“${lines(p)[1]}”`);
+const twoLines = (p) => `<span class="l1">${esc(lines(p)[0])}</span> <span class="l2">${esc(l2(p))}</span>`;
 // Légende sur deux temps, façon division.global : « MIZUNO x VRUNK » + « KYAN, São Paulo »
 const lines = (p) => {
   if (p.lines) return p.lines; // titre imposé par le client (ligne blanche, ligne grise)
@@ -61,8 +65,8 @@ const org = {
   address: { '@type': 'PostalAddress', addressLocality: site.city, addressCountry: site.country },
 };
 
-function head({ title, description, path, image = '/assets/og.jpg', video, noindex = false, serif = true, extra = '' }) {
-  const url = `${base}${path}`;
+function head({ title, description, path, canonical, image = '/assets/og.jpg', video, noindex = false, serif = true, extra = '' }) {
+  const url = `${base}${canonical || path}`;
   return `<!doctype html>
 <html lang="${site.lang}">
 <head>
@@ -82,7 +86,7 @@ ${noindex ? '<meta name="robots" content="noindex">\n' : ''}<link rel="canonical
 ${video ? `<meta property="og:video" content="${base}${video}">\n<meta property="og:video:type" content="video/mp4">\n` : ''}<meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
-<link rel="preload" href="/fonts/archivo-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/helvetica-bold.woff2" as="font" type="font/woff2" crossorigin>
 ${serif ? '<link rel="preload" href="/fonts/ebgaramond-latin.woff2" as="font" type="font/woff2" crossorigin>\n' : ''}<link rel="stylesheet" href="/assets/style.css?v=${version("style.css")}">
 <script>if (!('PageRevealEvent' in window)) document.documentElement.classList.add('no-vt');</script>
 ${extra}</head>`;
@@ -94,7 +98,7 @@ const header = (current = '') => {
   return `<header class="top">
   <nav class="nav" aria-label="Main">
     <a class="wordmark" href="/" aria-label="${esc(site.name)}®, home">${logoSvg}</a>
-    ${link('/projects/', 'Projects', 'projects')}
+    ${link('/films/', 'Films', 'films')}
     ${link('/team/', 'Team', 'team')}
     ${link('/contact/', 'Contact', 'contact')}
   </nav>
@@ -113,8 +117,8 @@ const reelsMarkup = (eager) =>
     .map(
       (p, i) => `<div class="reel${isVertical(p) ? ' is-portrait' : ''}">
     <canvas class="ambient" width="64" height="36" aria-hidden="true"></canvas>
-    <video muted loop playsinline preload="${eager && i === 0 ? 'auto' : 'none'}" ${eager && i === 0 ? 'poster' : 'data-poster'}="${media(p, 'poster.webp')}" data-src="${media(p, 'full.mp4')}#t=${p.start || 0}"></video>
-    <a class="cap" href="/work/${p.slug}/"><span class="l1">${esc(lines(p)[0])}</span> <span class="l2">${esc(lines(p)[1])}</span></a>
+    <video muted loop playsinline preload="none" data-poster="${media(p, 'first.webp')}" data-src="${media(p, 'full.mp4')}"></video>
+    <a class="cap" href="/work/${p.slug}/">${twoLines(p)}</a>
     <button class="snd" type="button" aria-pressed="false">Sound <span>off</span></button>
   </div>`
     )
@@ -135,7 +139,8 @@ function home() {
       description: site.description,
       path: '/',
       serif: false,
-      extra: `<link rel="preload" href="${media(projects[0], 'poster.webp')}" as="image" fetchpriority="high">
+      extra: `<link rel="preload" href="${media(projects.find((x) => !isVertical(x)), 'first.webp')}" as="image" media="(min-width: 721px)" fetchpriority="high">
+<link rel="preload" href="${media(projects.find(isVertical), 'first.webp')}" as="image" media="(max-width: 720px)" fetchpriority="high">
 <script>try { if (sessionStorage.getItem('angramm-intro') || matchMedia('(prefers-reduced-motion: reduce)').matches) document.documentElement.classList.add('skip-intro'); } catch (e) {}</script>
 ${jsonLd(ld)}\n`,
     })}
@@ -150,21 +155,21 @@ ${header()}
   ${reelsMarkup(true)}
   <section class="endcard" aria-label="${esc(site.name)}">
     <p class="lede">${esc(site.intro[0])}</p>
-    <p class="endcard-links"><a href="/projects/">All projects →</a><a href="/team/">Team →</a><a href="/contact/">Contact →</a></p>
+    <p class="endcard-links"><a href="/films/">All films →</a><a href="/team/">Team →</a><a href="/contact/">Contact →</a></p>
   </section>
 </main>
 ${tail}`
   );
 }
 
-// ---------- Projets : mosaïque 2 par ligne, les aperçus tournent au scroll ----------
-function projectsPage() {
+// ---------- Films : mosaïque 2 par ligne, les aperçus tournent au scroll ----------
+function filmsPage() {
   const tiles = projects
     .map(
       (p, i) => `<li${isVertical(p) ? ' class="is-portrait"' : ''}>
       <a class="tile" href="/work/${p.slug}/">
         <span class="frame">
-          <img src="${media(p, 'thumb.webp')}" alt="${esc(`${name(p)} — film by ${site.name}`)}" width="${isVertical(p) ? 720 : Math.round((720 * p.width) / p.height)}" height="${isVertical(p) ? Math.round((720 * p.height) / p.width) : 720}" ${i < 2 ? `loading="eager"${i === 0 ? ' fetchpriority="high"' : ''}` : 'loading="lazy"'} decoding="async">
+          <img src="${media(p, 'thumb.webp')}" alt="${esc(`${name(p)} — film by ${site.name}`)}" width="${isVertical(p) ? 720 : Math.round((720 * p.width) / p.height)}" height="${isVertical(p) ? Math.round((720 * p.height) / p.width) : 720}" ${projects.filter((x) => isVertical(x) === isVertical(p)).indexOf(p) < 2 ? 'loading="eager"' : 'loading="lazy"'} decoding="async">
           <video muted loop playsinline preload="none" data-src="${media(p, 'preview.mp4')}" aria-hidden="true"></video>
         </span>
         <span class="meta">${twoLines(p)}</span>
@@ -178,30 +183,29 @@ function projectsPage() {
       org,
       {
         '@type': 'CollectionPage',
-        name: `Projects · ${site.name}`,
-        url: `${base}/projects/`,
+        name: `Films · ${site.name}`,
+        url: `${base}/films/`,
         inLanguage: site.lang,
         mainEntity: {
           '@type': 'ItemList',
-          itemListElement: projects.map((p, i) => ({ '@type': 'ListItem', position: i + 1, url: `${base}/work/${p.slug}/`, name: name(p) })),
+          itemListElement: indexed.map((p, i) => ({ '@type': 'ListItem', position: i + 1, url: `${base}/work/${p.slug}/`, name: name(p) })),
         },
       },
     ],
   };
   write(
-    'projects/index.html',
+    'films/index.html',
     `${head({
-      title: `Projects: films for OM, Lacoste, Mizuno & adidas | ${site.name}®`,
+      title: `Films for OM, Lacoste, Mizuno & adidas | ${site.name}®`,
       description: `Films and campaigns by ${site.name}: ${clients.slice(0, 8).join(', ')}.`,
-      path: '/projects/',
+      path: '/films/',
       serif: false,
       extra: `${jsonLd(ld)}\n`,
     })}
 <body class="page-projects">
-${header('projects')}
+${header('films')}
 <main class="mosaic-wrap">
-  <h1 class="page-title">Projects</h1>
-  <p class="lede intro">Films and campaigns for sport, fashion and culture brands.</p>
+  <h1 class="page-title">Films</h1>
   <ul class="mosaic">
     ${tiles}
   </ul>
@@ -247,6 +251,36 @@ ${header('team')}
   </section>`
     )
     .join('\n  ')}
+  <a class="bts-link" href="/behind-the-scenes/"><span class="team-title">Behind the scenes</span><span class="arr" aria-hidden="true">→</span></a>
+</main>
+${tail}`
+  );
+}
+
+// ---------- Behind the scenes : grande mosaïque des photos de tournage ----------
+function btsPage() {
+  const shots = JSON.parse(readFileSync(join(root, 'content/bts.json'), 'utf8'));
+  const items = shots
+    .map(
+      (b, i) => `<a class="shot" href="${b.l}" target="_blank" rel="noopener"><img src="${b.s}" alt="${esc(`${b.project}, behind the scenes`)}" width="${b.w}" height="${b.h}" ${i < 6 ? 'loading="eager"' : 'loading="lazy"'} decoding="async"></a>`
+    )
+    .join('\n    ');
+  write(
+    'behind-the-scenes/index.html',
+    `${head({
+      title: `Behind the scenes | ${site.name}®`,
+      description: `Behind the scenes of ${site.name} shoots: Olympique de Marseille, Les Marseillaises, Lacoste, Mizuno x Vrunk, ASICS.`,
+      path: '/behind-the-scenes/',
+      serif: false,
+      image: shots[0].l,
+    })}
+<body class="page-bts">
+${header('team')}
+<main class="bts-wrap">
+  <h1 class="page-title">Behind the scenes</h1>
+  <div class="masonry">
+    ${items}
+  </div>
 </main>
 ${tail}`
   );
@@ -298,7 +332,7 @@ ${header()}
   </div>
   <ul class="inquiries">
     <li><a href="/"><span class="label-k">Home</span><span class="v">${esc(site.name)}®</span></a></li>
-    <li><a href="/projects/"><span class="label-k">Projects</span><span class="v">All films</span></a></li>
+    <li><a href="/films/"><span class="label-k">Films</span><span class="v">All films</span></a></li>
   </ul>
 </main>
 ${tail}`
@@ -306,8 +340,12 @@ ${tail}`
 }
 
 // ---------- Pages projet ----------
-function project(p, i) {
-  const next = projects[(i + 1) % projects.length];
+function project(p) {
+  // précédent / suivant parmi les films du même format (ordinateur : 16:9, téléphone : 9:16)
+  const group = projects.filter((x) => isVertical(x) === isVertical(p));
+  const k = group.indexOf(p);
+  const prev = group[(k - 1 + group.length) % group.length];
+  const next = group[(k + 1) % group.length];
   const path = `/work/${p.slug}/`;
   const date = p.date || site.fallbackDate;
   const ld = {
@@ -335,7 +373,7 @@ function project(p, i) {
         '@type': 'BreadcrumbList',
         itemListElement: [
           { '@type': 'ListItem', position: 1, name: site.name, item: `${base}/` },
-          { '@type': 'ListItem', position: 2, name: 'Projects', item: `${base}/projects/` },
+          { '@type': 'ListItem', position: 2, name: 'Films', item: `${base}/films/` },
           { '@type': 'ListItem', position: 3, name: name(p), item: `${base}${path}` },
         ],
       },
@@ -350,18 +388,21 @@ function project(p, i) {
       title: `${name(p)} | ${site.name}®`,
       description: desc.length > 158 ? `${p.summary.slice(0, 155).replace(/\s+\S*$/, '')}…` : desc,
       path,
+      canonical: p.canonicalOf ? `/work/${p.canonicalOf}/` : undefined,
       image: media(p, 'poster.jpg'),
       video: media(p, 'full.mp4'),
-      extra: `<link rel="preload" href="${media(p, 'poster.webp')}" as="image" fetchpriority="high">\n${jsonLd(ld)}\n`,
+      extra: `<link rel="preload" href="${media(p, 'first.webp')}" as="image" fetchpriority="high">\n${jsonLd(ld)}\n`,
     })}
 <body class="work">
-${header('projects')}
+${header('films')}
 <main>
   <section class="player${isVertical(p) ? ' is-portrait' : ''}" aria-label="Film">
     <canvas class="ambient" width="64" height="36" aria-hidden="true"></canvas>
-    <video class="film" src="${media(p, 'full.mp4')}" poster="${media(p, 'poster.webp')}" playsinline autoplay muted preload="auto" width="${p.width}" height="${p.height}"></video>
+    <video class="film" src="${media(p, 'full.mp4')}" poster="${media(p, 'first.webp')}" playsinline autoplay muted preload="auto" width="${p.width}" height="${p.height}"></video>
     <h1 class="cap">${twoLines(p)}</h1>
     <button class="snd" type="button" aria-pressed="false">Sound <span>off</span></button>
+    <a class="arrow prev" href="/work/${prev.slug}/" rel="prev" data-key="ArrowLeft"><span class="a" aria-hidden="true">←</span><span class="t"><span class="k">Previous</span>${esc(lines(prev)[0])}</span></a>
+    <a class="arrow next" href="/work/${next.slug}/" rel="next" data-key="ArrowRight"><span class="t"><span class="k">Next</span>${esc(lines(next)[0])}</span><span class="a" aria-hidden="true">→</span></a>
   </section>
 
   <article class="sheet">
@@ -375,8 +416,8 @@ ${header('projects')}
       <div><dt>Production</dt><dd>${esc(site.name)}®</dd></div>
       ${(p.credits || []).map((c) => `<div><dt>${esc(c.role)}</dt><dd>${esc(c.name)}</dd></div>`).join('')}
     </dl>
-    <nav class="pager" aria-label="Projects">
-      <a href="/projects/">All projects</a>
+    <nav class="pager" aria-label="Films">
+      <a href="/films/">All films</a>
       <a href="/work/${next.slug}/">Next: ${esc(name(next))} →</a>
     </nav>
   </article>
@@ -390,10 +431,11 @@ function seoFiles() {
   const page = (path, lastmod = lastUpdate) => `  <url><loc>${base}${path}</loc><lastmod>${lastmod}</lastmod></url>`;
   const urls = [
     page('/'),
-    page('/projects/'),
+    page('/films/'),
     page('/team/'),
+    page('/behind-the-scenes/'),
     page('/contact/'),
-    ...projects.map(
+    ...indexed.map(
       (p) => `  <url>
     <loc>${base}/work/${p.slug}/</loc>
     <lastmod>${p.date || site.fallbackDate}</lastmod>
@@ -419,9 +461,9 @@ ${urls.join('\n')}
   write('robots.txt', `User-agent: *\nAllow: /\n\nSitemap: ${base}/sitemap.xml\n`);
   write(
     'llms.txt',
-    `# ${site.name}®\n\n> ${site.intro[0]}\n\n${site.team.sections.map((x) => x.text.join(' ')).join(' ')}\n\nBased in ${site.city}, France. Contact: ${site.email}\n\n## Films\n\n${projects
+    `# ${site.name}®\n\n> ${site.intro[0]}\n\n${site.team.sections.map((x) => x.text.join(' ')).join(' ')}\n\nBased in ${site.city}, France. Contact: ${site.email}\n\n## Films\n\n${indexed
       .map((p) => `- [${name(p)}](${base}/work/${p.slug}/)${p.date ? ` (${year(p)})` : ''}: ${p.summary}`)
-      .join('\n')}\n\n## Pages\n\n- [Projects](${base}/projects/)\n- [Team](${base}/team/)\n- [Contact](${base}/contact/)\n- Instagram: ${site.instagram}\n`
+      .join('\n')}\n\n## Pages\n\n- [Films](${base}/films/)\n- [Behind the scenes](${base}/behind-the-scenes/)\n- [Team](${base}/team/)\n- [Contact](${base}/contact/)\n- Instagram: ${site.instagram}\n`
   );
   // Lus par Netlify même en glisser-déposer (netlify.toml ne l'est qu'en déploiement Git)
   write(
@@ -430,15 +472,16 @@ ${urls.join('\n')}
   );
   write(
     '_redirects',
-    ['/projets/ /projects/ 301', '/studio/ /team/ 301', '/horizontal/projets/ /projects/ 301', '/vertical/projets/ /projects/ 301', '/horizontal/ / 301', '/vertical/ / 301', '/work/volcan/ /work/om/ 301', '/work/lacoste-fw24/ /work/lacoste-ss25/ 301', ''].join('\n')
+    ['/projects/ /films/ 301', '/projets/ /films/ 301', '/studio/ /team/ 301', '/horizontal/projets/ /films/ 301', '/vertical/projets/ /films/ 301', '/horizontal/ / 301', '/vertical/ / 301', '/work/volcan/ /work/om/ 301', '/work/lacoste-fw24/ /work/lacoste-ss25/ 301', ''].join('\n')
   );
 }
 
 home();
-projectsPage();
+filmsPage();
 teamPage();
+btsPage();
 contactPage();
 notFound();
-projects.forEach(project);
+projects.forEach((p) => project(p));
 seoFiles();
-console.log(`OK : ${projects.length + 5} pages générées dans site/`);
+console.log(`OK : ${projects.length + 6} pages générées dans site/`);

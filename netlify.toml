@@ -22,7 +22,7 @@
 
 [[redirects]]
   from = "/projets/"
-  to = "/projects/"
+  to = "/films/"
   status = 301
 
 [[redirects]]
@@ -32,12 +32,12 @@
 
 [[redirects]]
   from = "/horizontal/projets/"
-  to = "/projects/"
+  to = "/films/"
   status = 301
 
 [[redirects]]
   from = "/vertical/projets/"
-  to = "/projects/"
+  to = "/films/"
   status = 301
 
 [[redirects]]
@@ -58,4 +58,9 @@
 [[redirects]]
   from = "/work/lacoste-fw24/"
   to = "/work/lacoste-ss25/"
+  status = 301
+
+[[redirects]]
+  from = "/projects/"
+  to = "/films/"
   status = 301

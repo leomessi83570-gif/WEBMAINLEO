@@ -3,16 +3,84 @@
     "slug": "om",
     "client": "Olympique de Marseille",
     "short": "OM",
-    "title": "Official campaign 26/27",
+    "title": "EXP. VOLCANO",
     "summary": "A film for Olympique de Marseille unveiling the 2026/27 kit. Live action and CGI meet in a cinematic expedition, from the stands to the heart of a blue-lit volcano.",
     "date": "2026-07-01",
-    "start": 27,
+    "start": 0,
     "duration": 80,
     "width": 1920,
     "height": 1080,
     "lines": [
       "OLYMPIQUE DE MARSEILLE",
-      "Official campaign 26/27"
+      "EXP. VOLCANO"
+    ]
+  },
+  {
+    "slug": "om-prise-du-vel",
+    "client": "Les Marseillaises × Olympique de Marseille",
+    "short": "Les Marseillaises",
+    "title": "Prise du Vel",
+    "summary": "Les Marseillaises take over the Vélodrome: a campaign for the Olympique de Marseille women's team, from neighbourhood pitches and hairdressers to a packed stadium, for their match against Montpellier at the Orange Vélodrome.",
+    "location": "Marseille",
+    "date": "2026-03-27",
+    "start": 0,
+    "duration": 69,
+    "width": 1920,
+    "height": 1080,
+    "lines": [
+      "LES MARSEILLAISES",
+      "Prise du Vel"
+    ]
+  },
+  {
+    "slug": "cma-cgm-om",
+    "client": "CMA CGM × Olympique de Marseille",
+    "short": "CMA CGM x OM",
+    "title": "Driven by passion",
+    "summary": "Driven by passion: CMA CGM and Olympique de Marseille, from the containers of the port of Marseille to the pitch.",
+    "location": "Marseille",
+    "duration": 53,
+    "width": 1920,
+    "height": 1080,
+    "lines": [
+      "CMA CGM x OM",
+      "Driven by passion"
+    ],
+    "start": 0,
+    "date": "2025-11-23"
+  },
+  {
+    "slug": "cma-cgm-om-vertical",
+    "client": "CMA CGM × Olympique de Marseille",
+    "short": "CMA CGM x OM",
+    "title": "Driven by passion",
+    "summary": "Driven by passion: CMA CGM and Olympique de Marseille, from the containers of the port of Marseille to the pitch.",
+    "location": "Marseille",
+    "duration": 53,
+    "width": 1080,
+    "height": 1920,
+    "canonicalOf": "cma-cgm-om",
+    "lines": [
+      "CMA CGM x OM",
+      "Driven by passion"
+    ],
+    "start": 0,
+    "date": "2025-11-23"
+  },
+  {
+    "slug": "lacoste",
+    "client": "Lacoste × Family 3.0",
+    "short": "Lacoste",
+    "title": "AFTER RAIN",
+    "summary": "An elevator, a single floor and a vinyl session: Lacoste's FW26 collection, created with Family 3.0 and filmed in chiaroscuro between record shelves and sound systems.",
+    "date": "2026-10-12",
+    "start": 0,
+    "duration": 48,
+    "width": 1440,
+    "height": 1080,
+    "lines": [
+      "LACOSTE FW26 x Family 3.0",
+      "AFTER RAIN"
     ]
   },
   {
@@ -23,129 +91,47 @@
     "summary": "The US Endoume 26/27 jersey kit by Kappa: the neighbourhood club founded in 1925, worn through the streets, beaches and creeks of Marseille, from Notre-Dame-de-la-Garde to the Vallon des Auffes.",
     "location": "Marseille",
     "date": "2026-09-08",
-    "start": 17,
+    "start": 0,
     "duration": 63,
     "width": 1036,
     "height": 1842,
     "lines": [
       "KAPPA",
-      "US ENDOUME Jersey kit 26/27"
-    ]
-  },
-  {
-    "slug": "mizuno-vrunk-sao-paulo",
-    "client": "Mizuno × Vrunk",
-    "title": "São Paulo",
-    "summary": "The Mizuno × Vrunk collection in São Paulo with KYAN: sneakers, tracksuits and the city's alleys, cut to the rhythm of the street.",
-    "location": "São Paulo",
-    "date": "2026-03-18",
-    "start": 9,
-    "duration": 47,
-    "width": 1080,
-    "height": 1920,
-    "lines": [
-      "MIZUNO x VRUNK",
-      "Kyan, São Paulo"
-    ]
-  },
-  {
-    "slug": "mizuno-rio",
-    "client": "Mizuno × Vrunk",
-    "short": "Mizuno × Vrunk",
-    "title": "Rio de Janeiro",
-    "summary": "A Rio de Janeiro favela lights up: the Mizuno × Vrunk collection told through hustle, energy and light, from rooftop barbers to a logo glowing over the city.",
-    "location": "Rio de Janeiro",
-    "date": "2026-03-10",
-    "start": 12,
-    "duration": 46,
-    "width": 1920,
-    "height": 1080,
-    "lines": [
-      "MIZUNO x VRUNK",
-      "Rio de Janeiro"
-    ]
-  },
-  {
-    "slug": "mizuno-vrunk",
-    "client": "Mizuno × Vrunk",
-    "title": "Nanterre",
-    "summary": "Motocross, drifting and CGI: the Mizuno × Vrunk collection staged with Ven1 among the towers of Nanterre, under a rain of petals.",
-    "location": "Nanterre",
-    "date": "2025-09-10",
-    "start": 32,
-    "duration": 57,
-    "width": 1080,
-    "height": 1920,
-    "lines": [
-      "MIZUNO x VRUNK",
-      "Ven1, Nanterre"
-    ]
-  },
-  {
-    "slug": "om-cma-cgm",
-    "client": "PUMA × Olympique de Marseille",
-    "short": "PUMA",
-    "title": "Third jersey 25/26",
-    "summary": "PUMA and Olympique de Marseille unveil the 2025/26 third jersey at the port of Marseille, shot among the containers and the dockers who keep the port running.",
-    "location": "Marseille",
-    "start": 60,
-    "duration": 70,
-    "width": 1278,
-    "height": 720,
-    "lines": [
-      "PUMA",
-      "Olympique de Marseille third jersey 25/26"
-    ]
-  },
-  {
-    "slug": "om-prise-du-vel",
-    "client": "Olympique de Marseille",
-    "short": "OM",
-    "title": "Prise du Vel",
-    "summary": "Les Marseillaises take over the Vélodrome: a campaign for the Olympique de Marseille women's team, from neighbourhood pitches and hairdressers to a packed stadium, for their match against Montpellier at the Orange Vélodrome.",
-    "location": "Marseille",
-    "date": "2026-03-27",
-    "start": 36,
-    "duration": 69,
-    "width": 1920,
-    "height": 1080,
-    "lines": [
-      "OLYMPIQUE DE MARSEILLE",
-      "Les Marseillaises, Prise du Vel"
-    ]
-  },
-  {
-    "slug": "umbro",
-    "client": "Umbro × SAiSON × Chroniques2mars",
-    "short": "Umbro",
-    "title": "Marseille",
-    "summary": "A neighbourhood pitch below Notre-Dame-de-la-Garde and the man who paints its lines: a film for Umbro, SAiSON and Chroniques2mars about grassroots football in Marseille.",
-    "location": "Marseille",
-    "date": "2024-09-19",
-    "start": 30,
-    "duration": 59,
-    "width": 1080,
-    "height": 1920,
-    "lines": [
-      "UMBRO",
-      "SAiSON Chroniques2mars"
+      "US ENDOUME jersey 26/27"
     ]
   },
   {
     "slug": "crocs-saison",
     "client": "Crocs × SAiSON × Chroniques2mars",
     "short": "Crocs",
-    "title": "Marseille",
+    "title": "CROCS2MARS",
     "summary": "Crocs lands in Marseille with SAiSON and Chroniques2mars: a mock news flash, street football and Crocs by the sea for a limited-edition drop.",
     "location": "Marseille",
     "date": "2024-05-30",
-    "start": 24,
+    "start": 0,
     "duration": 65,
     "width": 1080,
     "height": 1920,
     "lines": [
-      "CROCS",
-      "SAiSON Chroniques2mars"
+      "CROCS x SAiSON x C2MARS",
+      "CROCS2MARS"
+    ]
+  },
+  {
+    "slug": "umbro",
+    "client": "Umbro × SAiSON × Chroniques2mars",
+    "short": "Umbro",
+    "title": "CLASSIC2MARS",
+    "summary": "A neighbourhood pitch below Notre-Dame-de-la-Garde and the man who paints its lines: a film for Umbro, SAiSON and Chroniques2mars about grassroots football in Marseille.",
+    "location": "Marseille",
+    "date": "2024-09-19",
+    "start": 0,
+    "duration": 59,
+    "width": 1080,
+    "height": 1920,
+    "lines": [
+      "UMBRO x SAiSON x C2Mars",
+      "CLASSIC2MARS"
     ]
   },
   {
@@ -155,46 +141,98 @@
     "title": "Adizero Evo SL",
     "summary": "From orbit to asphalt: the adidas Adizero Evo SL with Family 3.0, mixing CGI with a run at first light.",
     "date": "2025-04-19",
-    "start": 26,
+    "start": 0,
     "duration": 40,
     "width": 1080,
     "height": 1920,
     "lines": [
-      "ADIDAS Adizero Evo SL",
-      "Family 3.0"
-    ]
-  },
-  {
-    "slug": "lacoste",
-    "client": "Lacoste × Family 3.0",
-    "short": "Lacoste",
-    "title": "FW26",
-    "summary": "An elevator, a single floor and a vinyl session: Lacoste's FW26 collection, created with Family 3.0 and filmed in chiaroscuro between record shelves and sound systems.",
-    "date": "2026-10-12",
-    "start": 26,
-    "duration": 48,
-    "width": 1440,
-    "height": 1080,
-    "lines": [
-      "LACOSTE FW26",
-      "Family 3.0"
+      "ADIDAS x Family 3.0",
+      "Adizero Evo SL"
     ]
   },
   {
     "slug": "lacoste-ss25",
     "client": "Lacoste × Family 3.0",
     "short": "Lacoste",
-    "title": "SS25",
+    "title": "Tennis to seaside",
     "summary": "Binoculars, boats and calanques: Lacoste's SS25 collection, created with Family 3.0 and shot in Marseille.",
     "location": "Marseille",
     "date": "2025-03-09",
-    "start": 4,
+    "start": 0,
     "duration": 35,
     "width": 1080,
     "height": 1920,
     "lines": [
-      "LACOSTE SS25",
-      "Family 3.0"
+      "LACOSTE SS25 x Family 3.0",
+      "Tennis to seaside"
+    ]
+  },
+  {
+    "slug": "mizuno-vrunk-sao-paulo",
+    "client": "Mizuno × Vrunk",
+    "title": "São Paulo",
+    "summary": "The Mizuno × Vrunk collection in São Paulo with KYAN: sneakers, tracksuits and the city's alleys, cut to the rhythm of the street.",
+    "location": "São Paulo",
+    "date": "2026-03-18",
+    "start": 0,
+    "duration": 47,
+    "width": 1080,
+    "height": 1920,
+    "lines": [
+      "MIZUNO x VRUNK",
+      "Kyan, São Paulo"
+    ],
+    "noQuotes": true
+  },
+  {
+    "slug": "mizuno-rio",
+    "client": "Mizuno × Vrunk",
+    "short": "Mizuno × Vrunk",
+    "title": "Rio de Janeiro",
+    "summary": "A Rio de Janeiro favela lights up: the Mizuno × Vrunk collection told through hustle, energy and light, from rooftop barbers to a logo glowing over the city.",
+    "location": "Rio de Janeiro",
+    "date": "2026-03-10",
+    "start": 0,
+    "duration": 46,
+    "width": 1920,
+    "height": 1080,
+    "lines": [
+      "MIZUNO x VRUNK",
+      "Rio de Janeiro"
+    ],
+    "noQuotes": true
+  },
+  {
+    "slug": "mizuno-vrunk",
+    "client": "Mizuno × Vrunk",
+    "title": "Nanterre",
+    "summary": "Motocross, drifting and CGI: the Mizuno × Vrunk collection staged with Ven1 among the towers of Nanterre, under a rain of petals.",
+    "location": "Nanterre",
+    "date": "2025-09-10",
+    "start": 0,
+    "duration": 57,
+    "width": 1080,
+    "height": 1920,
+    "lines": [
+      "MIZUNO x VRUNK",
+      "Ven1, Nanterre"
+    ],
+    "noQuotes": true
+  },
+  {
+    "slug": "om-cma-cgm",
+    "client": "PUMA × Olympique de Marseille",
+    "short": "PUMA",
+    "title": "Third jersey 25/26",
+    "summary": "PUMA and Olympique de Marseille unveil the 2025/26 third jersey at the port of Marseille, shot among the containers and the dockers who keep the port running.",
+    "location": "Marseille",
+    "start": 0,
+    "duration": 70,
+    "width": 1278,
+    "height": 720,
+    "lines": [
+      "PUMA",
+      "Olympique de Marseille third jersey 25/26"
     ]
   }
 ]
