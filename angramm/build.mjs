@@ -115,7 +115,7 @@ const tail = `<div class="cursor is-off" aria-hidden="true"><span>A</span></div>
 const reelsMarkup = (eager) =>
   projects
     .map(
-      (p, i) => `<div class="reel${isVertical(p) ? ' is-portrait' : ''}">
+      (p, i) => `<div class="reel${isVertical(p) ? ' is-portrait' : ''}${p.hideDesktop ? ' hide-desktop' : ''}">
     <canvas class="ambient" width="64" height="36" aria-hidden="true"></canvas>
     <video muted loop playsinline preload="none" data-poster="${media(p, 'first.webp')}" data-src="${media(p, 'full.mp4')}"></video>
     <a class="cap" href="/work/${p.slug}/">${twoLines(p)}</a>
@@ -162,7 +162,7 @@ ${tail}`
 function filmsPage() {
   const tiles = projects
     .map(
-      (p, i) => `<li${p.canonicalOf ? ' class="alt-desktop"' : projects.some((x) => x.canonicalOf === p.slug) ? ' class="alt-phone"' : ''}>
+      (p, i) => `<li${p.canonicalOf || p.hideDesktop ? ' class="alt-desktop"' : projects.some((x) => x.canonicalOf === p.slug) ? ' class="alt-phone"' : ''}>
       <a class="tile" href="/work/${p.slug}/">
         <span class="frame">
           <img src="${media(p, 'thumb.webp')}" alt="${esc(`${name(p)} — film by ${site.name}`)}" width="${isVertical(p) ? 720 : Math.round((720 * p.width) / p.height)}" height="${isVertical(p) ? Math.round((720 * p.height) / p.width) : 720}" ${i < 4 ? 'loading="eager"' : 'loading="lazy"'} decoding="async">
@@ -230,27 +230,18 @@ function teamPage() {
   write(
     'team/index.html',
     `${head({
-      title: `Team: one crew, made by hand | ${site.name}®`,
+      title: `Team: behind the scenes | ${site.name}®`,
       description: `${site.name} is a creative agency and audiovisual production company from Marseille, France: one crew, made by hand, images that stay with people.`,
       path: '/team/',
       extra: `${jsonLd(ld)}\n`,
     })}
-<body class="page-team">
+<body class="page-team page-bts">
 ${header('team')}
-<main class="team">
-  <h1 class="sr-only">Team</h1>
-  ${T.sections
-    .map(
-      (sec) => `<section class="team-block">
-    <h2 class="team-title">${esc(sec.title)}</h2>
-    ${sec.text.map((t) => `<p class="lede">${esc(t)}</p>`).join('\n    ')}
-  </section>`
-    )
-    .join('\n  ')}
-  <a class="bts-link" href="/behind-the-scenes/">
-    <span class="bts-head"><span class="team-title">Behind the scenes</span><span class="arr" aria-hidden="true">→</span></span>
-    <span class="bts-peek" aria-hidden="true">${btsShots().filter((b, i, all) => i === all.findIndex((x) => x.project === b.project)).slice(0, 3).map((b) => `<img src="${b.s}" alt="" width="${b.w}" height="${b.h}" loading="lazy" decoding="async">`).join('')}</span>
-  </a>
+<main class="bts-wrap">
+  <h1 class="sr-only">Team: behind the scenes</h1>
+  <div class="masonry">
+    ${btsShots().map((b, i) => `<a class="shot" href="${b.l}" target="_blank" rel="noopener"><img src="${b.s}" alt="${esc(`${b.project}, behind the scenes`)}" width="${b.w}" height="${b.h}" ${i < 6 ? 'loading="eager"' : 'loading="lazy"'} decoding="async"></a>`).join('\n    ')}
+  </div>
 </main>
 ${tail}`
   );
@@ -303,10 +294,20 @@ function contactPage() {
 ${header('contact')}
 <main class="contact">
   <h1 class="sr-only">Contact</h1>
+  <div class="contact-col">
+  ${site.team.sections
+    .map(
+      (sec) => `<section class="team-block">
+    <h2 class="team-title">${esc(sec.title)}</h2>
+    ${sec.text.map((t) => `<p class="lede">${esc(t)}</p>`).join('\n    ')}
+  </section>`
+    )
+    .join('\n  ')}
   <ul class="inquiries">
     <li><a href="mailto:${esc(site.email)}"><span class="label-k">Mail</span><span class="v">${esc(site.email)}</span></a></li>
     <li><a href="${esc(site.instagram)}" rel="me noopener" target="_blank"><span class="label-k">Instagram</span><span class="v">${esc(handle)}</span></a></li>
   </ul>
+  </div>
   ${
     site.studioFilm
       ? `<figure class="contact-film">

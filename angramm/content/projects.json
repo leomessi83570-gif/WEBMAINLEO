@@ -1,21 +1,5 @@
 [
   {
-    "slug": "om",
-    "client": "Olympique de Marseille",
-    "short": "OM",
-    "title": "EXP. VOLCANO",
-    "summary": "A film for Olympique de Marseille unveiling the 2026/27 kit. Live action and CGI meet in a cinematic expedition, from the stands to the heart of a blue-lit volcano.",
-    "date": "2026-07-01",
-    "start": 0,
-    "duration": 80,
-    "width": 1920,
-    "height": 1080,
-    "lines": [
-      "OLYMPIQUE DE MARSEILLE",
-      "EXP. VOLCANO"
-    ]
-  },
-  {
     "slug": "om-prise-du-vel",
     "client": "Les Marseillaises × Olympique de Marseille",
     "short": "Les Marseillaises",
@@ -30,141 +14,6 @@
     "lines": [
       "LES MARSEILLAISES",
       "Prise du Vel"
-    ]
-  },
-  {
-    "slug": "cma-cgm-om",
-    "client": "CMA CGM × Olympique de Marseille",
-    "short": "CMA CGM x OM",
-    "title": "Driven by passion",
-    "summary": "Driven by passion: CMA CGM and Olympique de Marseille, from the containers of the port of Marseille to the pitch.",
-    "location": "Marseille",
-    "duration": 53,
-    "width": 1920,
-    "height": 1080,
-    "lines": [
-      "CMA CGM x OM",
-      "Driven by passion"
-    ],
-    "start": 0,
-    "date": "2025-11-23"
-  },
-  {
-    "slug": "cma-cgm-om-vertical",
-    "client": "CMA CGM × Olympique de Marseille",
-    "short": "CMA CGM x OM",
-    "title": "Driven by passion",
-    "summary": "Driven by passion: CMA CGM and Olympique de Marseille, from the containers of the port of Marseille to the pitch.",
-    "location": "Marseille",
-    "duration": 53,
-    "width": 1080,
-    "height": 1920,
-    "canonicalOf": "cma-cgm-om",
-    "lines": [
-      "CMA CGM x OM",
-      "Driven by passion"
-    ],
-    "start": 0,
-    "date": "2025-11-23"
-  },
-  {
-    "slug": "lacoste",
-    "client": "Lacoste × Family 3.0",
-    "short": "Lacoste",
-    "title": "AFTER RAIN",
-    "summary": "An elevator, a single floor and a vinyl session: Lacoste's FW26 collection, created with Family 3.0 and filmed in chiaroscuro between record shelves and sound systems.",
-    "date": "2026-10-12",
-    "start": 0,
-    "duration": 48,
-    "width": 1440,
-    "height": 1080,
-    "lines": [
-      "LACOSTE FW26 x Family 3.0",
-      "AFTER RAIN"
-    ]
-  },
-  {
-    "slug": "endoume-kappa",
-    "client": "Kappa × US Endoume",
-    "short": "Kappa",
-    "title": "Jersey kit 26/27",
-    "summary": "The US Endoume 26/27 jersey kit by Kappa: the neighbourhood club founded in 1925, worn through the streets, beaches and creeks of Marseille, from Notre-Dame-de-la-Garde to the Vallon des Auffes.",
-    "location": "Marseille",
-    "date": "2026-09-08",
-    "start": 0,
-    "duration": 63,
-    "width": 1036,
-    "height": 1842,
-    "lines": [
-      "KAPPA",
-      "US ENDOUME jersey 26/27"
-    ]
-  },
-  {
-    "slug": "crocs-saison",
-    "client": "Crocs × SAiSON × Chroniques2mars",
-    "short": "Crocs",
-    "title": "CROCS2MARS",
-    "summary": "Crocs lands in Marseille with SAiSON and Chroniques2mars: a mock news flash, street football and Crocs by the sea for a limited-edition drop.",
-    "location": "Marseille",
-    "date": "2024-05-30",
-    "start": 0,
-    "duration": 65,
-    "width": 1080,
-    "height": 1920,
-    "lines": [
-      "CROCS x SAiSON x C2MARS",
-      "CROCS2MARS"
-    ]
-  },
-  {
-    "slug": "umbro",
-    "client": "Umbro × SAiSON × Chroniques2mars",
-    "short": "Umbro",
-    "title": "CLASSIC2MARS",
-    "summary": "A neighbourhood pitch below Notre-Dame-de-la-Garde and the man who paints its lines: a film for Umbro, SAiSON and Chroniques2mars about grassroots football in Marseille.",
-    "location": "Marseille",
-    "date": "2024-09-19",
-    "start": 0,
-    "duration": 59,
-    "width": 1080,
-    "height": 1920,
-    "lines": [
-      "UMBRO x SAiSON x C2MARS",
-      "CLASSIC2MARS"
-    ]
-  },
-  {
-    "slug": "adidas-adizero",
-    "client": "adidas × Family 3.0",
-    "short": "adidas",
-    "title": "Adizero Evo SL",
-    "summary": "From orbit to asphalt: the adidas Adizero Evo SL with Family 3.0, mixing CGI with a run at first light.",
-    "date": "2025-04-19",
-    "start": 0,
-    "duration": 40,
-    "width": 1080,
-    "height": 1920,
-    "lines": [
-      "ADIDAS x Family 3.0",
-      "Adizero Evo SL"
-    ]
-  },
-  {
-    "slug": "lacoste-ss25",
-    "client": "Lacoste × Family 3.0",
-    "short": "Lacoste",
-    "title": "Tennis to seaside",
-    "summary": "Binoculars, boats and calanques: Lacoste's SS25 collection, created with Family 3.0 and shot in Marseille.",
-    "location": "Marseille",
-    "date": "2025-03-09",
-    "start": 0,
-    "duration": 35,
-    "width": 1080,
-    "height": 1920,
-    "lines": [
-      "LACOSTE SS25 x Family 3.0",
-      "Tennis to seaside"
     ]
   },
   {
@@ -203,6 +52,73 @@
     "noQuotes": true
   },
   {
+    "slug": "crocs-saison",
+    "client": "Crocs × SAiSON × Chroniques2mars",
+    "short": "Crocs",
+    "title": "CROCS2MARS",
+    "summary": "Crocs lands in Marseille with SAiSON and Chroniques2mars: a mock news flash, street football and Crocs by the sea for a limited-edition drop.",
+    "location": "Marseille",
+    "date": "2024-05-30",
+    "start": 0,
+    "duration": 65,
+    "width": 1080,
+    "height": 1920,
+    "lines": [
+      "CROCS x SAiSON x C2MARS",
+      "CROCS2MARS"
+    ]
+  },
+  {
+    "slug": "om",
+    "client": "Olympique de Marseille",
+    "short": "OM",
+    "title": "EXP. VOLCANO",
+    "summary": "A film for Olympique de Marseille unveiling the 2026/27 kit. Live action and CGI meet in a cinematic expedition, from the stands to the heart of a blue-lit volcano.",
+    "date": "2026-07-01",
+    "start": 0,
+    "duration": 80,
+    "width": 1920,
+    "height": 1080,
+    "lines": [
+      "OLYMPIQUE DE MARSEILLE",
+      "EXP. VOLCANO"
+    ]
+  },
+  {
+    "slug": "cma-cgm-om-vertical",
+    "client": "CMA CGM × Olympique de Marseille",
+    "short": "CMA CGM x OM",
+    "title": "Driven by passion",
+    "summary": "Driven by passion: CMA CGM and Olympique de Marseille, from the containers of the port of Marseille to the pitch.",
+    "location": "Marseille",
+    "duration": 53,
+    "width": 1080,
+    "height": 1920,
+    "canonicalOf": "cma-cgm-om",
+    "lines": [
+      "CMA CGM x OM",
+      "Driven by passion"
+    ],
+    "start": 0,
+    "date": "2025-11-23"
+  },
+  {
+    "slug": "lacoste",
+    "client": "Lacoste × Family 3.0",
+    "short": "Lacoste",
+    "title": "AFTER RAIN",
+    "summary": "An elevator, a single floor and a vinyl session: Lacoste's FW26 collection, created with Family 3.0 and filmed in chiaroscuro between record shelves and sound systems.",
+    "date": "2026-10-12",
+    "start": 0,
+    "duration": 48,
+    "width": 1440,
+    "height": 1080,
+    "lines": [
+      "LACOSTE FW26 x Family 3.0",
+      "AFTER RAIN"
+    ]
+  },
+  {
     "slug": "mizuno-vrunk",
     "client": "Mizuno × Vrunk",
     "title": "Nanterre",
@@ -220,6 +136,90 @@
     "noQuotes": true
   },
   {
+    "slug": "cma-cgm-om",
+    "client": "CMA CGM × Olympique de Marseille",
+    "short": "CMA CGM x OM",
+    "title": "Driven by passion",
+    "summary": "Driven by passion: CMA CGM and Olympique de Marseille, from the containers of the port of Marseille to the pitch.",
+    "location": "Marseille",
+    "duration": 53,
+    "width": 1920,
+    "height": 1080,
+    "lines": [
+      "CMA CGM x OM",
+      "Driven by passion"
+    ],
+    "start": 0,
+    "date": "2025-11-23"
+  },
+  {
+    "slug": "endoume-kappa",
+    "client": "Kappa × US Endoume",
+    "short": "Kappa",
+    "title": "Jersey kit 26/27",
+    "summary": "The US Endoume 26/27 jersey kit by Kappa: the neighbourhood club founded in 1925, worn through the streets, beaches and creeks of Marseille, from Notre-Dame-de-la-Garde to the Vallon des Auffes.",
+    "location": "Marseille",
+    "date": "2026-09-08",
+    "start": 0,
+    "duration": 63,
+    "width": 1036,
+    "height": 1842,
+    "lines": [
+      "KAPPA",
+      "US ENDOUME jersey 26/27"
+    ]
+  },
+  {
+    "slug": "adidas-adizero",
+    "client": "adidas × Family 3.0",
+    "short": "adidas",
+    "title": "Adizero Evo SL",
+    "summary": "From orbit to asphalt: the adidas Adizero Evo SL with Family 3.0, mixing CGI with a run at first light.",
+    "date": "2025-04-19",
+    "start": 0,
+    "duration": 40,
+    "width": 1080,
+    "height": 1920,
+    "lines": [
+      "ADIDAS x Family 3.0",
+      "Adizero Evo SL"
+    ]
+  },
+  {
+    "slug": "umbro",
+    "client": "Umbro × SAiSON × Chroniques2mars",
+    "short": "Umbro",
+    "title": "CLASSIC2MARS",
+    "summary": "A neighbourhood pitch below Notre-Dame-de-la-Garde and the man who paints its lines: a film for Umbro, SAiSON and Chroniques2mars about grassroots football in Marseille.",
+    "location": "Marseille",
+    "date": "2024-09-19",
+    "start": 0,
+    "duration": 59,
+    "width": 1080,
+    "height": 1920,
+    "lines": [
+      "UMBRO x SAiSON x C2MARS",
+      "CLASSIC2MARS"
+    ]
+  },
+  {
+    "slug": "lacoste-ss25",
+    "client": "Lacoste × Family 3.0",
+    "short": "Lacoste",
+    "title": "Tennis to seaside",
+    "summary": "Binoculars, boats and calanques: Lacoste's SS25 collection, created with Family 3.0 and shot in Marseille.",
+    "location": "Marseille",
+    "date": "2025-03-09",
+    "start": 0,
+    "duration": 35,
+    "width": 1080,
+    "height": 1920,
+    "lines": [
+      "LACOSTE SS25 x Family 3.0",
+      "Tennis to seaside"
+    ]
+  },
+  {
     "slug": "om-cma-cgm",
     "client": "PUMA × Olympique de Marseille",
     "short": "PUMA",
@@ -233,6 +233,7 @@
     "lines": [
       "PUMA",
       "Olympique de Marseille third jersey 25/26"
-    ]
+    ],
+    "hideDesktop": true
   }
 ]

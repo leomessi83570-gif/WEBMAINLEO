@@ -748,3 +748,25 @@ body:not(.home) .top {
   .bts-link { grid-column: 2; grid-row: 1 / span 2; align-self: center; }
   .bts-peek img { height: clamp(160px, 30vh, 320px); }
 }
+
+/* Film masqué sur ordinateur (PUMA) */
+@media (min-width: 721px) {
+  .reel.hide-desktop { display: none; }
+}
+/* Team = mosaïque Behind the scenes, sans titre */
+.page-team .bts-wrap { padding-top: 96px; }
+@media (max-width: 720px) { .page-team .bts-wrap { padding-top: 112px; } }
+/* Contact : textes + mail / Instagram dans une colonne, film à côté */
+.contact-col { display: grid; gap: clamp(28px, 5vh, 56px); align-content: center; }
+.contact .team-block { max-width: 640px; }
+.contact .team-block .lede { font-size: clamp(19px, min(2vw, 3.2vh), 30px); }
+
+/* Mosaïque en rangées : l'ordre se lit de gauche à droite, ligne par ligne (les 3 photos choisies en premier) */
+.masonry { columns: auto; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(8px, 1.2vw, 16px); }
+.masonry .shot { margin: 0; }
+.masonry img { aspect-ratio: 2 / 3; height: auto; object-fit: cover; }
+@media (max-width: 720px) {
+  .masonry { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .masonry .shot:first-child { grid-column: 1 / -1; }
+  .masonry .shot:first-child img { aspect-ratio: 4 / 5; }
+}
