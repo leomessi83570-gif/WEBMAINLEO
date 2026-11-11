@@ -255,7 +255,7 @@ function btsPage() {
   const shots = btsShots();
   const items = shots
     .map(
-      (b, i) => `<a class="shot" href="${b.l}" target="_blank" rel="noopener"><img src="${b.s}" alt="${esc(`${b.project}, behind the scenes`)}" width="${b.w}" height="${b.h}" ${i < 6 ? 'loading="eager"' : 'loading="lazy"'} decoding="async"></a>`
+      (b, i) => `<a class="shot" href="${b.l}" data-i="${i}"><img src="${b.s}" alt="${esc(`${b.project}, behind the scenes`)}" width="${b.w}" height="${b.h}" ${i < 6 ? 'loading="eager"' : 'loading="lazy"'} decoding="async"></a>`
     )
     .join('\n    ');
   write(
@@ -275,6 +275,12 @@ ${header('team')}
     ${items}
   </div>
 </main>
+<div class="lightbox" hidden role="dialog" aria-modal="true" aria-label="Behind the scenes">
+  <img alt="">
+  <button class="lb-close" type="button">Close</button>
+  <button class="arrow prev" type="button" aria-label="Previous photo"><span class="a" aria-hidden="true">←</span><span class="t"><span class="k">Previous</span></span></button>
+  <button class="arrow next" type="button" aria-label="Next photo"><span class="t"><span class="k">Next</span></span><span class="a" aria-hidden="true">→</span></button>
+</div>
 ${tail}`
   );
 }
@@ -326,7 +332,7 @@ function notFound() {
   write(
     '404.html',
     `${head({ title: `Page not found | ${site.name}®`, description: site.description, path: '/404.html', noindex: true })}
-<body class="page-contact">
+<body class="page-contact page-404">
 ${header()}
 <main class="contact">
   <div class="contact-text">

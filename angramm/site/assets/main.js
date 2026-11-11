@@ -226,6 +226,43 @@
     });
   });
 
+  // ---------- Behind the scenes : visionneuse avec précédent / suivant ----------
+  const lb = document.querySelector('.lightbox');
+  if (lb) {
+    const shots = [...document.querySelectorAll('.masonry .shot')];
+    const img = lb.querySelector('img');
+    let cur = 0;
+    const show = (i) => {
+      cur = (i + shots.length) % shots.length;
+      img.src = shots[cur].href;
+      img.alt = shots[cur].querySelector('img').alt;
+      // précharge la suivante et la précédente
+      [cur + 1, cur - 1].forEach((k) => { const n = shots[(k + shots.length) % shots.length]; if (n) new Image().src = n.href; });
+    };
+    const open = (i) => { show(i); lb.hidden = false; document.documentElement.style.overflow = 'hidden'; };
+    const close = () => { lb.hidden = true; img.removeAttribute('src'); document.documentElement.style.overflow = ''; };
+    shots.forEach((a, i) => a.addEventListener('click', (e) => { e.preventDefault(); open(i); }));
+    lb.querySelector('.prev').addEventListener('click', () => show(cur - 1));
+    lb.querySelector('.next').addEventListener('click', () => show(cur + 1));
+    lb.querySelector('.lb-close').addEventListener('click', close);
+    lb.addEventListener('click', (e) => { if (e.target === lb) close(); });
+    addEventListener('keydown', (e) => {
+      if (lb.hidden) return;
+      if (e.key === 'ArrowRight') show(cur + 1);
+      else if (e.key === 'ArrowLeft') show(cur - 1);
+      else if (e.key === 'Escape') close();
+    });
+    // glisser du doigt sur téléphone
+    let x0 = null;
+    lb.addEventListener('touchstart', (e) => (x0 = e.touches[0].clientX), { passive: true });
+    lb.addEventListener('touchend', (e) => {
+      if (x0 === null) return;
+      const dx = e.changedTouches[0].clientX - x0;
+      if (Math.abs(dx) > 40) show(cur + (dx < 0 ? 1 : -1));
+      x0 = null;
+    });
+  }
+
   // ---------- Curseur ----------
   const cursor = document.querySelector('.cursor');
   if (cursor && matchMedia('(hover: hover) and (pointer: fine)').matches) {

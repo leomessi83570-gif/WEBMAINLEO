@@ -803,3 +803,41 @@ body:not(.home) .top {
   .contact-film { align-self: end; }
   .contact-film video { width: 100%; height: auto; }
 }
+
+/* Helvetica aussi pour SOUND OFF/ON, PREVIOUS/NEXT, MAIL/INSTAGRAM et la page 404 */
+.snd,
+.snd span,
+.arrow .k,
+.label-k,
+.lb-close,
+body.page-404 *:not(.wordmark):not(svg):not(path) {
+  font-family: var(--helv);
+  font-weight: 700;
+  font-stretch: normal;
+  letter-spacing: 0;
+}
+
+/* Visionneuse Behind the scenes : photo en grand + précédent / suivant */
+.lightbox {
+  position: fixed; inset: 0; z-index: 60;
+  display: grid; place-items: center;
+  background: rgba(0, 0, 0, 0.94);
+  padding: 72px var(--gutter);
+  animation: fade 0.3s var(--ease) both;
+}
+.lightbox[hidden] { display: none; }
+.lightbox img { max-width: 100%; max-height: calc(100svh - 144px); object-fit: contain; display: block; }
+.lightbox .lb-close { position: absolute; top: 24px; right: var(--gutter); color: var(--fg); font-size: 13px; text-transform: uppercase; }
+.lightbox .arrow {
+  position: absolute; top: 50%; translate: 0 -50%;
+  display: flex; align-items: center; gap: 12px;
+  color: var(--fg); background: none; border: 0; cursor: pointer;
+}
+.lightbox .arrow.prev { left: var(--gutter); }
+.lightbox .arrow.next { right: var(--gutter); }
+.lightbox .arrow .a { font-family: var(--helv); font-size: clamp(26px, 2.6vw, 40px); line-height: 1; }
+.lightbox .arrow .k { font-size: 12px; text-transform: uppercase; color: var(--soft); }
+@media (max-width: 720px) {
+  .lightbox { padding: 64px 12px 96px; }
+  .lightbox .arrow { top: auto; bottom: 28px; translate: none; }
+}
