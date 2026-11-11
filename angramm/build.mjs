@@ -247,15 +247,21 @@ ${header('team')}
   </section>`
     )
     .join('\n  ')}
-  <a class="bts-link" href="/behind-the-scenes/"><span class="team-title">Behind the scenes</span><span class="arr" aria-hidden="true">→</span></a>
+  <a class="bts-link" href="/behind-the-scenes/">
+    <span class="bts-head"><span class="team-title">Behind the scenes</span><span class="arr" aria-hidden="true">→</span></span>
+    <span class="bts-peek" aria-hidden="true">${btsShots().filter((b, i, all) => i === all.findIndex((x) => x.project === b.project)).slice(0, 3).map((b) => `<img src="${b.s}" alt="" width="${b.w}" height="${b.h}" loading="lazy" decoding="async">`).join('')}</span>
+  </a>
 </main>
 ${tail}`
   );
 }
 
 // ---------- Behind the scenes : grande mosaïque des photos de tournage ----------
+function btsShots() {
+  return JSON.parse(readFileSync(join(root, 'content/bts.json'), 'utf8'));
+}
 function btsPage() {
-  const shots = JSON.parse(readFileSync(join(root, 'content/bts.json'), 'utf8'));
+  const shots = btsShots();
   const items = shots
     .map(
       (b, i) => `<a class="shot" href="${b.l}" target="_blank" rel="noopener"><img src="${b.s}" alt="${esc(`${b.project}, behind the scenes`)}" width="${b.w}" height="${b.h}" ${i < 6 ? 'loading="eager"' : 'loading="lazy"'} decoding="async"></a>`
@@ -401,21 +407,6 @@ ${header('films')}
     <a class="arrow next" href="/work/${next.slug}/" rel="next" data-key="ArrowRight"><span class="t"><span class="k">Next</span>${esc(lines(next)[0])}</span><span class="a" aria-hidden="true">→</span></a>
   </section>
 
-  <article class="sheet">
-    <dl class="facts">
-      <div><dt>Client</dt><dd>${esc(p.client)}</dd></div>
-      ${p.location ? `<div><dt>Location</dt><dd>${esc(p.location)}</dd></div>` : ''}
-      ${p.date ? `<div><dt>Year</dt><dd>${year(p)}</dd></div>` : ''}
-      <div><dt>Format</dt><dd>${isVertical(p) ? 'Vertical 9:16' : 'Horizontal'}</dd></div>
-      <div><dt>Duration</dt><dd>${dur}</dd></div>
-      <div><dt>Production</dt><dd>${esc(site.name)}®</dd></div>
-      ${(p.credits || []).map((c) => `<div><dt>${esc(c.role)}</dt><dd>${esc(c.name)}</dd></div>`).join('')}
-    </dl>
-    <nav class="pager" aria-label="Films">
-      <a href="/films/">All films</a>
-      <a href="/work/${next.slug}/">Next: ${esc(name(next))} →</a>
-    </nav>
-  </article>
 </main>
 ${tail}`
   );

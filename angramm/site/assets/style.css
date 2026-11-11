@@ -730,3 +730,23 @@ body:not(.home) .top {
 /* Page film : plus de texte, la fiche seule à gauche */
 .sheet { grid-template-columns: minmax(0, 1fr); }
 .sheet .facts { max-width: 560px; }
+
+/* Team : aperçu de trois photos de tournage sous « Behind the scenes » */
+.bts-link { display: grid; gap: 16px; width: 100%; max-width: 760px; }
+.bts-head { display: inline-flex; align-items: baseline; gap: 14px; }
+.bts-peek { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.bts-peek img { display: block; width: 100%; height: clamp(110px, 20vh, 220px); object-fit: cover; background: #111; transition: transform 1.2s var(--ease); }
+.bts-link:hover { opacity: 1; }
+.bts-link:hover .bts-head { opacity: 0.6; }
+.bts-link:hover .bts-peek img { transform: scale(1.03); }
+.bts-peek { overflow: hidden; }
+@media (max-width: 720px) {
+  .bts-peek img { height: 120px; }
+}
+
+@media (min-width: 721px) {
+  .team { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); column-gap: clamp(40px, 6vw, 120px); }
+  .team-block { grid-column: 1; }
+  .bts-link { grid-column: 2; grid-row: 1 / span 2; align-self: center; }
+  .bts-peek img { height: clamp(160px, 30vh, 320px); }
+}
