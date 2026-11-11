@@ -162,10 +162,10 @@ ${tail}`
 function filmsPage() {
   const tiles = projects
     .map(
-      (p, i) => `<li${isVertical(p) ? ' class="is-portrait"' : ''}>
+      (p, i) => `<li${p.canonicalOf ? ' class="alt-desktop"' : projects.some((x) => x.canonicalOf === p.slug) ? ' class="alt-phone"' : ''}>
       <a class="tile" href="/work/${p.slug}/">
         <span class="frame">
-          <img src="${media(p, 'thumb.webp')}" alt="${esc(`${name(p)} — film by ${site.name}`)}" width="${isVertical(p) ? 720 : Math.round((720 * p.width) / p.height)}" height="${isVertical(p) ? Math.round((720 * p.height) / p.width) : 720}" ${projects.filter((x) => isVertical(x) === isVertical(p)).indexOf(p) < 2 ? 'loading="eager"' : 'loading="lazy"'} decoding="async">
+          <img src="${media(p, 'thumb.webp')}" alt="${esc(`${name(p)} — film by ${site.name}`)}" width="${isVertical(p) ? 720 : Math.round((720 * p.width) / p.height)}" height="${isVertical(p) ? Math.round((720 * p.height) / p.width) : 720}" ${i < 4 ? 'loading="eager"' : 'loading="lazy"'} decoding="async">
           <video muted loop playsinline preload="none" data-src="${media(p, 'preview.mp4')}" aria-hidden="true"></video>
         </span>
         <span class="meta">${twoLines(p)}</span>

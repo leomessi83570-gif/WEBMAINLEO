@@ -604,16 +604,14 @@ body:not(.home) .top {
 .tab .l1 { color: inherit; }
 .tab .l2 { color: inherit; opacity: 0.6; text-transform: none; font-stretch: normal; }
 
-/* Ordinateur : uniquement les films 16:9 (accueil, mosaïque, film du studio).
-   Téléphone : les deux formats. */
+/* Accueil sur ordinateur : uniquement les films 16:9.
+   Page Films : tous les films, en vignettes 4:5 qui conviennent aux deux formats
+   (seul le doublon de format d'un même film est masqué : 9:16 sur ordinateur, 16:9 sur téléphone). */
 @media (min-width: 721px) {
   .reel.is-portrait,
-  .mosaic li.is-portrait { display: none; }
+  .mosaic li.alt-desktop { display: none; }
 }
-/* Téléphone : vignettes 4:5, qui conviennent aux deux formats */
-@media (max-width: 720px) {
-  .frame { aspect-ratio: 4 / 5; }
-}
+.frame { aspect-ratio: 4 / 5; }
 
 /* ---------- Team : deux blocs de texte ---------- */
 .team { gap: clamp(64px, 9vw, 120px); align-content: center; min-height: 100svh; }
@@ -655,7 +653,7 @@ body:not(.home) .top {
 /* Ordinateur : uniquement le 16:9 ; téléphone : uniquement le vertical */
 @media (max-width: 720px) {
   .reel:not(.is-portrait),
-  .mosaic li:not(.is-portrait) { display: none; }
+  .mosaic li.alt-phone { display: none; }
 }
 
 /* « OLYMPIQUE DE MARSEILLE » et autres noms toujours sur une seule ligne */
