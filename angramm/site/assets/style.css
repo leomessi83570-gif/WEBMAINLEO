@@ -770,3 +770,36 @@ body:not(.home) .top {
   .masonry .shot:first-child { grid-column: 1 / -1; }
   .masonry .shot:first-child img { aspect-ratio: 4 / 5; }
 }
+
+/* Team : « BEHIND THE SCENES » + les 3 photos choisies, sur un seul écran ; clic → mosaïque */
+.team-bts { height: 100vh; height: 100svh; padding: 84px var(--gutter) clamp(24px, 4vh, 48px); display: grid; }
+.team-bts-link { display: grid; grid-template-rows: auto minmax(0, 1fr); gap: clamp(16px, 3vh, 32px); min-height: 0; }
+.team-bts .page-title { margin: 0; font-size: clamp(40px, 7vw, 120px); line-height: 0.9; transition: opacity 0.3s; }
+.team-bts-row { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(8px, 1.2vw, 16px); min-height: 0; }
+.team-bts-row img { width: 100%; height: 100%; object-fit: cover; display: block; background: #111; transition: transform 1.2s var(--ease); animation: rise 0.9s var(--ease) both; }
+.team-bts-row img:nth-child(2) { animation-delay: 0.08s; }
+.team-bts-row img:nth-child(3) { animation-delay: 0.16s; }
+.team-bts-link:hover .page-title { opacity: 0.6; }
+.team-bts-link:hover img { transform: scale(1.02); }
+@media (max-width: 720px) {
+  .team-bts { padding-top: 112px; }
+  .team-bts .page-title { font-size: clamp(34px, 11vw, 56px); }
+}
+
+/* Contact sur un seul écran */
+.contact { height: 100vh; height: 100svh; min-height: 0; padding-top: 84px; padding-bottom: clamp(20px, 4vh, 40px); overflow: hidden; }
+.contact-col { gap: clamp(14px, 3vh, 36px); }
+.contact .team-block { gap: clamp(6px, 1.4vh, 16px); }
+.contact .team-title { font-size: clamp(16px, min(1.6vw, 2.6vh), 26px); }
+.contact .team-block .lede { font-size: clamp(14px, min(1.6vw, 2.4vh), 26px); }
+.contact .inquiries li > a { padding: clamp(4px, 1vh, 10px) 0; }
+.contact .inquiries .v { font-size: clamp(16px, min(1.6vw, 2.6vh), 24px); }
+.contact-film video { height: min(calc(100svh - 160px), 720px); }
+@media (max-width: 720px) {
+  .contact { grid-template-columns: minmax(0, 1fr) 34%; align-items: end; gap: 14px; padding-top: 112px; }
+  .contact-col { align-content: start; align-self: start; }
+  .contact .team-block .lede { font-size: clamp(13px, 3.6vw, 16px); line-height: 1.25; }
+  .contact .team-title { font-size: 15px; }
+  .contact-film { align-self: end; }
+  .contact-film video { width: 100%; height: auto; }
+}
