@@ -201,7 +201,7 @@ function filmsPage() {
 <body class="page-projects">
 ${header('films')}
 <main class="mosaic-wrap">
-  <h1 class="page-title">Films</h1>
+  <h1 class="sr-only">Films</h1>
   <ul class="mosaic">
     ${tiles}
   </ul>

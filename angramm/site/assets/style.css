@@ -841,3 +841,16 @@ body.page-404 *:not(.wordmark):not(svg):not(path) {
   .lightbox { padding: 64px 12px 96px; }
   .lightbox .arrow { top: auto; bottom: 28px; translate: none; }
 }
+
+/* Ordinateur : menu groupé à droite, logo à gauche */
+@media (min-width: 721px) {
+  .nav { display: flex; align-items: center; gap: clamp(28px, 3vw, 48px); }
+  .nav .wordmark { margin-right: auto; }
+  .nav > :last-child { justify-self: auto; }
+}
+/* Films : grille plus dense sur ordinateur (4 par ligne), sans grand titre */
+.mosaic-wrap { padding-top: 96px; }
+@media (min-width: 721px) {
+  .mosaic { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: clamp(24px, 3vw, 44px) clamp(10px, 1.2vw, 18px); }
+}
+@media (max-width: 720px) { .mosaic-wrap { padding-top: 112px; } }
