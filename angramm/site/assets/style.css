@@ -874,3 +874,13 @@ body.page-404 *:not(.wordmark):not(svg):not(path) {
 }
 
 .contact .team-block .lede + .lede { margin-top: 0.4em; }
+
+/* Contact (ordinateur) : textes alignés sur la hauteur de la vidéo, en plus grand pour remplir la page */
+@media (min-width: 721px) {
+  .contact { align-items: stretch; align-content: center; }
+  .contact-col { align-self: stretch; display: flex; flex-direction: column; justify-content: space-between; height: min(calc(100svh - 160px), 720px); }
+  .contact .team-block { max-width: 760px; }
+  .contact .team-block .lede { font-size: clamp(22px, min(2.3vw, 3.6vh), 38px); line-height: 1.2; max-width: 32ch; }
+  .contact .inquiries .v { font-size: clamp(20px, min(1.8vw, 2.8vh), 30px); }
+  .contact-film { align-self: start; }
+}
