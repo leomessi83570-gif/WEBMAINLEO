@@ -927,3 +927,10 @@ body.page-404 *:not(.wordmark):not(svg):not(path) {
   .contact .inquiries .label-k { font-size: clamp(14px, 1.1vw, 18px); }
   .contact .inquiries li > a { grid-template-columns: minmax(140px, 220px) 1fr; align-items: baseline; }
 }
+/* Ordinateur : les trois blocs (texte 1, texte 2, contact) répartis à égalité sur la hauteur de la vidéo */
+@media (min-width: 721px) {
+  .contact { grid-template-rows: auto minmax(0, 1fr); }
+  .contact .contact-film { align-self: start; }
+  .contact .contact-col { height: 100% !important; justify-content: space-between; }
+  .contact .c-more { margin: auto 0 !important; }
+}
