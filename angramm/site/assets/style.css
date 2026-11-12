@@ -995,3 +995,11 @@ body.page-404 *:not(.wordmark):not(svg):not(path) {
   .contact .inquiries { gap: 10px; }
   .contact .inquiries li > a { padding: 0; gap: 2px; }
 }
+/* About : titres BEHIND THE NAME / CONTACT en Helvetica gras */
+.contact .c-title { margin: 0 0 clamp(10px, 1.6vh, 18px); font-size: clamp(16px, min(1.5vw, 2.4vh), 24px); }
+.contact .c-def { margin: 0; }
+@media (max-width: 720px) {
+  .contact .c-title { font-size: 15px; margin-bottom: 10px; }
+  .contact .c-def { font-size: min(4.55vw, 22px); }
+  .contact .c-contact { margin-top: 10px; }
+}

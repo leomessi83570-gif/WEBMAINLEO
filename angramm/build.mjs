@@ -305,13 +305,19 @@ function contactPage() {
 ${header('contact')}
 <main class="contact">
   <h1 class="sr-only">About</h1>
-  <p class="lede c-intro">${esc(site.team.sections[0].text[0]).replace(/^(.*?brain\.)\s+/, '<span class="def">$1</span><br>')}</p>
+  <div class="c-intro">
+    <h2 class="team-title c-title">Behind the name</h2>
+    <p class="lede c-def">${esc(site.team.sections[0].text[0]).replace(/^(.*?brain\.)\s+/, '<span class="def">$1</span><br>')}</p>
+  </div>
   <div class="contact-col">
   ${site.team.sections[0].text.slice(1).map((t) => `<p class="lede c-more">${esc(t)}</p>`).join('')}
+  <div class="c-contact">
+  <h2 class="team-title c-title">Contact</h2>
   <ul class="inquiries">
     <li><a href="mailto:${esc(site.email)}"><span class="label-k">Mail</span><span class="v">${esc(site.email)}</span></a></li>
     <li><a href="${esc(site.instagram)}" rel="me noopener" target="_blank"><span class="label-k">Instagram</span><span class="v">${esc(handle)}</span></a></li>
   </ul>
+  </div>
   </div>
   ${
     site.studioFilm
