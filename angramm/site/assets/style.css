@@ -964,3 +964,7 @@ body.page-404 *:not(.wordmark):not(svg):not(path) {
   .contact .c-more { margin: 0 !important; }
   .contact .contact-film video { object-fit: cover; }
 }
+@media (max-width: 720px) {
+  .contact .contact-col { justify-content: flex-start; gap: 22px; height: auto !important; }
+  .contact .inquiries li:last-child > a { padding-bottom: 0; }
+}

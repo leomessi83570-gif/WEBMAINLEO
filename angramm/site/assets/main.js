@@ -274,7 +274,8 @@
       if (innerWidth <= 720) {
         // téléphone : la vidéo prend la hauteur du texte, haut et bas alignés
         col.style.height = '';
-        v.style.height = `${col.getBoundingClientRect().height}px`;
+        const last = col.querySelector('.inquiries li:last-child .v') || col;
+        v.style.height = `${last.getBoundingClientRect().bottom - col.getBoundingClientRect().top}px`;
       } else {
         v.style.height = '';
         col.style.height = `${Math.max(0, v.getBoundingClientRect().bottom - intro.getBoundingClientRect().bottom)}px`;
