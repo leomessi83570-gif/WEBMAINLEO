@@ -934,3 +934,20 @@ body.page-404 *:not(.wordmark):not(svg):not(path) {
   .contact .contact-col { height: 100% !important; justify-content: space-between; }
   .contact .c-more { margin: auto 0 !important; }
 }
+/* Ordinateur : la colonne de texte a exactement la hauteur de la vidéo (SOUND OFF en dessous ne compte pas) */
+@media (min-width: 721px) {
+  .contact { grid-template-areas: "intro film" "col film"; align-items: start; }
+  .contact .contact-film { position: relative; align-self: start; }
+  .contact .contact-film figcaption { position: absolute; top: 100%; left: 0; margin-top: 10px; }
+  .contact .inquiries li:last-child > a { padding-bottom: 0; }
+  .contact .inquiries .v { line-height: 1; }
+}
+@media (min-width: 721px) {
+  .contact { --vh: min(calc(100svh - 170px), 760px); grid-template-rows: auto calc(var(--vh) - var(--introh, 0px)); }
+  .contact .contact-film video { height: var(--vh); }
+  .contact .contact-col { height: auto !important; min-height: 0; overflow: visible; }
+}
+@media (min-width: 721px) {
+  .contact { grid-template-rows: auto auto; align-content: center; }
+  .contact .contact-col { justify-content: space-between; }
+}

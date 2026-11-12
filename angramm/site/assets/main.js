@@ -263,6 +263,19 @@
     });
   }
 
+  // ---------- Contact (ordinateur) : texte + mail/Instagram exactement à la hauteur de la vidéo ----------
+  const contactEl = document.querySelector('main.contact');
+  if (contactEl) {
+    const fit = () => {
+      const v = contactEl.querySelector('.contact-film video'), intro = contactEl.querySelector('.c-intro'), col = contactEl.querySelector('.contact-col');
+      if (!v || !intro || !col || innerWidth <= 720) { if (col) col.style.height = ''; return; }
+      const vr = v.getBoundingClientRect();
+      col.style.height = `${Math.max(0, vr.bottom - intro.getBoundingClientRect().bottom)}px`;
+    };
+    fit(); addEventListener('resize', fit); addEventListener('load', fit);
+    if (document.fonts) document.fonts.ready.then(fit);
+  }
+
   // ---------- Curseur ----------
   const cursor = document.querySelector('.cursor');
   if (cursor && matchMedia('(hover: hover) and (pointer: fine)').matches) {

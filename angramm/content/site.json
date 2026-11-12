@@ -27,8 +27,8 @@
   "studioFilm": {
     "src": "/media/studio/angramm.mp4",
     "poster": "/media/studio/poster.webp",
-    "width": 720,
-    "height": 1280
+    "width": 1080,
+    "height": 1920
   },
   "fallbackDate": "2026-10-20"
 }
