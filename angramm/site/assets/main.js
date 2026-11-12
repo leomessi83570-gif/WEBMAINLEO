@@ -268,9 +268,10 @@
   if (contactEl) {
     const fit = () => {
       const v = contactEl.querySelector('.contact-film video'), intro = contactEl.querySelector('.c-intro'), col = contactEl.querySelector('.contact-col');
-      if (!v || !intro || !col || innerWidth <= 720) { if (col) col.style.height = ''; return; }
+      if (!v || !intro || !col) return;
       const vr = v.getBoundingClientRect();
-      col.style.height = `${Math.max(0, vr.bottom - intro.getBoundingClientRect().bottom)}px`;
+      // ordinateur : du bas du 1er texte au bas de la vidéo ; téléphone : exactement la hauteur de la vidéo
+      col.style.height = innerWidth <= 720 ? `${vr.height}px` : `${Math.max(0, vr.bottom - intro.getBoundingClientRect().bottom)}px`;
     };
     fit(); addEventListener('resize', fit); addEventListener('load', fit);
     if (document.fonts) document.fonts.ready.then(fit);

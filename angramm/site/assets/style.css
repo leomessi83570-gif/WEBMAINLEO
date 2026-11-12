@@ -951,3 +951,12 @@ body.page-404 *:not(.wordmark):not(svg):not(path) {
   .contact { grid-template-rows: auto auto; align-content: center; }
   .contact .contact-col { justify-content: space-between; }
 }
+/* Ordinateur : le second bloc remonte légèrement (plus proche du premier) */
+@media (min-width: 721px) {
+  .contact .c-more { margin: clamp(28px, 7vh, 72px) 0 auto !important; }
+}
+/* Téléphone : colonne de gauche à la hauteur exacte de la vidéo (haut et bas alignés) */
+@media (max-width: 720px) {
+  .contact .contact-col { display: flex; flex-direction: column; justify-content: space-between; }
+  .contact .contact-film figcaption { margin-top: 10px; }
+}
