@@ -306,7 +306,7 @@ function contactPage() {
 ${header('contact')}
 <main class="contact">
   <h1 class="sr-only">About</h1>
-  <p class="lede c-intro">${esc(site.team.sections[0].text[0]).replace(/(brain\.)\s+/, '$1<br>')}</p>
+  <p class="lede c-intro">${esc(site.team.sections[0].text[0]).replace(/^(.*?brain\.)\s+/, '<span class="def">$1</span><br>')}</p>
   <div class="contact-col">
   ${site.team.sections[0].text.slice(1).map((t) => `<p class="lede c-more">${esc(t)}</p>`).join('')}
   <ul class="inquiries">

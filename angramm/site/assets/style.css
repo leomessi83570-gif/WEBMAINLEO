@@ -974,3 +974,6 @@ body.page-404 *:not(.wordmark):not(svg):not(path) {
 @media (min-width: 721px) {
   .contact .c-more { position: relative; top: -0.9em; }
 }
+/* La définition tient sur une ligne */
+.contact .c-intro .def { white-space: nowrap; }
+@media (max-width: 720px) { .contact .c-intro { font-size: min(4.9vw, 22px); } }
