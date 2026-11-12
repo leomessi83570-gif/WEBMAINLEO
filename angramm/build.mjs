@@ -100,7 +100,7 @@ const header = (current = '') => {
     <a class="wordmark" href="/" aria-label="${esc(site.name)}®, home">${logoSvg}</a>
     ${link('/films/', 'Films', 'films')}
     ${link('/team/', 'Team', 'team')}
-    ${link('/contact/', 'Contact', 'contact')}
+    ${link('/contact/', 'About', 'contact')}
   </nav>
 </header>`;
 };
@@ -297,7 +297,7 @@ function contactPage() {
   write(
     'contact/index.html',
     `${head({
-      title: `Contact: start your film project | ${site.name}®`,
+      title: `About | ${site.name}®`,
       description: `Contact ${site.name}®, creative agency and audiovisual production company in Marseille.`,
       path: '/contact/',
       extra: `${jsonLd({ '@context': 'https://schema.org', '@graph': [org, { '@type': 'ContactPage', url: `${base}/contact/`, inLanguage: site.lang, about: { '@id': `${base}/#org` } }] })}\n`,
@@ -305,7 +305,7 @@ function contactPage() {
 <body class="page-contact">
 ${header('contact')}
 <main class="contact">
-  <h1 class="sr-only">Contact</h1>
+  <h1 class="sr-only">About</h1>
   <p class="lede c-intro">${esc(site.team.sections[0].text[0])}</p>
   <div class="contact-col">
   ${site.team.sections[0].text.slice(1).map((t) => `<p class="lede c-more">${esc(t)}</p>`).join('')}
@@ -456,7 +456,7 @@ ${urls.join('\n')}
     'llms.txt',
     `# ${site.name}®\n\n> ${site.intro[0]}\n\n${site.team.sections.map((x) => x.text.join(' ')).join(' ')}\n\nBased in ${site.city}, France. Contact: ${site.email}\n\n## Films\n\n${indexed
       .map((p) => `- [${name(p)}](${base}/work/${p.slug}/)${p.date ? ` (${year(p)})` : ''}: ${p.summary}`)
-      .join('\n')}\n\n## Pages\n\n- [Films](${base}/films/)\n- [Behind the scenes](${base}/behind-the-scenes/)\n- [Team](${base}/team/)\n- [Contact](${base}/contact/)\n- Instagram: ${site.instagram}\n`
+      .join('\n')}\n\n## Pages\n\n- [Films](${base}/films/)\n- [Behind the scenes](${base}/behind-the-scenes/)\n- [Team](${base}/team/)\n- [About](${base}/contact/)\n- Instagram: ${site.instagram}\n`
   );
   // Lus par Netlify même en glisser-déposer (netlify.toml ne l'est qu'en déploiement Git)
   write(

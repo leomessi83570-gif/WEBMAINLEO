@@ -275,9 +275,11 @@
         // téléphone : la vidéo prend la hauteur du texte, haut et bas alignés
         col.style.height = '';
         const last = col.querySelector('.inquiries li:last-child .v') || col;
+        v.style.marginTop = '0px';
+        v.style.marginTop = `${col.getBoundingClientRect().top - v.getBoundingClientRect().top}px`;
         v.style.height = `${last.getBoundingClientRect().bottom - col.getBoundingClientRect().top}px`;
       } else {
-        v.style.height = '';
+        v.style.height = ''; v.style.marginTop = '';
         col.style.height = `${Math.max(0, v.getBoundingClientRect().bottom - intro.getBoundingClientRect().bottom)}px`;
       }
     };

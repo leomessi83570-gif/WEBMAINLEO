@@ -27,5 +27,5 @@ Based in Marseille, France. Contact: contact@angramm.com
 - [Films](https://angramm.com/films/)
 - [Behind the scenes](https://angramm.com/behind-the-scenes/)
 - [Team](https://angramm.com/team/)
-- [Contact](https://angramm.com/contact/)
+- [About](https://angramm.com/contact/)
 - Instagram: https://www.instagram.com/angramm/
