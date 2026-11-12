@@ -271,7 +271,14 @@
       if (!v || !intro || !col) return;
       const vr = v.getBoundingClientRect();
       // ordinateur : du bas du 1er texte au bas de la vidéo ; téléphone : exactement la hauteur de la vidéo
-      col.style.height = innerWidth <= 720 ? `${vr.height}px` : `${Math.max(0, vr.bottom - intro.getBoundingClientRect().bottom)}px`;
+      if (innerWidth <= 720) {
+        // téléphone : la vidéo prend la hauteur du texte, haut et bas alignés
+        col.style.height = '';
+        v.style.height = `${col.getBoundingClientRect().height}px`;
+      } else {
+        v.style.height = '';
+        col.style.height = `${Math.max(0, v.getBoundingClientRect().bottom - intro.getBoundingClientRect().bottom)}px`;
+      }
     };
     fit(); addEventListener('resize', fit); addEventListener('load', fit);
     if (document.fonts) document.fonts.ready.then(fit);
