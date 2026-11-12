@@ -238,8 +238,12 @@ function teamPage() {
 <body class="page-team page-bts">
 ${header('team')}
 <main class="team-bts">
+  ${site.team.sections.slice(0, 1).map((sec) => `<section class="team-block">
+    <h2 class="team-title">${esc(sec.title)}</h2>
+    ${sec.text.map((t) => `<p class="lede">${esc(t)}</p>`).join('')}
+  </section>`).join('')}
   <a class="team-bts-link" href="/behind-the-scenes/">
-    <h1 class="page-title">Behind the scenes</h1>
+    <h2 class="page-title">Behind the scenes</h2>
     <span class="team-bts-row">${btsShots().slice(0, 3).map((b) => `<img src="${b.l}" alt="${esc(`${b.project}, behind the scenes`)}" width="${b.w}" height="${b.h}" loading="eager" decoding="async">`).join('')}</span>
   </a>
 </main>
@@ -301,7 +305,7 @@ ${header('contact')}
 <main class="contact">
   <h1 class="sr-only">Contact</h1>
   <div class="contact-col">
-  ${site.team.sections
+  ${site.team.sections.slice(1)
     .map(
       (sec) => `<section class="team-block">
     <h2 class="team-title">${esc(sec.title)}</h2>
