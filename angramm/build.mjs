@@ -237,16 +237,18 @@ function teamPage() {
     })}
 <body class="page-team page-bts">
 ${header('team')}
-<main class="team-bts">
-  ${site.team.sections.slice(0, 1).map((sec) => `<section class="team-block">
-    <h2 class="team-title">${esc(sec.title)}</h2>
-    ${sec.text.map((t) => `<p class="lede">${esc(t)}</p>`).join('')}
-  </section>`).join('')}
-  <a class="team-bts-link" href="/behind-the-scenes/">
-    <h2 class="page-title">Behind the scenes</h2>
-    <span class="team-bts-row">${btsShots().slice(0, 3).map((b) => `<img src="${b.l}" alt="${esc(`${b.project}, behind the scenes`)}" width="${b.w}" height="${b.h}" loading="eager" decoding="async">`).join('')}</span>
-  </a>
+<main class="bts-wrap">
+  <h1 class="sr-only">Team: behind the scenes</h1>
+  <div class="masonry">
+    ${btsShots().map((b, i) => `<a class="shot" href="${b.l}" data-i="${i}"><img src="${b.s}" alt="${esc(`${b.project}, behind the scenes`)}" width="${b.w}" height="${b.h}" ${i < 6 ? 'loading="eager"' : 'loading="lazy"'} decoding="async"></a>`).join('\n    ')}
+  </div>
 </main>
+<div class="lightbox" hidden role="dialog" aria-modal="true" aria-label="Behind the scenes">
+  <img alt="">
+  <button class="lb-close" type="button">Close</button>
+  <button class="arrow prev" type="button" aria-label="Previous photo"><span class="a" aria-hidden="true">←</span><span class="t"><span class="k">Previous</span></span></button>
+  <button class="arrow next" type="button" aria-label="Next photo"><span class="t"><span class="k">Next</span></span><span class="a" aria-hidden="true">→</span></button>
+</div>
 ${tail}`
   );
 }
@@ -305,7 +307,7 @@ ${header('contact')}
 <main class="contact">
   <h1 class="sr-only">Contact</h1>
   <div class="contact-col">
-  ${site.team.sections.slice(1)
+  ${site.team.sections
     .map(
       (sec) => `<section class="team-block">
     <h2 class="team-title">${esc(sec.title)}</h2>
