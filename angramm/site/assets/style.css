@@ -922,3 +922,8 @@ body.page-404 *:not(.wordmark):not(svg):not(path) {
   .contact .contact-film video { width: 100%; height: auto; }
   .contact-col { justify-content: space-between; }
 }
+@media (min-width: 721px) {
+  .contact .inquiries .v { font-size: clamp(26px, min(2.6vw, 4vh), 44px); }
+  .contact .inquiries .label-k { font-size: clamp(14px, 1.1vw, 18px); }
+  .contact .inquiries li > a { grid-template-columns: minmax(140px, 220px) 1fr; align-items: baseline; }
+}
