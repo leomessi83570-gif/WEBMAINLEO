@@ -284,8 +284,10 @@
         col.style.height = `${Math.max(0, v.getBoundingClientRect().bottom - intro.getBoundingClientRect().bottom)}px`;
       }
     };
+    const show = () => { fit(); contactEl.classList.add('is-fit'); };
     fit(); addEventListener('resize', fit); addEventListener('load', fit);
-    if (document.fonts) document.fonts.ready.then(fit);
+    if (document.fonts) document.fonts.ready.then(show); else show();
+    setTimeout(show, 1200);
   }
 
   // ---------- Curseur ----------

@@ -1003,3 +1003,7 @@ body.page-404 *:not(.wordmark):not(svg):not(path) {
   .contact .c-def { font-size: min(4.55vw, 22px); }
   .contact .c-contact { margin-top: 10px; }
 }
+
+/* Contact : le texte n'apparaît qu'une fois placé (pas de saut au chargement) */
+.contact .c-intro, .contact .contact-col { transition: opacity 0.5s var(--ease); }
+.contact:not(.is-fit) .c-intro, .contact:not(.is-fit) .contact-col { opacity: 0; }
