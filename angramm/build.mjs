@@ -306,15 +306,9 @@ function contactPage() {
 ${header('contact')}
 <main class="contact">
   <h1 class="sr-only">Contact</h1>
+  <p class="lede c-intro">${esc(site.team.sections[0].text[0])}</p>
   <div class="contact-col">
-  ${site.team.sections
-    .map(
-      (sec) => `<section class="team-block">
-    ${sec.title ? `<h2 class="team-title">${esc(sec.title)}</h2>` : ''}
-    ${sec.text.map((t) => `<p class="lede">${esc(t)}</p>`).join('\n    ')}
-  </section>`
-    )
-    .join('\n  ')}
+  ${site.team.sections[0].text.slice(1).map((t) => `<p class="lede c-more">${esc(t)}</p>`).join('')}
   <ul class="inquiries">
     <li><a href="mailto:${esc(site.email)}"><span class="label-k">Mail</span><span class="v">${esc(site.email)}</span></a></li>
     <li><a href="${esc(site.instagram)}" rel="me noopener" target="_blank"><span class="label-k">Instagram</span><span class="v">${esc(handle)}</span></a></li>
