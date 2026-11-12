@@ -971,3 +971,6 @@ body.page-404 *:not(.wordmark):not(svg):not(path) {
 @media (min-width: 721px) {
   .contact .c-more { margin: clamp(16px, 3.5vh, 36px) 0 auto !important; }
 }
+@media (min-width: 721px) {
+  .contact .c-more { position: relative; top: -2.6em; }
+}
