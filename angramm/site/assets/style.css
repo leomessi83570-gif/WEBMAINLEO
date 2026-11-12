@@ -977,3 +977,7 @@ body.page-404 *:not(.wordmark):not(svg):not(path) {
 /* La définition tient sur une ligne */
 .contact .c-intro .def { white-space: nowrap; }
 @media (max-width: 720px) { .contact .c-intro { font-size: min(4.55vw, 22px); } }
+/* Curseur « A » retiré : souris normale du système */
+.cursor { display: none !important; }
+.has-cursor, .has-cursor * { cursor: auto !important; }
+.has-cursor a, .has-cursor button, .has-cursor video, .has-cursor [role="button"] { cursor: pointer !important; }

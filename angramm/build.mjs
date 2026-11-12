@@ -105,8 +105,7 @@ const header = (current = '') => {
 </header>`;
 };
 
-const tail = `<div class="cursor is-off" aria-hidden="true"><span>A</span></div>
-<script src="/assets/main.js?v=${version("main.js")}" defer></script>
+const tail = `<script src="/assets/main.js?v=${version("main.js")}" defer></script>
 </body>
 </html>
 `;
