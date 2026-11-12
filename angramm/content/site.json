@@ -12,15 +12,10 @@
   "team": {
     "sections": [
       {
-        "title": "One crew, made by hand",
+        "title": "",
         "text": [
-          "ANGRAMM is a creative agency and audiovisual production company. Driven by major collaborations with high-profile partners, we bring our creative and technical expertise to any industry, both in France and internationally."
-        ]
-      },
-      {
-        "title": "Our mark",
-        "text": [
-          "An engram is the trace a memory leaves in the brain. That's where ANGRAMM comes from: images that stay with people, quietly, long after the screen goes dark."
+          "An engram is the trace a memory leaves in the brain. This is where ANGRAMM comes from: images that stay with people.",
+          "We are a creative agency and audiovisual production company, in France and abroad. Led by instinct, shaped by craft, we create as one artist with many hands."
         ]
       }
     ]

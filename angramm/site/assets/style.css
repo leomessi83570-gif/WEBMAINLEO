@@ -767,8 +767,6 @@ body:not(.home) .top {
 .masonry img { aspect-ratio: 2 / 3; height: auto; object-fit: cover; }
 @media (max-width: 720px) {
   .masonry { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .masonry .shot:first-child { grid-column: 1 / -1; }
-  .masonry .shot:first-child img { aspect-ratio: 4 / 5; }
 }
 
 /* Team : « BEHIND THE SCENES » + les 3 photos choisies, sur un seul écran ; clic → mosaïque */
@@ -874,3 +872,5 @@ body.page-404 *:not(.wordmark):not(svg):not(path) {
   .contact { align-content: center; align-items: center; }
   .contact-col, .contact-film { align-self: center; }
 }
+
+.contact .team-block .lede + .lede { margin-top: 0.4em; }

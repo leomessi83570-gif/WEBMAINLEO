@@ -310,7 +310,7 @@ ${header('contact')}
   ${site.team.sections
     .map(
       (sec) => `<section class="team-block">
-    <h2 class="team-title">${esc(sec.title)}</h2>
+    ${sec.title ? `<h2 class="team-title">${esc(sec.title)}</h2>` : ''}
     ${sec.text.map((t) => `<p class="lede">${esc(t)}</p>`).join('\n    ')}
   </section>`
     )
