@@ -272,6 +272,7 @@
       const vr = v.getBoundingClientRect();
       // ordinateur : du bas du 1er texte au bas de la vidéo ; téléphone : exactement la hauteur de la vidéo
       if (innerWidth <= 720) {
+        col.style.height = ''; v.style.height = ''; v.style.marginTop = ''; return;
         // téléphone : la vidéo prend la hauteur du texte, haut et bas alignés
         col.style.height = '';
         const last = col.querySelector('.inquiries li:last-child .v') || col;

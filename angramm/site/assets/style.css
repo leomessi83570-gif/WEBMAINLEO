@@ -981,3 +981,10 @@ body.page-404 *:not(.wordmark):not(svg):not(path) {
 .cursor { display: none !important; }
 .has-cursor, .has-cursor * { cursor: auto !important; }
 .has-cursor a, .has-cursor button, .has-cursor video, .has-cursor [role="button"] { cursor: pointer !important; }
+/* Téléphone : pas de vidéo sur About, textes sur une colonne */
+@media (max-width: 720px) {
+  .contact .contact-film { display: none; }
+  .contact { grid-template-columns: 1fr; grid-template-areas: "intro" "col"; row-gap: 28px; align-content: center; padding-top: 112px; }
+  .contact .contact-col { gap: 28px; }
+  .contact .c-more { font-size: min(4.55vw, 22px); line-height: 1.25; }
+}
