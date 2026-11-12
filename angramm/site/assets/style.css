@@ -988,3 +988,10 @@ body.page-404 *:not(.wordmark):not(svg):not(path) {
   .contact .contact-col { gap: 28px; }
   .contact .c-more { font-size: min(4.55vw, 22px); line-height: 1.25; }
 }
+/* Téléphone : texte qui démarre sous le menu, espacements resserrés */
+@media (max-width: 720px) {
+  .contact { align-content: start; padding-top: 104px; row-gap: 18px; height: auto; min-height: 100svh; }
+  .contact .contact-col { gap: 18px; }
+  .contact .inquiries { gap: 10px; }
+  .contact .inquiries li > a { padding: 0; gap: 2px; }
+}
