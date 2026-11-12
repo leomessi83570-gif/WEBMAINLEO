@@ -976,4 +976,4 @@ body.page-404 *:not(.wordmark):not(svg):not(path) {
 }
 /* La définition tient sur une ligne */
 .contact .c-intro .def { white-space: nowrap; }
-@media (max-width: 720px) { .contact .c-intro { font-size: min(4.9vw, 22px); } }
+@media (max-width: 720px) { .contact .c-intro { font-size: min(4.55vw, 22px); } }
