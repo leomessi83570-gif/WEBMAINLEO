@@ -1,91 +1,72 @@
-# Brief : construire un site vitrine vidéo du niveau d'ANGRAMM
+# Brief : faire un site vitrine haut de gamme, vite et sans erreurs
 
-À donner à Claude au début de la session. Ce sont les décisions et les pièges appris en construisant angramm.com (agence créative / production audiovisuelle, Marseille).
+À donner à Claude au début de la session. Ce n'est pas un modèle à copier. Ce sont les **méthodes**, les **erreurs à éviter** et les **retours client** appris en construisant angramm.com (agence créative / production vidéo). Le design, la structure et le contenu doivent partir du projet du collègue.
 
-## 1. Ce qu'on vise
+---
 
-- Un site **statique**, sans framework, sans dépendances et sans base de données : rapide, hébergeable partout (Netlify, OVH, GitHub Pages) et sans maintenance.
-- La vidéo est le produit : plein écran, démarrage instantané, et aucun saut de mise en page.
-- Typographie très sobre : une linéale grasse pour la navigation et les titres (Helvetica Bold), une serif pour le texte (EB Garamond). Fond noir, texte blanc.
+## 1. Comment travailler avec le client (le plus important)
 
-## 2. Architecture (à reproduire telle quelle)
+- **Avant de coder, poser 3 ou 4 questions courtes** : la cible, la langue du site, les 3 sites de référence qu'il aime, et ce qui doit être vu en premier.
+- **Une modification à la fois**, petite, puis une capture pour montrer le résultat. Le client valide sur des captures et des vidéos d'écran, pas sur du code.
+- **Ne pas en faire plus que demandé.** Quand le client demande de « remonter un peu un texte », c'est un peu. Une version plus ambitieuse a été refusée, et il a fallu revenir en arrière.
+- **Revenir en arrière immédiatement** quand le client le demande, sans discuter. Garder un commit par retour pour pouvoir le faire.
+- **Répondre simplement** : étapes numérotées, sans jargon, dans la langue du client. Quand il envoie une capture d'erreur (hébergeur, DNS), lire exactement ce qu'elle dit avant de répondre.
+- **Être honnête sur ce qu'on ne sait pas**, par exemple une option payante d'un hébergeur. Le dire, plutôt qu'affirmer.
 
-```
-site-projet/
-  build.mjs              # générateur Node pur (node build.mjs), écrit tout le HTML dans site/
-  content/site.json      # nom, url, langue, description, textes, email, instagram
-  content/projects.json  # liste des films (ordre = ordre d'affichage)
-  content/bts.json       # photos coulisses (facultatif)
-  site/                  # dossier publié
-    assets/style.css, main.js, og.jpg
-    fonts/*.woff2        # polices auto-hébergées (pas de Google Fonts)
-    media/<slug>/full.mp4, preview.mp4, poster.webp, thumb.webp, still-1..4.webp
-    _headers, _redirects, robots.txt, sitemap.xml, llms.txt, 404.html
-netlify.toml             # base = dossier du projet, command = "node build.mjs", publish = "site"
-```
+## 2. Retours client à retenir (ce qui a plu, ce qui a déplu)
 
-Champs d'un film dans `projects.json` : `slug`, `client`, `short`, `title`, `summary` (1 à 2 phrases en anglais), `location`, `date`, `duration` (en secondes), `width`, `height`, `lines` (2 lignes affichées sur le film), puis les options `hideDesktop`, `hideMobile` et `canonicalOf` (quand le même film existe en 16:9 et en 9:16).
+- **Simplicité** : le client a régulièrement demandé d'**enlever** des choses (titres de page inutiles, sections en trop, effets). Partir minimal.
+- **Le travail d'abord** : les vidéos et les images doivent occuper l'écran. Le texte est court et peu présent.
+- **Formats adaptés à l'écran** : les vidéos horizontales sur ordinateur, les verticales sur téléphone. Ne jamais montrer un film vertical perdu au milieu d'un écran large. Quand un film existe en deux formats, n'en afficher qu'un par écran.
+- **L'ordre des projets est un choix du client.** Le rendre facile à changer, dans un seul fichier de contenu.
+- **Typographie** : deux polices maximum, avec un contraste net (une linéale grasse pour la navigation et les titres, une serif pour les textes). Le client remarque les détails : retours à la ligne, interlignage, alignements.
+- **Pas de gadgets** : le curseur personnalisé a été retiré parce qu'il était jugé gênant. Pas d'animation qui retarde l'accès au contenu.
+- **Alignements précis** : si un texte est à côté d'une vidéo, leurs hauts et leurs bas doivent s'aligner. Le client le voit tout de suite.
+- **Aucun saut au chargement** : un texte qui bouge après l'affichage a été signalé comme un bug.
+- **Galerie photo** : une mosaïque avec agrandissement au clic et navigation précédent/suivant (clavier + swipe). Mettre en premier les photos choisies par le client.
 
-Le build génère :
-- l'accueil (reels plein écran) ;
-- /films/ (grille 4:5) ;
-- /work/<slug>/ (une page par film) ;
-- /team/ (mosaïque photos + lightbox) ;
-- /contact/ ;
-- la page 404 ;
-- le sitemap avec les balises vidéo, le JSON-LD (Organization, VideoObject), les balises Open Graph et `?v=<hash>` sur le CSS et le JS (cache cassé automatiquement).
+## 3. Choix techniques qui évitent les ennuis
 
-## 3. Vidéos (c'est 80 % de la qualité)
+- **Site statique** : HTML/CSS/JS générés par un petit script (par exemple Node, sans dépendances) à partir de fichiers de contenu JSON. Pas de WordPress ni de base de données. C'est rapide, ça s'héberge partout, et il n'y a rien à maintenir.
+- **Contenu séparé du code** : textes, projets et ordre sont dans des JSON, et le build régénère tout. Modifier un texte ne doit pas demander de toucher au HTML.
+- **Cache** : ajouter `?v=<hash>` aux fichiers CSS et JS, sinon le client voit l'ancienne version et croit que rien n'a changé.
+- **Polices auto-hébergées** (`.woff2`), avec `preload`.
+- **Mobile** : utiliser `100svh` plutôt que `100vh` (sinon la barre Safari coupe le contenu). Vérifier les marges et les tailles de texte sur iPhone.
 
-- Pour chaque film, encode avec ffmpeg :
-  - `full.mp4` : H.264, `-crf 23`, `-preset slow`, `-movflags +faststart`, AAC 128k, 1080p max. Vise 20 à 50 Mo et **jamais plus de 100 Mo**.
-  - `preview.mp4` : boucle muette de 6 à 10 s, 720p, `-an`, environ 2 à 4 Mo.
-  - `poster.webp` : 1re image, même ratio que la vidéo.
-  - `thumb.webp` : vignette 4:5 pour la grille.
-- **`+faststart` est obligatoire**, sinon la vidéo ne démarre qu'une fois entièrement téléchargée.
-- Mets toujours `muted playsinline autoplay loop` + `poster` sur les vidéos d'ambiance (sinon iOS bloque l'autoplay).
-- Sépare les formats : l'ordinateur reçoit les films 16:9, le téléphone reçoit les films 9:16 (filtrés par une media query ou une classe, pas en JavaScript après le chargement).
-- Charge en différé (`preload="none"`, IntersectionObserver) tout ce qui n'est pas au premier écran.
+## 4. Vidéos
 
-## 4. Les pièges qu'on a vraiment rencontrés
+- Encodage : H.264, `-crf 23`, `-movflags +faststart` (**obligatoire**, sinon la vidéo attend d'être entièrement téléchargée), 1080p maximum, 20 à 50 Mo par film et jamais plus de 100 Mo.
+- Prévoir une version courte et muette (environ 3 Mo) pour les aperçus et les boucles, plus une image `poster`.
+- Attributs `muted playsinline autoplay loop` + `poster` sur les vidéos d'ambiance, sinon iOS bloque la lecture.
+- Ce qui n'est pas visible au premier écran se charge plus tard (`preload="none"` + IntersectionObserver).
 
-1. **Saut de texte au chargement.** Si du JavaScript ajuste une mise en page (aligner un texte sur une vidéo, par exemple), le texte s'affiche d'abord mal placé puis se décale. Solution : faire la mise en page en CSS pur (grid), ou masquer le bloc (`opacity:0`) jusqu'à `document.fonts.ready` + le calcul, puis l'afficher en fondu.
-2. **Polices** : héberger les `.woff2` dans le site, `preload` la police du texte et utiliser `font-display: swap`, en gardant à l'esprit le point 1.
-3. **Unités de hauteur sur mobile** : utiliser `100svh` (et non `100vh`), sinon la barre d'adresse de Safari coupe le contenu.
-4. **Curseur personnalisé** : à éviter, c'était jugé gênant et on l'a retiré.
-5. **Une modification Python ou sed qui cible du HTML** peut toucher deux endroits (par exemple, la même liste dans Contact et dans la 404). Cibler précisément et vérifier.
-6. **Tester à 3 tailles** avant chaque livraison, avec Playwright : 1440×900, 1920×1080 et iPhone (390×844). Faire des captures et les regarder.
-7. **Le client valide sur des captures et des vidéos d'écran.** Faire une petite modification à la fois, et revenir en arrière tout de suite si on te le demande.
+## 5. Erreurs techniques réellement rencontrées
 
-## 5. Hébergement et domaine
+1. **Mise en page calculée en JavaScript** : provoque un saut visible. Préférer le CSS (grid/flex). Si un calcul est inévitable, cacher le bloc jusqu'à `document.fonts.ready` + le calcul, puis l'afficher en fondu.
+2. **Modification par recherche/remplacement** : elle a touché deux endroits identiques (la même liste dans deux pages). Toujours vérifier le nombre d'occurrences avant de modifier.
+3. **Serveur de test local** : il s'arrête parfois. Le relancer plutôt que conclure que le site est cassé.
+4. **Ne rien livrer sans test** à trois tailles (1440×900, 1920×1080, iPhone 390×844) avec Playwright. Faire des captures et les regarder vraiment.
 
-- Les limites de taille de fichier comptent à cause des vidéos :
-  - Cloudflare Pages refuse les fichiers de plus de 25 Mo, donc il est inutilisable ici ;
-  - GitHub Pages est gratuit, accepte les fichiers jusqu'à 100 Mo et 1 Go au total, mais le dépôt doit être public ;
-  - l'offre gratuite de Netlify affiche un badge « Powered by Netlify » ;
-  - OVH Starter (environ 1 Go) fonctionne pour un site statique, à remplir par FTP. Ne pas installer WordPress ni le CDN.
-- DNS OVH vers Netlify :
-  - A `@` → `75.2.60.5` ;
-  - CNAME `www` → `<site>.netlify.app.`
-  - OVH refuse le CNAME tant qu'il reste une ligne A ou TXT (« 3|welcome ») sur `www` : il faut d'abord la modifier ou la supprimer. Si la suppression échoue, réinitialiser la zone avec les entrées minimales.
-- Ne pas toucher aux lignes MX, SPF/TXT, autoconfig et SRV (ce sont celles du mail).
-- Chez OVH, recréer `_headers` et `_redirects` dans un `.htaccess` (cache, compression, 404, redirections 301).
+## 6. Mise en ligne
 
-## 6. SEO (déjà inclus dans le build)
+- Vérifier les **limites de taille de fichier** de l'hébergeur à cause des vidéos :
+  - Cloudflare Pages : 25 Mo maximum par fichier ;
+  - GitHub Pages : gratuit, 100 Mo par fichier, dépôt public obligatoire ;
+  - Netlify gratuit : affiche un badge « Powered by Netlify » ;
+  - OVH Starter : suffisant pour un site statique, sans WordPress ni CDN.
+- DNS chez OVH :
+  - le CNAME `www` est refusé tant qu'une ligne A ou TXT existe déjà sur `www`. Modifier ou supprimer ces lignes d'abord ;
+  - ne jamais toucher aux lignes MX, SPF ou autoconfig (ce sont celles du mail).
+- Activer le HTTPS (Let's Encrypt) et rediriger `www` vers le domaine principal.
 
-- Pour chaque page : un `<title>` et une meta description uniques, une URL canonique, Open Graph et Twitter, ainsi que `og.jpg` en 1200×630.
-- JSON-LD : `Organization` (nom, ville, email, sameAs Instagram) et un `VideoObject` par film (`thumbnailUrl`, `uploadDate`, `duration`, `contentUrl`).
-- Un `sitemap.xml` avec les balises `video:video`, un `robots.txt` qui pointe vers le sitemap et un `llms.txt`.
-- Après la mise en ligne, actions manuelles du client :
-  1. Google Search Console : propriété « Préfixe d'URL » avec la balise meta (pas besoin de toucher au DNS), puis envoi de `sitemap.xml` ;
-  2. Bing Webmaster, en important les réglages depuis Google ;
+## 7. SEO, à intégrer dès le départ
+
+- Pour chaque page : `<title>` et meta description uniques, URL canonique, Open Graph, et une image de partage 1200×630.
+- JSON-LD : `Organization` (ou `LocalBusiness` si c'est local), plus `VideoObject` pour les vidéos.
+- `sitemap.xml` (avec les balises vidéo), `robots.txt` qui pointe vers le sitemap, et une page 404.
+- **Langue du site = langue de la cible.** Un site en anglais se trouve mal sur les recherches en français.
+- Après la mise en ligne, le client fait lui-même :
+  1. Google Search Console : vérification par balise meta, plus simple que le DNS, puis envoi du sitemap ;
+  2. Bing Webmaster ;
   3. une fiche Google Business Profile ;
-  4. le lien du site dans la bio Instagram et dans les crédits des partenaires.
-- Langue : si la cible est française, prévoir le site en français, ou les deux langues avec `hreflang`.
-
-## 7. Méthode de travail conseillée
-
-1. D'abord le contenu (JSON) et l'encodage des médias, ensuite le build, ensuite le style.
-2. Construire une page à la fois, la tester en local (`python3 -m http.server` dans `site/`), puis faire des captures Playwright.
-3. Faire un commit par retour du client, avec un message clair. Ne jamais casser le build : `node build.mjs` doit afficher « OK ».
-4. Toujours répondre au client en français, simplement, avec des étapes numérotées et sans jargon.
+  4. le lien du site sur Instagram et dans les crédits des partenaires.
